@@ -139,117 +139,13 @@ var cmxCanvas = (function(){
 $(function() {
 	var panel, i;
 	cmxCanvas.config.transitionSpeed = 700;
-	/*
-	function loadTOCCredits(comicJSON) {
-		var L = comicJSON.comic.length;
-		$("#toc").empty();
-		for (i = 0; i < L; i++) {
-			var pg = (i < 9) ? "0" + ( i + 1 ) : ( i + 1 );
-			if (comicJSON.comic[i].type === "panel"){
-				var innerhtml = "<li id='toc_btn_" + i + "'class='toc_btn'>" + pg + "</li>";
-				$("#toc").append(innerhtml);
-			}
-			if (i === 0){
-				$(".toc_btn").css("background-color", "#bbbbbb");
-				$(".toc_btn").css("color", "black");
-			}
-		}
-		$(".toc_btn").click(function() {
-			cmxCanvas.selectPanel($(this).text()-1);
-			$(".toc_btn").css("background-color", "black");
-			$(".toc_btn").css("color", "white");
-			$(this).css("background-color", "#bbbbbb");
-			$(this).css("color", "black");
-		});
-		$("#creditblock").empty();
-		if(comicJSON.credit){
-			$("#creditblock").append(comicJSON.credit);
-		}
-		$("#info").hide();
-		
-		reset #info_btn
-		$("#info_btn").empty();
-		$("#info_btn").append("more info");
-		$("#info_btn").css("background-color", "black");
-		$("#info_btn").css("color", "white");
-	}
-
-	cmxCanvas.loadFromURL("sovereign01/sovereign01.json", loadTOCCredits);
-	*/
 	
 	cmxCanvas.loadFromURL("sovereign01/sovereign01.json");
 	
 	$("#leftarrow").click(function(){ 
 		panel = cmxCanvas.goToPrev();
-		//selectTOCBtn(panel);
 	});
 	$("#rightarrow").click(function(){ 
 		panel = cmxCanvas.goToNext();
-		//selectTOCBtn(panel);
 	});
 });
-
-	/*questionable
-
-	function selectTOCBtn(panel){
-		$(".toc_btn").css("background-color", "black");
-		$(".toc_btn").css("color", "white");
-		$("#toc_btn_" + panel).css("background-color", "#bbbbbb");
-		$("#toc_btn_" + panel).css("color", "black");
-	}
-
-	$("#comic_btn_sovereign01").css("background-color", "#bbbbbb");
-	$("#comic_btn_sovereign01").css("color", "black");
-	
-	$("#comic_btn_sovereign01").click(function(){ 
-		cmxCanvas.loadFromURL("sovereign01/sovereign01.json", loadTOCCredits);
-		console.log($(this)[0].id);
-	});	
-	$("#comic_btn_revengerOrigin").click(function(){ 
-		cmxCanvas.loadFromURL("revenger_origin/revenger_origin.json", loadTOCCredits);
-		console.log($(this)[0].id);
-	});	
-	$("#comic_btn_superboy").click(function(){ 
-		cmxCanvas.loadFromURL("superboy/superboy.json", loadTOCCredits);
-		console.log($(this)[0].id);
-	});
-	$("#nav_top > ul > li").click(function() {
-		$("#nav_top > ul > li").css("background-color", "black");
-		$("#nav_top > ul > li").css("color", "white");
-		$(this).css("background-color", "#bbbbbb");
-		$(this).css("color", "black");
-	});
-
-	$("#centertap").click(function(){
-		$(".nav").slideToggle();
-	});
-
-	$("#rightarrow").mouseenter(function() {
-		$(this).css("border-left-color", "#dddddd");
-	});
-	$("#rightarrow").mouseleave(function() {
-		$(this).css("border-left-color", "#373A3E");
-	});
-	$("#leftarrow").mouseenter(function() {
-		$(this).css("border-right-color", "#dddddd");
-	});
-	$("#leftarrow").mouseleave(function() {
-		$(this).css("border-right-color", "#373A3E");
-	});
-	$("#info_btn").click(function(){
-		$("#info").slideToggle(300, function(){
-			$("html, body").animate({ scrollTop: $(document).height() - window.innerHeight });
-		});
-		if ($(this)[0].textContent.substring(0,4) === "more") {
-			$(this).empty();
-			$(this).append("less info");
-			$(this).css("background-color", "#bbbbbb");
-			$(this).css("color", "black");
-		}
-		else {
-			$(this).empty();
-			$(this).append("more info");
-			$(this).css("background-color", "black");
-			$(this).css("color", "white");
-		}
-	});*/
