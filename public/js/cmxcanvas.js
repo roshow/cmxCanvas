@@ -1,6 +1,3 @@
-//cmxCanvas.js
-//by Rolando Garcia, roshow.net
-
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 
 var cmxCanvas = (function(){
@@ -142,12 +139,7 @@ var cmxCanvas = (function(){
 $(function() {
 	var panel, i;
 	cmxCanvas.config.transitionSpeed = 700;
-	function selectTOCBtn(panel){
-		$(".toc_btn").css("background-color", "black");
-		$(".toc_btn").css("color", "white");
-		$("#toc_btn_" + panel).css("background-color", "#bbbbbb");
-		$("#toc_btn_" + panel).css("color", "black");
-	}
+	/*
 	function loadTOCCredits(comicJSON) {
 		var L = comicJSON.comic.length;
 		$("#toc").empty();
@@ -175,7 +167,7 @@ $(function() {
 		}
 		$("#info").hide();
 		
-		//reset #info_btn
+		reset #info_btn
 		$("#info_btn").empty();
 		$("#info_btn").append("more info");
 		$("#info_btn").css("background-color", "black");
@@ -183,18 +175,28 @@ $(function() {
 	}
 
 	cmxCanvas.loadFromURL("sovereign01/sovereign01.json", loadTOCCredits);
-
+	*/
+	
+	cmxCanvas.loadFromURL("sovereign01/sovereign01.json");
+	
 	$("#leftarrow").click(function(){ 
 		panel = cmxCanvas.goToPrev();
-		selectTOCBtn(panel);
+		//selectTOCBtn(panel);
 	});
 	$("#rightarrow").click(function(){ 
 		panel = cmxCanvas.goToNext();
-		selectTOCBtn(panel);
+		//selectTOCBtn(panel);
 	});
 });
 
 	/*questionable
+
+	function selectTOCBtn(panel){
+		$(".toc_btn").css("background-color", "black");
+		$(".toc_btn").css("color", "white");
+		$("#toc_btn_" + panel).css("background-color", "#bbbbbb");
+		$("#toc_btn_" + panel).css("color", "black");
+	}
 
 	$("#comic_btn_sovereign01").css("background-color", "#bbbbbb");
 	$("#comic_btn_sovereign01").css("color", "black");
