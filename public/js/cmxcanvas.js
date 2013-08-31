@@ -11,8 +11,6 @@ var cmxCanvas = (function(){
 	var direction = 1;
 	var imgObj = new Image();
 	var imgObj_next = new Image();
-	//var imgObj_select = new Image();
-	//var imgObj_select_x, imgObj_select_y;
 
 	var cmxCanvasObj = {
 		config: {
@@ -66,60 +64,6 @@ var cmxCanvas = (function(){
 			currentPanel = panel;
 			currentPopup = 0;
 			imgObj.src = comicJSON[currentPanel].src;
-			/* Performance on this was poor when run on a real webserver.
-			if (panel !== currentPanel) {
-				var that = this;
-				currentPopup = 0;
-				direction = (panel < currentPanel) ? -1 : 1;
-
-				imgObj_select.onload = function(){
-					imgObj_x = (canvasId.width - imgObj.width) / 2;
-					imgObj_y = (canvasId.height - imgObj.height) / 2;
-					imgObj_select_x = (canvasId.width - imgObj_select.width) / 2;
-					imgObj_select_y = (canvasId.height - imgObj_select.height) / 2;
-
-					ctx.drawImage(imgObj_select, imgObj_select_x + (direction * canvasId.width), imgObj_select_y);
-
-					jsAnimate({
-						target: [imgObj, imgObj_select],
-						from: [
-			            {
-							x: imgObj_x,
-							y: imgObj_y
-						},
-			               {
-							x: imgObj_select_x + (direction * canvasId.width),
-							y: imgObj_select_y
-						}
-			            ],
-						to: [
-			            {
-							x: imgObj_x - (direction * canvasId.width),
-							y: imgObj_y
-						},
-			            {
-							x: imgObj_select_x,
-							y: imgObj_select_y
-						}
-			            ],
-						canvas: canvasId,
-						ctx: ctx,
-						duration: 100,
-						aInt: 20,
-						friction: 0,
-						aFunction: linear,
-						onComplete: function() {
-							currentPanel = currentPanel + direction;
-							if (currentPanel !== panel) {
-								that.selectPanel(panel);
-							}
-							imgObj.src = comicJSON[currentPanel].src;
-						}
-					});
-				};
-
-				imgObj_select.src = comicJSON[currentPanel + direction].src;
-			}*/
 		},
 		popUp: function(popup) {
 			var x = popup.x || 0;
@@ -239,6 +183,19 @@ $(function() {
 	}
 
 	cmxCanvas.loadFromURL("sovereign01/sovereign01.json", loadTOCCredits);
+
+	$("#leftarrow").click(function(){ 
+		panel = cmxCanvas.goToPrev();
+		selectTOCBtn(panel);
+	});
+	$("#rightarrow").click(function(){ 
+		panel = cmxCanvas.goToNext();
+		selectTOCBtn(panel);
+	});
+});
+
+	/*questionable
+
 	$("#comic_btn_sovereign01").css("background-color", "#bbbbbb");
 	$("#comic_btn_sovereign01").css("color", "black");
 	
@@ -260,15 +217,7 @@ $(function() {
 		$(this).css("background-color", "#bbbbbb");
 		$(this).css("color", "black");
 	});
-	
-	$("#leftarrow").click(function(){ 
-		panel = cmxCanvas.goToPrev();
-		selectTOCBtn(panel);
-	});
-	$("#rightarrow").click(function(){ 
-		panel = cmxCanvas.goToNext();
-		selectTOCBtn(panel);
-	});
+
 	$("#centertap").click(function(){
 		$(".nav").slideToggle();
 	});
@@ -301,5 +250,4 @@ $(function() {
 			$(this).css("background-color", "black");
 			$(this).css("color", "white");
 		}
-	});
-});
+	});*/

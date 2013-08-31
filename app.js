@@ -5,4 +5,7 @@ var express = require('express'),
 app.use(express.static(__dirname + '/public'));
 
 app.listen(_port);
+app.get('/', function(req, res){
+  res.render('index.jade');
+});
 console.log('cmxcanvas Listening on port ' + _port);
