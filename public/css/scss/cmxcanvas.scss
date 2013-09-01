@@ -1,0 +1,58 @@
+$canvas-h: 450px;
+$canvas-w: 800px;
+
+body {
+    background-color: #bbbbbb;
+    color: white;
+    font-family: Futura, Arial, sans-serif;
+    font-size: 1em;
+    min-width: 960px;
+    padding: 0px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    //border: 2px dotted blue;
+    #canvas_container {
+        position: relative;
+
+        #cmxcanvas {
+            //border: 2px dashed red;
+            display: block;
+            padding: 0px;
+            width: $canvas-w;
+            height: $canvas-h;
+            margin: auto;
+        }
+
+        #rightarrow {
+            width: 40%;
+            height: 100%;
+            top: 0;
+            left: 60%;
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0);
+        }
+
+        #centertap {
+            width: 20%;
+            height: 100%;
+            top: 0;
+            left: 40%;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        #leftarrow {
+            width: 40%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            background-color: rgba(0, 0, 255, 0);
+        }
+    }
+}

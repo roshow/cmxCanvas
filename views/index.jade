@@ -1,14 +1,24 @@
-!!! 5
-html
-  head
-    title cmxCanvas
+extends layouts/basic
+
+append head
+
+    title cmxcanvas EXTENDS
     link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
-    script(type='text/javascript', src='js/jquery-1.9.1.js')
     script(type='text/javascript', src='js/jsAnimate.js')
     script(type='text/javascript', src='js/cmxcanvas.js')
-  body
-    #readingarea
-      #leftarrow
-      #centertap
-      canvas#cmxCanvas(height='450px', width='800px')
-      #rightarrow
+    script(type='text/javascript', src='js/index.js')
+
+append #MAIN   
+
+    div.container
+
+        ul#issues_list
+            each issue in issues   
+                li.btn.readcomic(issueId=issue._id)
+                    =issue.series.name +': ' + issue.title
+
+        div#canvas_container
+            div#leftarrow
+            div#centertap
+            canvas#cmxcanvas(height='450px', width='800px')
+            div#rightarrow

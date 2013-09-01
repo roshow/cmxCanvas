@@ -1,4 +1,25 @@
 {
+  "_id": "revorigin",
+  "issue": null,
+  "title": "Origin",
+  "series": {
+    "name": "Revenger",
+    "id": "rev"
+  },
+  "creators": {
+    "art": [
+      {
+        "name": "Michael Powell",
+        "url": "http://michaelpowellart.deviantart.com"
+      }
+    ],
+    "story": [
+      {
+        "name": "Rolando Garcia",
+        "url": "http://roshow.net"
+      }
+    ]
+  },
   "comic":[
     {
         "src": "revenger_origin/panel_01.jpg",
@@ -70,6 +91,5 @@
         "src": "revenger_origin/panel_14.jpg",
         "type": "panel"
     }
-  ],
- "credit": "art & concept by <a href='http://michaelpowellart.deviantart.com/' target='_blank'>Michael Powell</a>, story by <a href='http://roshow.net' target='_blank'>Rolando Garcia</a>"
+  ]
 }

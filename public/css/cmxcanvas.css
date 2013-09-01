@@ -9,67 +9,32 @@ body {
 a {
   text-decoration: none; }
 
-#readingarea {
-  margin: auto;
-  display: block;
-  width: 960px;
-  height: 450px;
-  overflow: hidden;
-  padding: 0px;
+.container #canvas_container {
   position: relative; }
-
-#cmxCanvas {
-  /*background-color: white;*/
-  display: block;
-  padding: 0px;
-  width: 800px;
-  height: 450px;
-  margin: auto; }
-
-/*#rightarrow {
-  width: 0; 
-  height: 0; 
-  display: inline-block;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 50px solid;
-  border-left-color: #373A3E;
-  margin: 0px 0px 175px 0px;
-}
-
-#leftarrow {
-  width: 0; 
-  height: 0; 
-  display: inline-block;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-right: 50px solid;
-  border-right-color: #373A3E;
-  margin: 0px 0px 175px 0px;
-}*/
-#rightarrow {
-  width: 40%;
-  height: 100%;
-  display: block;
-  top: 0;
-  left: 60%;
-  position: absolute;
-  background-color: rgba(255, 0, 0, 0); }
-
-#centertap {
-  width: 20%;
-  height: 100%;
-  display: block;
-  top: 0;
-  left: 40%;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0); }
-
-#leftarrow {
-  width: 40%;
-  height: 100%;
-  display: block;
-  top: 0;
-  left: 0;
-  position: absolute;
-  background-color: rgba(0, 0, 255, 0); }
+  .container #canvas_container #cmxcanvas {
+    display: block;
+    padding: 0px;
+    width: 800px;
+    height: 450px;
+    margin: auto; }
+  .container #canvas_container #rightarrow {
+    width: 40%;
+    height: 100%;
+    top: 0;
+    left: 60%;
+    position: absolute;
+    background-color: rgba(255, 0, 0, 0); }
+  .container #canvas_container #centertap {
+    width: 20%;
+    height: 100%;
+    top: 0;
+    left: 40%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0); }
+  .container #canvas_container #leftarrow {
+    width: 40%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 255, 0); }
