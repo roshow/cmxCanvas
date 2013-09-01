@@ -23,31 +23,38 @@
   "comic":[
     {
         "src": "revenger_origin/panel_01.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_02.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_03.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_04.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_05.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_06.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_07a.png",
         "type": "panel",
+        "transition": "jumpcut",
         "popups": [
             {
               "src": "revenger_origin/panel_07b.jpg",
@@ -65,31 +72,38 @@
     },
     {
         "src": "revenger_origin/panel_08.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_09.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_10.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_11.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_12.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_13.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     },
     {
         "src": "revenger_origin/panel_14.jpg",
-        "type": "panel"
+        "type": "panel",
+        "transition": "jumpcut"
     }
   ]
 }

@@ -20,46 +20,58 @@ var CmxCanvas = (function() {
 			transitionSpeed: null
 		},
 		movePanels: function() {
-			var that = this,
-				imgObj_x = halfDiff(cnv.width, imgObj.width),
-				imgObj_y = halfDiff(cnv.height, imgObj.height),
-				imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
-				imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
 
-			ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
+			switch (cjson[thisPanel].transition) {
 
-			jsAnimate({
-				target: [imgObj, imgObj_next],
-				from: [
-                {
-					x: imgObj_x,
-					y: imgObj_y
-				},
-                   {
-					x: imgObj_next_x + (direction * cnv.width),
-					y: imgObj_next_y
-				}
-                ],
-				to: [
-                {
-					x: imgObj_x - (direction * cnv.width),
-					y: imgObj_y
-				},
-                   {
-					x: imgObj_next_x,
-					y: imgObj_next_y
-				}
-                ],
-				canvas: cnv,
-				ctx: ctx,
-				duration: that.config.transitionSpeed || 500,
-				aInt: 20,
-				friction: 0,
-				aFunction: makeEaseOut(back),
-				onComplete: function() {
+				case 'jumpcut':
 					imgObj.src = cjson[thisPanel].src;
-				}
-			});
+					break;
+
+				case 'elastic':
+				default:
+					var that = this,
+						imgObj_x = halfDiff(cnv.width, imgObj.width),
+						imgObj_y = halfDiff(cnv.height, imgObj.height),
+						imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
+						imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
+
+					ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
+
+					jsAnimate({
+						target: [imgObj, imgObj_next],
+						from: [
+		                {
+							x: imgObj_x,
+							y: imgObj_y
+						},
+		                   {
+							x: imgObj_next_x + (direction * cnv.width),
+							y: imgObj_next_y
+						}
+		                ],
+						to: [
+		                {
+							x: imgObj_x - (direction * cnv.width),
+							y: imgObj_y
+						},
+		                   {
+							x: imgObj_next_x,
+							y: imgObj_next_y
+						}
+		                ],
+						canvas: cnv,
+						ctx: ctx,
+						duration: that.config.transitionSpeed || 500,
+						aInt: 20,
+						friction: 0,
+						aFunction: makeEaseOut(back),
+						onComplete: function() {
+							imgObj.src = cjson[thisPanel].src;
+						}
+					});
+					break;
+			}
+				
 		},
 		selectPanel: function(panel) {
 			thisPanel = panel;
@@ -141,5 +153,3 @@ var CmxCanvas = (function() {
 	return init;
 	
 }());
-
-console.log('renamed helpers');

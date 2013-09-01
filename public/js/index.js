@@ -3,11 +3,13 @@ $(function() {
 
     cmxcanvas.config.transitionSpeed = 700;
 
+    //left & right buttons
+
     cmxcanvas.loadFromURL("getcomic/?id=sov01");
-    $("#leftarrow").click(function() {
+    $("#leftbutton").click(function() {
         panel = cmxcanvas.goToPrev();
     });
-    $("#rightarrow").click(function() {
+    $("#rightbutton").click(function() {
         panel = cmxcanvas.goToNext();
     });
 

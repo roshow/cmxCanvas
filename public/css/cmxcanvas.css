@@ -17,7 +17,7 @@ a {
     width: 800px;
     height: 450px;
     margin: auto; }
-  .container #canvas_container #rightarrow {
+  .container #canvas_container #rightbutton {
     width: 40%;
     height: 100%;
     top: 0;
@@ -31,7 +31,7 @@ a {
     left: 40%;
     position: absolute;
     background-color: rgba(0, 0, 0, 0); }
-  .container #canvas_container #leftarrow {
+  .container #canvas_container #leftbutton {
     width: 40%;
     height: 100%;
     top: 0;
