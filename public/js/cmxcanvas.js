@@ -2,27 +2,31 @@
 
 var CmxCanvas = (function() {
 
-	var i, _cid, ctx, _cjson, imgObj_x, imgObj_y, imgObj_next_x, imgObj_next_y;
-	var _thisPanel = 0;
-	var _thisPopup = 0;
-	var direction = 1;
-	var imgObj = new Image();
-	var imgObj_next = new Image();
+	// Begin Helpers
+	function halfDiff(a, b) {
+		return (a - b)/2;
+	}
+	//End Helpers
 
-	var cmxCanvasObj = {
+	var i, cnv, ctx, cjson,
+		thisPanel = 0,
+		thisPopup = 0,
+		direction = 1,
+		imgObj = new Image(),
+		imgObj_next = new Image();
+
+	var cmxcanvas = {
 		config: {
 			transitionSpeed: null
 		},
 		movePanels: function() {
+			var that = this,
+				imgObj_x = halfDiff(cnv.width, imgObj.width),
+				imgObj_y = halfDiff(cnv.height, imgObj.height),
+				imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
+				imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
 
-			var that = this;
-
-			imgObj_x = (_cid.width - imgObj.width) / 2;
-			imgObj_y = (_cid.height - imgObj.height) / 2;
-			imgObj_next_x = (_cid.width - imgObj_next.width) / 2;
-			imgObj_next_y = (_cid.height - imgObj_next.height) / 2;
-
-			ctx.drawImage(imgObj_next, imgObj_next_x + (direction * _cid.width), imgObj_next_y);
+			ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
 
 			jsAnimate({
 				target: [imgObj, imgObj_next],
@@ -32,13 +36,13 @@ var CmxCanvas = (function() {
 					y: imgObj_y
 				},
                    {
-					x: imgObj_next_x + (direction * _cid.width),
+					x: imgObj_next_x + (direction * cnv.width),
 					y: imgObj_next_y
 				}
                 ],
 				to: [
                 {
-					x: imgObj_x - (direction * _cid.width),
+					x: imgObj_x - (direction * cnv.width),
 					y: imgObj_y
 				},
                    {
@@ -46,21 +50,21 @@ var CmxCanvas = (function() {
 					y: imgObj_next_y
 				}
                 ],
-				canvas: _cid,
+				canvas: cnv,
 				ctx: ctx,
 				duration: that.config.transitionSpeed || 500,
 				aInt: 20,
 				friction: 0,
 				aFunction: makeEaseOut(back),
 				onComplete: function() {
-					imgObj.src = _cjson[_thisPanel].src;
+					imgObj.src = cjson[thisPanel].src;
 				}
 			});
 		},
 		selectPanel: function(panel) {
-			_thisPanel = panel;
-			_thisPopup = 0;
-			imgObj.src = _cjson[_thisPanel].src;
+			thisPanel = panel;
+			thisPopup = 0;
+			imgObj.src = cjson[thisPanel].src;
 		},
 		popUp: function(popup) {
 			var x = popup.x || 0;
@@ -72,47 +76,47 @@ var CmxCanvas = (function() {
 			img_Pop.src = popup.src;
 		},
 		goToNext: function() {
-			if (_thisPanel <= _cjson.length - 1) {
-				var popups = _cjson[_thisPanel].popups || null;
-				if (popups && _thisPopup < popups.length) {
-					switch (popups[_thisPopup].type) {
-						case "popup":
-							this.popUp(popups[_thisPopup]);
-							_thisPopup += 1;
+			if (thisPanel <= cjson.length - 1) {
+				var popups = cjson[thisPanel].popups || null;
+				if (popups && thisPopup < popups.length) {
+					switch (popups[thisPopup].type) {
+						case 'popup':
+							this.popUp(popups[thisPopup]);
+							thisPopup += 1;
 							break;
 					}
 				}
-				else if (_thisPanel !== _cjson.length - 1) {
-					_thisPanel = _thisPanel + 1;
-					_thisPopup = 0;
+				else if (thisPanel !== cjson.length - 1) {
+					thisPanel = thisPanel + 1;
+					thisPopup = 0;
 					direction = 1;
-					imgObj_next.src = _cjson[_thisPanel].src;
+					imgObj_next.src = cjson[thisPanel].src;
 				}
 			}
-			return _thisPanel;
+			return thisPanel;
 		},
 		goToPrev: function() {
-			if (_thisPanel > 0) {
-				_thisPanel = _thisPanel - 1;
+			if (thisPanel > 0) {
+				thisPanel = thisPanel - 1;
 				direction = -1;
-				_thisPopup = 0;
-				switch (_cjson[_thisPanel].type) {
-					case "panel":
-						imgObj_next.src = _cjson[_thisPanel].src;
+				thisPopup = 0;
+				switch (cjson[thisPanel].type) {
+					case 'panel':
+						imgObj_next.src = cjson[thisPanel].src;
 						break;
 					default:
 						this.goToPrev();
 						break;
 				}
 			}
-			return _thisPanel;
+			return thisPanel;
 		},
 		loadFromURL: function(comicURI, func) {
 			var that = this;
 			$.getJSON(comicURI, function(data) {
-				_cjson = data.comic;
-				_thisPanel = 0;
-				imgObj.src = data.comic[_thisPanel].src;
+				cjson = data.comic;
+				thisPanel = 0;
+				imgObj.src = data.comic[thisPanel].src;
 				if (func) {
 					func(data);
 				}
@@ -121,20 +125,21 @@ var CmxCanvas = (function() {
 	};
 
 	imgObj.onload = function() {
-		ctx.clearRect(0, 0, _cid.width, _cid.height);
-		ctx.drawImage(imgObj, (_cid.width - imgObj.width) / 2, (_cid.height - imgObj.height) / 2);
+		ctx.clearRect(0, 0, cnv.width, cnv.height);
+		ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
 	};
 	imgObj_next.onload = function() {
-		cmxCanvasObj.movePanels();
+		cmxcanvas.movePanels();
 	};
 
 	function init(canvasId) {
-		_cid = document.getElementById(canvasId);
-		ctx = _cid.getContext("2d");
-		return cmxCanvasObj;
+		cnv = document.getElementById(canvasId);
+		ctx = cnv.getContext('2d');
+		return cmxcanvas;
 	};
 
 	return init;
-
 	
 }());
+
+console.log('renamed helpers');
