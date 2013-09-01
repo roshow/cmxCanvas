@@ -17,7 +17,7 @@ var CmxCanvas = (function() {
 
 	var cmxcanvas = {
 		config: {
-			transitionSpeed: null
+			transitionSpeed: 700
 		},
 		movePanels: function() {
 
@@ -143,9 +143,12 @@ var CmxCanvas = (function() {
 		cmxcanvas.movePanels();
 	};
 
-	function init(canvasId) {
+	function init(canvasId, config) {
 		cnv = document.getElementById(canvasId);
 		ctx = cnv.getContext('2d');
+		for (key in config) {
+			cmxcanvas.config[key] = config[key];
+		}
 		return cmxcanvas;
 	};
 

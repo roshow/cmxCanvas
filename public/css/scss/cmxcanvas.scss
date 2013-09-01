@@ -18,6 +18,8 @@ a {
     //border: 2px dotted blue;
     #canvas_container {
         position: relative;
+        margin-top: 2%;
+        margin-bottom: 2%;
 
         #cmxcanvas {
             //border: 2px dashed red;
@@ -26,6 +28,7 @@ a {
             width: $canvas-w;
             height: $canvas-h;
             margin: auto;
+            border: 1px solid grey;
         }
 
         #rightbutton {
@@ -56,11 +59,7 @@ a {
         }
     }
 
-    #toc {
-        max-width: 800px;
-        margin: auto;
-        li.btn {
-            border-radius: 0;
-        }
+    .btn {
+        border-radius: 0;
     }
 }

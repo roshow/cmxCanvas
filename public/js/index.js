@@ -1,17 +1,10 @@
 $(function() {
-    var cmxcanvas = new CmxCanvas('cmxcanvas');
 
-    cmxcanvas.config.transitionSpeed = 700;
-
-    //left & right buttons
-
-    var comicUrl = "getcomic/?id=";
+    // helper
 
     function buildTOC(c) {
-        console.log('build toc');
         var _l = c.comic.length,
             _html = '';
-        console.log(_l);
         for (i = 0; i < _l; i++) {
             _html += '<li class="btn btn-inverse" panelNum="' + i + '">' + (i + 1) + '</li>';
         }
@@ -23,10 +16,20 @@ $(function() {
         });
     }
 
+    //load cmxcanvas!
+
+    var cmxcanvas = new CmxCanvas('cmxcanvas', {
+            transitionSpeed: 700
+        }),
+        comicUrl = "getcomic/?id=";
+
+    //left & right buttons
+
     cmxcanvas.loadFromURL(comicUrl + 'sov01', buildTOC);
+    
     $("#leftbutton").click(function() {
         panel = cmxcanvas.goToPrev();
-    });
+    }); 
     $("#rightbutton").click(function() {
         panel = cmxcanvas.goToNext();
     });

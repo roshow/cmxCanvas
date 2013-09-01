@@ -10,13 +10,16 @@ a {
   text-decoration: none; }
 
 .container #canvas_container {
-  position: relative; }
+  position: relative;
+  margin-top: 2%;
+  margin-bottom: 2%; }
   .container #canvas_container #cmxcanvas {
     display: block;
     padding: 0px;
     width: 800px;
     height: 450px;
-    margin: auto; }
+    margin: auto;
+    border: 1px solid grey; }
   .container #canvas_container #rightbutton {
     width: 40%;
     height: 100%;
@@ -38,8 +41,5 @@ a {
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
-.container #toc {
-  max-width: 800px;
-  margin: auto; }
-  .container #toc li.btn {
-    border-radius: 0; }
+.container .btn {
+  border-radius: 0; }
