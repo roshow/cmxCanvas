@@ -11,14 +11,16 @@ append head
 append #MAIN   
 
     div.container
+        div.row-fluid
+            ul#issues_list
+                each issue in issues   
+                    li.btn.readcomic(issueId=issue._id)
+                        =issue.series.name.toUpperCase() +': ' + issue.title
 
-        ul#issues_list
-            each issue in issues   
-                li.btn.readcomic(issueId=issue._id)
-                    =issue.series.name +': ' + issue.title
+            div#canvas_container
+                div#leftbutton
+                div#centertap
+                canvas#cmxcanvas(height='450px', width='800px')
+                div#rightbutton
 
-        div#canvas_container
-            div#leftbutton
-            div#centertap
-            canvas#cmxcanvas(height='450px', width='800px')
-            div#rightbutton
+            ul#toc

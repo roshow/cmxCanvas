@@ -38,3 +38,8 @@ a {
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
+.container #toc {
+  max-width: 800px;
+  margin: auto; }
+  .container #toc li.btn {
+    border-radius: 0; }

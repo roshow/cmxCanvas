@@ -55,4 +55,12 @@ a {
             background-color: rgba(0, 0, 255, 0);
         }
     }
+
+    #toc {
+        max-width: 800px;
+        margin: auto;
+        li.btn {
+            border-radius: 0;
+        }
+    }
 }

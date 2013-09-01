@@ -24,7 +24,7 @@ var CmxCanvas = (function() {
 			switch (cjson[thisPanel].transition) {
 
 				case 'jumpcut':
-					imgObj.src = cjson[thisPanel].src;
+					this.goToPanel(thisPanel);
 					break;
 
 				case 'elastic':
@@ -70,10 +70,9 @@ var CmxCanvas = (function() {
 						}
 					});
 					break;
-			}
-				
+			}			
 		},
-		selectPanel: function(panel) {
+		goToPanel: function(panel) {
 			thisPanel = panel;
 			thisPopup = 0;
 			imgObj.src = cjson[thisPanel].src;
@@ -123,14 +122,14 @@ var CmxCanvas = (function() {
 			}
 			return thisPanel;
 		},
-		loadFromURL: function(comicURI, func) {
+		loadFromURL: function(comicURI, cb) {
 			var that = this;
 			$.getJSON(comicURI, function(data) {
 				cjson = data.comic;
 				thisPanel = 0;
 				imgObj.src = data.comic[thisPanel].src;
-				if (func) {
-					func(data);
+				if (cb) {
+					cb(data);
 				}
 			});
 		}
