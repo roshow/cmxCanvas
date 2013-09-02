@@ -11,7 +11,7 @@ $(function() {
         var _l = c.comic.length,
             _html = '';
         for (i = 0; i < _l; i++) {
-            _html += '<li id="toc' + i + '" panelNum="' + i + '"><a>' + (i + 1) + '</a></li>';
+            _html += templates.toc_panel(i);
         }
 
         $('#toc').html(_html);

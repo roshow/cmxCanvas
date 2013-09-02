@@ -19,8 +19,7 @@ exports.handler = (function(){
             var _q = {};
             dbc.issues.get(_q, function(r) {
                 res.render('index.jade', {
-                    issues: r,
-                    balls: 'balls'
+                    issues: r
                 });
             });
         },
