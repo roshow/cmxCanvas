@@ -12,14 +12,14 @@ append #MAIN
 
     .container
 
-        .navbar
+        #topnav.navbar
             .navbar-inner
                 a.brand(href='#')
-                    | cmxcanvas
+                    | CMXCANVAS
                 ul.nav
                     li
                         a(class="dropdown-toggle", data-toggle="dropdown", href="#")
-                            | Library
+                            | library
                         ul.dropdown-menu
                             each issue in issues   
                                 li.readcomic(issueId=issue._id)
@@ -31,4 +31,6 @@ append #MAIN
             canvas#cmxcanvas(height='450px', width='800px')
             #rightbutton
 
-        ul#toc.radio
+        #footer.navbar
+            .navbar-inner
+                ul#toc.nav

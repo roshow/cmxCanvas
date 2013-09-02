@@ -6,11 +6,11 @@ $(function() {
         var _l = c.comic.length,
             _html = '';
         for (i = 0; i < _l; i++) {
-            _html += '<li class="btn btn-inverse" panelNum="' + i + '">' + (i + 1) + '</li>';
+            _html += '<li panelNum="' + i + '"><a>' + (i + 1) + '</a></li>';
         }
 
         $('#toc').html(_html);
-        $('#toc li.btn').click(function(){
+        $('#toc li').click(function(){
             console.log($(this).attr('panelNum'));
             cmxcanvas.goToPanel(parseInt($(this).attr('panelNum'), 10));
         });
