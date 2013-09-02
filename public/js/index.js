@@ -1,6 +1,6 @@
 $(function() {
 
-    // helper
+    // begin helpers
 
     function selectTOCbtn(btn) {
         $('#toc li').removeClass('active');
@@ -20,7 +20,10 @@ $(function() {
             cmxcanvas.goToPanel(parseInt($(this).attr('panelNum'), 10));
             selectTOCbtn($(this));
         });
+        selectTOCbtn($('#toc0'));
     }
+
+    //end helpers
 
     //load cmxcanvas!
 
