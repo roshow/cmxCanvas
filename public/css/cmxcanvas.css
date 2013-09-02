@@ -9,6 +9,14 @@ body {
 a {
   text-decoration: none; }
 
+.navbar {
+  cursor: pointer; }
+  .navbar .navbar-inner {
+    border-radius: 0; }
+
+.btn {
+  border-radius: 0; }
+
 .container #canvas_container {
   position: relative;
   margin-top: 2%;
@@ -41,5 +49,3 @@ a {
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
-.container .btn {
-  border-radius: 0; }

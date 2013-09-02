@@ -36,7 +36,7 @@ $(function() {
 
     //nav buttons
 
-    $('.btn.readcomic').click(function(){
+    $('.readcomic').click(function(){
         cmxcanvas.loadFromURL(comicUrl + $(this).attr('issueId'), buildTOC);
     });
 });

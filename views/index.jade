@@ -10,17 +10,25 @@ append head
 
 append #MAIN   
 
-    div.container
-        div.row-fluid
-            ul#issues_list
-                each issue in issues   
-                    li.btn.btn-inverse.readcomic(issueId=issue._id)
-                        =issue.series.name.toUpperCase() +': ' + issue.title
+    .container
 
-            div#canvas_container
-                div#leftbutton
-                div#centertap
-                canvas#cmxcanvas(height='450px', width='800px')
-                div#rightbutton
+        .navbar
+            .navbar-inner
+                a.brand(href='#')
+                    | cmxcanvas
+                ul.nav
+                    li
+                        a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                            | Library
+                        ul.dropdown-menu
+                            each issue in issues   
+                                li.readcomic(issueId=issue._id)
+                                    a= issue.series.name.toUpperCase() +': ' + issue.title
 
-            ul#toc.radio
+        #canvas_container
+            #leftbutton
+            #centertap
+            canvas#cmxcanvas(height='450px', width='800px')
+            #rightbutton
+
+        ul#toc.radio
