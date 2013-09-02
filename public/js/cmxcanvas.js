@@ -86,7 +86,7 @@ var CmxCanvas = (function() {
 			};
 			img_Pop.src = popup.src;
 		},
-		goToNext: function() {
+		goToNext: function(cb) {
 			if (thisPanel <= cjson.length - 1) {
 				var popups = cjson[thisPanel].popups || null;
 				if (popups && thisPopup < popups.length) {
