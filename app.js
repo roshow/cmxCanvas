@@ -1,7 +1,14 @@
-var express = require('express'),
+try { CONFIG = require('./config.js'); }
+catch(e){ CONFIG = {
+    mongo: {
+        uri: 'cmx'
+    },
+    port: 2000
+}; }
 
+var express = require('express'),
     app = express(),
-    _port = require('./config.js').port;
+    _port = CONFIG.port;
 
 var handler = require('./handler').handler;
 

@@ -1,5 +1,4 @@
-var dbconfig = require('./config.js').mongo,
-    db = require('mongojs').connect(dbconfig.uri, ['comics']);
+var db = require('mongojs').connect(CONFIG.mongo.uri, ['comics']);
 
 exports.db_cmx = (function() {
     var db_cmx = {
