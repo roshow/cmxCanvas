@@ -1,16 +1,25 @@
 $canvas-h: 450px;
 $canvas-w: 800px;
+$liGray: #777;
+$bgGray: #BBB;
+
+@mixin anim-maxH($dur){
+    -moz-transition: max-height $dur ease;
+    -webkit-transition: max-height $dur ease;
+    -o-transition: max-height $dur ease;
+    transition: max-height $dur ease;
+}
 
 body {
-    background-color: #bbbbbb;
+    background-color: $bgGray;
     color: white;
     font-family: Futura, Arial, sans-serif;
-    font-size: 1em;
+    font-size: 100%;
     min-width: 960px;
     padding: 0px;
 }
 
-a {
+a, a:hover {
     text-decoration: none;
 }
 
@@ -29,15 +38,32 @@ a {
 
 //end bootstrap overwriters
 
+.narrowernav {
+    max-width: 940px;
+    margin: auto;
+}
+
+#topnav {
+        span.caret {
+            border-top-color: black;
+            border-bottom-color: black;
+        }
+        .comicsmenu {
+            margin-left: 105px;
+        }
+
+    }
+
 .container {
     //border: 2px dotted blue;
+    
+
     #canvas_container {
         position: relative;
         margin-top: 2%;
         margin-bottom: 2%;
 
         #cmxcanvas {
-            //border: 2px dashed red;
             display: block;
             padding: 0px;
             width: $canvas-w;
@@ -74,3 +100,37 @@ a {
         }
     }
 }
+
+#footer {
+        .moreinfoBtn {
+            margin: 5px 0;
+            span.caret {
+                vertical-align: middle;
+                &.reverse {
+                    transform:rotate(180deg);
+                    -ms-transform:rotate(180deg);  
+                    -webkit-transform:rotate(180deg);
+                }
+            }
+            a {
+                color: $liGray;
+                &:hover {
+                    color: black;
+                }
+            }
+        }
+        #moreinfo {
+            max-height: 0px;
+            overflow: hidden;
+            @include anim-maxH(0.25s);
+            &.open {
+                max-height: 100px;
+            }
+            .issueDetails {
+                color: $liGray;
+                li {
+                    display: block;
+                }
+            }
+        }
+    }

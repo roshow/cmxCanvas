@@ -1,157 +1,60 @@
-/*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
+var testy;
+$(function() {
 
-var CmxCanvas = (function() {
+    // begin helpers
 
-	// Begin Helpers
-	function halfDiff(a, b) {
-		return (a - b)/2;
-	}
-	//End Helpers
+    function selectTOCbtn(btn) {
+        $('#toc li').removeClass('active');
+        btn.addClass('active');
+    }
 
-	var i, cnv, ctx, cjson,
-		thisPanel = 0,
-		thisPopup = 0,
-		direction = 1,
-		imgObj = new Image(),
-		imgObj_next = new Image();
+    function buildDetails(c) {
+        $('#footerContent').html(jade.templates['toc'](c));
 
-	var cmxcanvas = {
-		config: {
-			transitionSpeed: 700
-		},
-		movePanels: function() {
+        $('.moreinfoBtn').click(function(){
+            if ($('#moreinfo').hasClass('open')) {
+                $('#moreinfo').removeClass('open');
+                $('.moreinfoBtn > span.caret').removeClass('reverse');
+            }
+            else {
+                $('#moreinfo').addClass('open');
+                $('.moreinfoBtn > span.caret').addClass('reverse');
+            }
+        });
 
-			switch (cjson[thisPanel].transition) {
+        $('#toc li').click(function(){
+            console.log($(this).attr('panelNum'));
+            cmxcanvas.goToPanel(parseInt($(this).attr('panelNum'), 10));
+            selectTOCbtn($(this));
+        });
+        selectTOCbtn($('#toc0'));
+    }
 
-				case 'jumpcut':
-					this.goToPanel(thisPanel);
-					break;
+    //end helpers
 
-				case 'elastic':
-				default:
-					var that = this,
-						imgObj_x = halfDiff(cnv.width, imgObj.width),
-						imgObj_y = halfDiff(cnv.height, imgObj.height),
-						imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
-						imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
+    //load cmxcanvas!
 
-					ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
+    var cmxcanvas = new CmxCanvas('cmxcanvas', {
+            transitionSpeed: 700
+        }),
+        comicUrl = "getcomic/?id=";
 
-					jsAnimate({
-						target: [imgObj, imgObj_next],
-						from: [
-		                {
-							x: imgObj_x,
-							y: imgObj_y
-						},
-		                   {
-							x: imgObj_next_x + (direction * cnv.width),
-							y: imgObj_next_y
-						}
-		                ],
-						to: [
-		                {
-							x: imgObj_x - (direction * cnv.width),
-							y: imgObj_y
-						},
-		                   {
-							x: imgObj_next_x,
-							y: imgObj_next_y
-						}
-		                ],
-						canvas: cnv,
-						ctx: ctx,
-						duration: that.config.transitionSpeed || 500,
-						aInt: 20,
-						friction: 0,
-						aFunction: makeEaseOut(back),
-						onComplete: function() {
-							imgObj.src = cjson[thisPanel].src;
-						}
-					});
-					break;
-			}			
-		},
-		goToPanel: function(panel) {
-			thisPanel = panel;
-			thisPopup = 0;
-			imgObj.src = cjson[thisPanel].src;
-		},
-		popUp: function(popup) {
-			var x = popup.x || 0;
-			var y = popup.y || 0;
-			var img_Pop = new Image();
-			img_Pop.onload = function() {
-				ctx.drawImage(img_Pop, x, y);
-			};
-			img_Pop.src = popup.src;
-		},
-		goToNext: function(cb) {
-			if (thisPanel <= cjson.length - 1) {
-				var popups = cjson[thisPanel].popups || null;
-				if (popups && thisPopup < popups.length) {
-					switch (popups[thisPopup].type) {
-						case 'popup':
-							this.popUp(popups[thisPopup]);
-							thisPopup += 1;
-							break;
-					}
-				}
-				else if (thisPanel !== cjson.length - 1) {
-					thisPanel = thisPanel + 1;
-					thisPopup = 0;
-					direction = 1;
-					imgObj_next.src = cjson[thisPanel].src;
-				}
-			}
-			return thisPanel;
-		},
-		goToPrev: function() {
-			if (thisPanel > 0) {
-				thisPanel = thisPanel - 1;
-				direction = -1;
-				thisPopup = 0;
-				switch (cjson[thisPanel].type) {
-					case 'panel':
-						imgObj_next.src = cjson[thisPanel].src;
-						break;
-					default:
-						this.goToPrev();
-						break;
-				}
-			}
-			return thisPanel;
-		},
-		loadFromURL: function(comicURI, cb) {
-			var that = this;
-			$.getJSON(comicURI, function(data) {
-				cjson = data.comic;
-				thisPanel = 0;
-				imgObj.src = data.comic[thisPanel].src;
-				if (cb) {
-					cb(data);
-				}
-			});
-		}
-	};
+    //left & right buttons
 
-	imgObj.onload = function() {
-		ctx.clearRect(0, 0, cnv.width, cnv.height);
-		ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
-	};
-	imgObj_next.onload = function() {
-		cmxcanvas.movePanels();
-	};
+    cmxcanvas.loadFromURL(comicUrl + 'sov01', buildDetails);
+    
+    $("#leftbutton").click(function() {
+        panel = cmxcanvas.goToPrev();
+        selectTOCbtn($('#toc' + panel));
+    }); 
+    $("#rightbutton").click(function() {
+        panel = cmxcanvas.goToNext();
+        selectTOCbtn($('#toc' + panel));
+    });
 
-	function init(canvasId, config) {
-		cnv = document.getElementById(canvasId);
-		ctx = cnv.getContext('2d');
-		for (key in config) {
-			cmxcanvas.config[key] = config[key];
-		}
-		return cmxcanvas;
-	};
+    //nav buttons
 
-	return init;
-	
-}());
+    $('.readcomic').click(function(){
+        cmxcanvas.loadFromURL(comicUrl + $(this).attr('issueId'), buildDetails);
+    });
+});

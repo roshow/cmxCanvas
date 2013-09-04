@@ -4,34 +4,36 @@ append head
 
     title cmxcanvas EXTENDS
     link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
-    script(type='text/javascript', src='js/templates.js')
     script(type='text/javascript', src='js/jsAnimate.js')
+    script(type='text/javascript', src='js/CmxCanvasClass.js')
     script(type='text/javascript', src='js/cmxcanvas.js')
-    script(type='text/javascript', src='js/index.js')
+    script(type='text/javascript', src='js/templates/tmpl.cmxcanvas.js')
 
 append #MAIN   
 
-    .container
+    
 
         #topnav.navbar
             .navbar-inner
-                a.brand(href='#')
-                    | CMXCANVAS
-                ul.nav
-                    li
-                        a(class="dropdown-toggle", data-toggle="dropdown", href="#")
-                            | library
-                        ul.dropdown-menu
-                            each issue in issues   
-                                li.readcomic(issueId=issue._id)
-                                    a= issue.series.name.toUpperCase() +': ' + issue.title
-
-        #canvas_container
-            #leftbutton
-            #centertap
-            canvas#cmxcanvas(height='450px', width='800px')
-            #rightbutton
+                .narrowernav
+                    a.brand(href='#')
+                        | CMXCANVAS
+                    ul.nav
+                        li
+                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                                | read a comic 
+                                span.caret
+                            ul.dropdown-menu.comicsmenu
+                                each issue in issues   
+                                    li.readcomic(issueId=issue._id)
+                                        a= issue.series.name.toUpperCase() +': ' + issue.title
+        .container                           
+            #canvas_container
+                #leftbutton
+                #centertap
+                canvas#cmxcanvas(height='450px', width='800px')
+                #rightbutton
 
         #footer.navbar
             .navbar-inner
-                ul#toc.nav
+                #footerContent.narrowernav

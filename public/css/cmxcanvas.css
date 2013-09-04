@@ -2,11 +2,11 @@ body {
   background-color: #bbbbbb;
   color: white;
   font-family: Futura, Arial, sans-serif;
-  font-size: 1em;
+  font-size: 100%;
   min-width: 960px;
   padding: 0px; }
 
-a {
+a, a:hover {
   text-decoration: none; }
 
 .navbar {
@@ -16,6 +16,16 @@ a {
 
 .btn {
   border-radius: 0; }
+
+.narrowernav {
+  max-width: 940px;
+  margin: auto; }
+
+#topnav span.caret {
+  border-top-color: black;
+  border-bottom-color: black; }
+#topnav .comicsmenu {
+  margin-left: 105px; }
 
 .container #canvas_container {
   position: relative;
@@ -49,3 +59,29 @@ a {
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
+
+#footer .moreinfoBtn {
+  margin: 5px 0; }
+  #footer .moreinfoBtn span.caret {
+    vertical-align: middle; }
+    #footer .moreinfoBtn span.caret.reverse {
+      transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg); }
+  #footer .moreinfoBtn a {
+    color: #777777; }
+    #footer .moreinfoBtn a:hover {
+      color: black; }
+#footer #moreinfo {
+  max-height: 0px;
+  overflow: hidden;
+  -moz-transition: max-height 0.25s ease;
+  -webkit-transition: max-height 0.25s ease;
+  -o-transition: max-height 0.25s ease;
+  transition: max-height 0.25s ease; }
+  #footer #moreinfo.open {
+    max-height: 100px; }
+  #footer #moreinfo .issueDetails {
+    color: #777777; }
+    #footer #moreinfo .issueDetails li {
+      display: block; }
