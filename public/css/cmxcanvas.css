@@ -28,6 +28,11 @@ a, a:hover {
   margin-left: 105px; }
 #topnav .contactmenu {
   margin-left: 202px; }
+#topnav .instructionsmenu {
+  margin-left: 324px;
+  padding: 10px; }
+  #topnav .instructionsmenu li {
+    color: black; }
 
 .container #canvas_container {
   position: relative;
