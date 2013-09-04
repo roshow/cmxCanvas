@@ -2,7 +2,7 @@ extends layouts/basic
 
 append head
 
-    title CMXCANVAS
+    title CMXCANVAS----
     link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
     script(type='text/javascript', src='js/jsAnimate.js')
     script(type='text/javascript', src='js/CmxCanvasClass.js')
@@ -25,6 +25,18 @@ append #MAIN
                                 each issue in issues   
                                     li.readcomic(issueId=issue._id)
                                         a= issue.series.name.toUpperCase() +': ' + issue.title
+                        li
+                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                                | contact  
+                                span.caret
+                            ul.dropdown-menu.contactmenu
+                                li
+                                    a(href="http://twitter.com/roshow", target="_blank")
+                                        | twitter @roshow
+                                li
+                                    a(href="mailto:rolando@roshow.net")
+                                        | email rolando@roshow.net
+
         
         .container                           
             #canvas_container

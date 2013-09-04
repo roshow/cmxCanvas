@@ -26,6 +26,8 @@ a, a:hover {
   border-bottom-color: black; }
 #topnav .comicsmenu {
   margin-left: 105px; }
+#topnav .contactmenu {
+  margin-left: 202px; }
 
 .container #canvas_container {
   position: relative;
