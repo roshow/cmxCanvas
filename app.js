@@ -1,6 +1,7 @@
 var express = require('express'),
+
     app = express(),
-    _port = '5000';
+    _port = require('./config.js').port;
 
 var handler = require('./handler').handler;
 
