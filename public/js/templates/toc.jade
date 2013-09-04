@@ -1,0 +1,25 @@
+
+.moreinfo.btn
+    | More info
+
+.row-fluid#moreinfo.anim
+    span4
+        ul.issueDetails
+            li= "Series: " + series.name
+            li= "Issue: " + issue
+            li= "Title: " + title
+    .span4
+        ul.issueDetails
+            li
+                | Creators:
+            each creator in creators
+                li
+                    a(href=creator.url, target="_blank")= creator.name
+                    span=" (" + creator.credit + ")"
+
+ul#toc.nav
+    - var i = 0
+    each p in comic
+        li(id="toc" + i, panelNum=i)
+            a= (i + 1)
+        - i++
