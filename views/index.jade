@@ -11,8 +11,6 @@ append head
 
 append #MAIN   
 
-    
-
         #topnav.navbar
             .navbar-inner
                 .narrowernav
@@ -27,6 +25,7 @@ append #MAIN
                                 each issue in issues   
                                     li.readcomic(issueId=issue._id)
                                         a= issue.series.name.toUpperCase() +': ' + issue.title
+        
         .container                           
             #canvas_container
                 #leftbutton
