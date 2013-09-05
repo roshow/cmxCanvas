@@ -44,6 +44,16 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
             selectTOCbtn($('#toc0'));
         }
 
+        function goForward() {
+            panel = cmxcanvas.goToPrev();
+            selectTOCbtn($('#toc' + panel));
+        }
+
+        function goBack() {
+            panel = cmxcanvas.goToNext();
+            selectTOCbtn($('#toc' + panel));
+        }
+
         //end helpers
 
         //load cmxcanvas!
@@ -58,12 +68,18 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         cmxcanvas.loadFromURL(comicUrl + 'sov01', buildDetails);
         
         $("#leftbutton").click(function() {
-            panel = cmxcanvas.goToPrev();
-            selectTOCbtn($('#toc' + panel));
+            goForward();
         }); 
         $("#rightbutton").click(function() {
-            panel = cmxcanvas.goToNext();
-            selectTOCbtn($('#toc' + panel));
+            goBack();
+        });
+        $(document).keydown(function(e) {
+            if (e.keyCode === 37) {
+                goForward();
+            }
+            else if (e.keyCode === 39) {
+                goBack();
+            }
         });
 
         //nav buttons
