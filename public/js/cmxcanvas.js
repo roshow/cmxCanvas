@@ -45,12 +45,12 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         }
 
         function goForward() {
-            panel = cmxcanvas.goToPrev();
+            var panel = cmxcanvas.goToPrev();
             selectTOCbtn($('#toc' + panel));
         }
 
         function goBack() {
-            panel = cmxcanvas.goToNext();
+            var panel = cmxcanvas.goToNext();
             selectTOCbtn($('#toc' + panel));
         }
 
@@ -73,12 +73,22 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         $("#rightbutton").click(function() {
             goBack();
         });
+        var _keydown = false;
         $(document).keydown(function(e) {
-            if (e.keyCode === 37) {
-                goForward();
+            if (!_keydown) {
+                if (e.keyCode === 37) {
+                    _keydown = true;
+                    goForward();
+                }
+                else if (e.keyCode === 39) {
+                    _keydown = true;
+                    goBack();
+                }
             }
-            else if (e.keyCode === 39) {
-                goBack();
+        });
+        $(document).keyup(function(e){
+            if(_keydown && e.keyCode === 37 || e.keyCode === 39) {
+                _keydown = false;
             }
         });
 

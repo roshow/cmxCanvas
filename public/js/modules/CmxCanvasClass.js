@@ -9,7 +9,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 		}
 		//End Helpers
 
-		var i, cnv, ctx, cjson,
+		var i, cnv, ctx, cjson, 
+			animating = false,
 			thisPanel = 0,
 			thisPopup = 0,
 			direction = 1,
@@ -21,57 +22,60 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				transitionSpeed: 700
 			},
 			movePanels: function() {
+				if (!animating) {
+					switch (cjson[thisPanel].transition) {
 
-				switch (cjson[thisPanel].transition) {
+						case 'jumpcut':
+							this.goToPanel(thisPanel);
+							break;
 
-					case 'jumpcut':
-						this.goToPanel(thisPanel);
-						break;
+						case 'elastic':
+						default:
+							animating = true;
+							var that = this,
+								imgObj_x = halfDiff(cnv.width, imgObj.width),
+								imgObj_y = halfDiff(cnv.height, imgObj.height),
+								imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
+								imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
 
-					case 'elastic':
-					default:
-						var that = this,
-							imgObj_x = halfDiff(cnv.width, imgObj.width),
-							imgObj_y = halfDiff(cnv.height, imgObj.height),
-							imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
-							imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
+							ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
 
-						ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
-
-						jsAnimate.animation({
-							target: [imgObj, imgObj_next],
-							from: [
-			                {
-								x: imgObj_x,
-								y: imgObj_y
-							},
-			                   {
-								x: imgObj_next_x + (direction * cnv.width),
-								y: imgObj_next_y
-							}
-			                ],
-							to: [
-			                {
-								x: imgObj_x - (direction * cnv.width),
-								y: imgObj_y
-							},
-			                   {
-								x: imgObj_next_x,
-								y: imgObj_next_y
-							}
-			                ],
-							canvas: cnv,
-							ctx: ctx,
-							duration: that.config.transitionSpeed || 500,
-							aInt: 20,
-							friction: 0,
-							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
-							onComplete: function() {
-								imgObj.src = cjson[thisPanel].src;
-							}
-						});
-						break;
-				}			
+							jsAnimate.animation({
+								target: [imgObj, imgObj_next],
+								from: [
+				                {
+									x: imgObj_x,
+									y: imgObj_y
+								},
+				                   {
+									x: imgObj_next_x + (direction * cnv.width),
+									y: imgObj_next_y
+								}
+				                ],
+								to: [
+				                {
+									x: imgObj_x - (direction * cnv.width),
+									y: imgObj_y
+								},
+				                   {
+									x: imgObj_next_x,
+									y: imgObj_next_y
+								}
+				                ],
+								canvas: cnv,
+								ctx: ctx,
+								duration: that.config.transitionSpeed || 500,
+								aInt: 20,
+								friction: 0,
+								aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
+								onComplete: function() {
+									imgObj.src = cjson[thisPanel].src;
+									animating = false;
+								}
+							});
+							break;
+					}	
+				}		
 			},
 			goToPanel: function(panel) {
 				thisPanel = panel;
@@ -88,7 +92,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				img_Pop.src = popup.src;
 			},
 			goToNext: function(cb) {
-				if (thisPanel <= cjson.length - 1) {
+				if (thisPanel <= cjson.length - 1 && !animating) {
 					var popups = cjson[thisPanel].popups || null;
 					if (popups && thisPopup < popups.length) {
 						switch (popups[thisPopup].type) {
@@ -108,7 +112,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				return thisPanel;
 			},
 			goToPrev: function() {
-				if (thisPanel > 0) {
+				if (thisPanel > 0 && !animating) {
 					thisPanel = thisPanel - 1;
 					direction = -1;
 					thisPopup = 0;
