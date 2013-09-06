@@ -39,8 +39,6 @@ nav {
   .container #canvas_container #cmxcanvas {
     display: block;
     padding: 0px;
-    width: 800px;
-    height: 450px;
     margin: auto;
     border: 1px solid grey; }
   .container #canvas_container #rightbutton {
