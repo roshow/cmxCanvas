@@ -1,0 +1,53 @@
+!!! 5
+html
+    head
+
+        //- start bootstrap stuff
+
+        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap-responsive.min.css')
+        script(type="text/javascript", src="http://code.jquery.com/jquery-2.0.3.min.js")
+        script(type="text/javascript", src="bootstrap/js/bootstrap.js")
+
+        //- end bootstrap stuff
+
+        block head
+
+    body
+    #MAIN
+        
+        #topnav.navbar
+            .navbar-inner
+                .narrowernav
+                    a.brand(href='#')
+                        | CMXCANVAS
+                    ul.nav
+                        li
+                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                                | read a comic 
+                                span.caret
+                            ul.dropdown-menu.comicsmenu
+                                each issue in issues   
+                                    li.readcomic(issueId=issue._id)
+                                        a= issue.series.name.toUpperCase() +': ' + issue.title
+                        li
+                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                                | contact  
+                                span.caret
+                            ul.dropdown-menu.contactmenu
+                                li
+                                    a(href="http://twitter.com/roshow", target="_blank")
+                                        | twitter @roshow
+                                li
+                                    a(href="mailto:rolando@roshow.net")
+                                        | email rolando@roshow.net
+
+                        li
+                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                                | instructions  
+                                span.caret
+                            ul.dropdown-menu.instructionsmenu
+                                li
+                                    | Tap on the right side of the image to go move forward, tap on the left side to move back. The table of contents below takes you to key panels.
+
+        block #MAIN
