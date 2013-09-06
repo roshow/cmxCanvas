@@ -1,5 +1,3 @@
-console.log('requiring running');
-
 require.config({
     paths: {
         'jade': 'templates/tmpl.cmxcanvas'
@@ -99,5 +97,3 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         });
     });
 });
-
-console.log('balls');

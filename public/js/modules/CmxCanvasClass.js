@@ -19,7 +19,12 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 		function _imgurl() {
 			var u = mjson.img && mjson.img.url ? mjson.img.url + cjson[thisPanel].src : cjson[thisPanel].src;
-			console.log(u);
+			return u;
+		}
+
+		function _popUrl() {
+			var u = cjson[thisPanel].popups[thisPopup].src;
+			u = mjson.img && mjson.img.url ? mjson.img.url + u : u;
 			return u;
 		}
 
@@ -27,7 +32,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			config: {
 				transitionSpeed: 700
 			},
-
 			movePanels: function() {
 
 				switch (cjson[thisPanel].transition) {
@@ -95,7 +99,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				img_Pop.onload = function() {
 					ctx.drawImage(img_Pop, x, y);
 				};
-				img_Pop.src = popup.src;
+				img_Pop.src = _popUrl(popup.src);
 			},
 			goToNext: function(cb) {
 				if (thisPanel <= cjson.length - 1 && !animating) {
