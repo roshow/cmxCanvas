@@ -9,7 +9,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 		}
 		//End Helpers
 
-		var i, cnv, ctx, cjson, 
+		var i, cnv, ctx, cjson, mjson,
 			animating = false,
 			thisPanel = 0,
 			thisPopup = 0,
@@ -17,11 +17,19 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			imgObj = new Image(),
 			imgObj_next = new Image();
 
+		function _imgurl() {
+			var u = mjson.img && mjson.img.url ? mjson.img.url + cjson[thisPanel].src : cjson[thisPanel].src;
+			console.log(u);
+			return u;
+		}
+
 		var cmxcanvas = {
 			config: {
 				transitionSpeed: 700
 			},
+
 			movePanels: function() {
+
 				switch (cjson[thisPanel].transition) {
 
 					case 'jumpcut':
@@ -68,7 +76,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							friction: 0,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = cjson[thisPanel].src;
+								imgObj.src = _imgurl();
 								animating = false;
 							}
 						});
@@ -78,7 +86,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			goToPanel: function(panel) {
 				thisPanel = panel;
 				thisPopup = 0;
-				imgObj.src = cjson[thisPanel].src;
+				imgObj.src = _imgurl();
 			},
 			popUp: function(popup) {
 				var x = popup.x || 0;
@@ -104,7 +112,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						thisPanel = thisPanel + 1;
 						thisPopup = 0;
 						direction = 1;
-						imgObj_next.src = cjson[thisPanel].src;
+						imgObj_next.src = _imgurl();
 					}
 				}
 				return thisPanel;
@@ -116,7 +124,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					thisPopup = 0;
 					switch (cjson[thisPanel].type) {
 						case 'panel':
-							imgObj_next.src = cjson[thisPanel].src;
+							imgObj_next.src = _imgurl();
 							break;
 						default:
 							this.goToPrev();
@@ -128,9 +136,11 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			loadFromURL: function(comicURI, cb) {
 				var that = this;
 				$.getJSON(comicURI, function(data) {
+
+					mjson = data;
 					cjson = data.comic;
 					thisPanel = 0;
-					imgObj.src = data.comic[thisPanel].src;
+					imgObj.src = _imgurl();
 					if (cb) {
 						cb(data);
 					}

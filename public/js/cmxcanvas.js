@@ -99,3 +99,5 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         });
     });
 });
+
+console.log('balls');
