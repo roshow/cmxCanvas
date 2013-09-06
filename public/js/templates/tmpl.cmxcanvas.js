@@ -189,7 +189,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="moreinfoBtn"><a>More info </a><span class="caret"></span></div><div id="moreinfo" class="anim"><div class="row-fluid"><div class="span4"><ul class="issueDetails"><li>');
+buf.push('<div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');
@@ -203,7 +203,7 @@ buf.push('</li>');
 buf.push('<li>');
 var __val__ = "Title: " + title
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li></ul></div><div class="span4"><ul class="issueDetails"><li>Creators:</li>');
+buf.push('</li></ul></div><div class="col-md-3"><ul class="issueDetails"><li>Creators:</li>');
 // iterate creators
 ;(function(){
   if ('number' == typeof creators.length) {
@@ -237,7 +237,7 @@ buf.push('</span></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div></div><ul id="toc" class="nav">');
+buf.push('</ul></div></div></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate comic
 ;(function(){
@@ -268,7 +268,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul>');
+buf.push('</ul></div>');
 }
 return buf.join("");
 }

@@ -2,17 +2,11 @@ body {
   background-color: #bbbbbb;
   color: white;
   font-family: Futura, Arial, sans-serif;
-  font-size: 100%;
   min-width: 960px;
   padding: 0px; }
 
 a, a:hover {
   text-decoration: none; }
-
-.navbar {
-  cursor: pointer; }
-  .navbar .navbar-inner {
-    border-radius: 0; }
 
 .btn {
   border-radius: 0; }
@@ -21,18 +15,22 @@ a, a:hover {
   max-width: 940px;
   margin: auto; }
 
-#topnav span.caret {
-  border-top-color: black;
-  border-bottom-color: black; }
-#topnav .comicsmenu {
-  margin-left: 105px; }
-#topnav .contactmenu {
-  margin-left: 202px; }
-#topnav .instructionsmenu {
-  margin-left: 324px;
-  padding: 10px; }
-  #topnav .instructionsmenu li {
-    color: black; }
+nav {
+  cursor: pointer;
+  border-radius: 0; }
+
+#topnav {
+  margin: 0; }
+  #topnav button {
+    min-width: 30px;
+    min-height: 30px; }
+  #topnav span.caret {
+    border-top-color: black;
+    border-bottom-color: black; }
+  #topnav .instructionsmenu {
+    padding: 10px; }
+    #topnav .instructionsmenu li {
+      color: black; }
 
 .container #canvas_container {
   position: relative;
@@ -67,6 +65,9 @@ a, a:hover {
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
 
+#footer a.navbar-brand {
+  padding-top: 5px;
+  padding-bottom: 5px; }
 #footer .moreinfoBtn {
   margin: 5px 0; }
   #footer .moreinfoBtn span.caret {
@@ -80,6 +81,7 @@ a, a:hover {
     #footer .moreinfoBtn a:hover {
       color: black; }
 #footer #moreinfo {
+  clear: both;
   max-height: 0px;
   overflow: hidden;
   -moz-transition: max-height 0.25s ease;

@@ -16,38 +16,44 @@ html
     body
     #MAIN
         
-        #topnav.navbar
-            .navbar-inner
-                .narrowernav
-                    a.brand(href='#')
-                        | CMXCANVAS
-                    ul.nav
-                        li
-                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
-                                | read a comic 
-                                span.caret
-                            ul.dropdown-menu.comicsmenu
-                                each issue in issues   
-                                    li.readcomic(issueId=issue._id)
-                                        a= issue.series.name.toUpperCase() +': ' + issue.title
-                        li
-                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
-                                | contact  
-                                span.caret
-                            ul.dropdown-menu.contactmenu
-                                li
-                                    a(href="http://twitter.com/roshow", target="_blank")
-                                        | twitter @roshow
-                                li
-                                    a(href="mailto:rolando@roshow.net")
-                                        | email rolando@roshow.net
+        nav#topnav.navbar.navbar-default(role="navigation")
+            .navbar-header
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand(href='#')
+                    | CMXCANVAS
+            .collapse.navbar-collapse.navbar-ex1-collapse
+                ul.nav.navbar-nav
+                    li
+                        a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                            | read a comic 
+                            span.caret
+                        ul.dropdown-menu.comicsmenu
+                            each issue in issues   
+                                li.readcomic(issueId=issue._id)
+                                    a= issue.series.name.toUpperCase() +': ' + issue.title
 
-                        li
-                            a(class="dropdown-toggle", data-toggle="dropdown", href="#")
-                                | instructions  
-                                span.caret
-                            ul.dropdown-menu.instructionsmenu
-                                li
-                                    | Tap on the right side of the image to go move forward, tap on the left side to move back. The table of contents below takes you to key panels.
+                    li
+                        a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                            | instructions  
+                            span.caret
+                        ul.dropdown-menu.instructionsmenu
+                            li
+                                | Tap on the right side of the image to go move forward, tap on the left side to move back. The table of contents below takes you to key panels.
+                    
+                    li
+                        a(class="dropdown-toggle", data-toggle="dropdown", href="#")
+                            | contact  
+                            span.caret
+                        ul.dropdown-menu.contactmenu
+                            li
+                                a(href="http://twitter.com/roshow", target="_blank")
+                                    | twitter @roshow
+                            li
+                                a(href="mailto:rolando@roshow.net")
+                                    | email rolando@roshow.net
 
         block #MAIN

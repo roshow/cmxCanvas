@@ -14,7 +14,6 @@ body {
     background-color: $bgGray;
     color: white;
     font-family: Futura, Arial, sans-serif;
-    font-size: 100%;
     min-width: 960px;
     padding: 0px;
 }
@@ -25,43 +24,49 @@ a, a:hover {
 
 //begin bootstrap overwrites
 
-.navbar {
-    cursor: pointer;
-    .navbar-inner {
-        border-radius: 0;
-    }
-}
-
 .btn {
     border-radius: 0;
 }
 
-//end bootstrap overwriters
+//end bootstrap overwriter
+
 
 .narrowernav {
     max-width: 940px;
     margin: auto;
 }
 
+nav {
+    cursor: pointer;
+    border-radius: 0;
+}
+
 #topnav {
-        span.caret {
-            border-top-color: black;
-            border-bottom-color: black;
-        }
-        .comicsmenu {
-            margin-left: 105px;
-        }
-        .contactmenu {
-            margin-left: 202px;
-        }
-        .instructionsmenu {
-            li {
-                color: black;
-            }
-            margin-left: 324px;
-            padding: 10px;
-        }
+    margin: 0;
+    
+    button {
+        min-width: 30px;
+        min-height: 30px;
     }
+
+    span.caret {
+        border-top-color: black;
+        border-bottom-color: black;
+    }
+    .comicsmenu {
+        //margin-left: 105px;
+    }
+    .contactmenu {
+        //margin-left: 202px;
+    }
+    .instructionsmenu {
+        li {
+            color: black;
+        }
+        //margin-left: 324px;
+        padding: 10px;
+    }
+}
 
 .container {
     //border: 2px dotted blue;
@@ -110,7 +115,15 @@ a, a:hover {
     }
 }
 
+//consider moving this to its own file so it loads with the js that generates it.
+
 #footer {
+        a.navbar-brand {
+            padding: {
+                top: 5px;
+                bottom: 5px;
+            }
+        }
         .moreinfoBtn {
             margin: 5px 0;
             span.caret {
@@ -129,6 +142,7 @@ a, a:hover {
             }
         }
         #moreinfo {
+            clear: both;
             max-height: 0px;
             overflow: hidden;
             @include anim-maxH(0.25s);
