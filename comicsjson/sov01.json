@@ -18,6 +18,9 @@
             "url": "http://roshow.net"
         }
     ],
+    "img": {
+        "src": ""
+    },
     "comic": [
         {
             "src": "images/sov01/panel_01.jpg",

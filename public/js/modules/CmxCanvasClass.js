@@ -17,17 +17,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			imgObj = new Image(),
 			imgObj_next = new Image();
 
-		function _imgurl() {
-			var u = mjson.img && mjson.img.url ? mjson.img.url + cjson[thisPanel].src : cjson[thisPanel].src;
-			return u;
-		}
-
-		function _popUrl() {
-			var u = cjson[thisPanel].popups[thisPopup].src;
-			u = mjson.img && mjson.img.url ? mjson.img.url + u : u;
-			return u;
-		}
-
 		var cmxcanvas = {
 			config: {
 				transitionSpeed: 700
@@ -80,7 +69,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							friction: 0,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = _imgurl();
+								imgObj.src = mjson.img.url + cjson[thisPanel].src;
 								animating = false;
 							}
 						});
@@ -90,7 +79,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			goToPanel: function(panel) {
 				thisPanel = panel;
 				thisPopup = 0;
-				imgObj.src = _imgurl();
+				imgObj.src = mjson.img.url + cjson[thisPanel].src;
 			},
 			popUp: function(popup) {
 				var x = popup.x || 0;
@@ -99,7 +88,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				img_Pop.onload = function() {
 					ctx.drawImage(img_Pop, x, y);
 				};
-				img_Pop.src = _popUrl(popup.src);
+				img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
 			goToNext: function(cb) {
 				if (thisPanel <= cjson.length - 1 && !animating) {
@@ -116,7 +105,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						thisPanel = thisPanel + 1;
 						thisPopup = 0;
 						direction = 1;
-						imgObj_next.src = _imgurl();
+						imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
 					}
 				}
 				return thisPanel;
@@ -128,7 +117,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					thisPopup = 0;
 					switch (cjson[thisPanel].type) {
 						case 'panel':
-							imgObj_next.src = _imgurl();
+							imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
 							break;
 						default:
 							this.goToPrev();
@@ -140,11 +129,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			loadFromURL: function(comicURI, cb) {
 				var that = this;
 				$.getJSON(comicURI, function(data) {
-
 					mjson = data;
 					cjson = data.comic;
 					thisPanel = 0;
-					imgObj.src = _imgurl();
+					imgObj.src = mjson.img.url + cjson[thisPanel].src;
 					if (cb) {
 						cb(data);
 					}
