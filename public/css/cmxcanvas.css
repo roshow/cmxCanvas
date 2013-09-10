@@ -1,9 +1,11 @@
 body {
   background-color: #bbbbbb;
-  color: white;
+  color: black;
   font-family: Futura, Arial, sans-serif;
-  min-width: 960px;
   padding: 0px; }
+
+h1, h2, h3 {
+  font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
   text-decoration: none; }
@@ -92,3 +94,31 @@ nav {
     color: #777777; }
     #footer #moreinfo .issueDetails li {
       display: block; }
+
+#library.container {
+  padding-top: 1%; }
+  #library.container .issueEntry {
+    position: relative;
+    height: 100%;
+    color: black;
+    text-align: center;
+    cursor: pointer; }
+    #library.container .issueEntry a {
+      color: black; }
+      #library.container .issueEntry a:hover {
+        color: #777777; }
+      #library.container .issueEntry a img {
+        display: block;
+        margin: auto;
+        border: 5px solid black;
+        margin: 8% auto 6% auto;
+        padding: 2%;
+        width: 70%;
+        background-color: white; }
+        #library.container .issueEntry a img:hover {
+          border-color: #777777; }
+      #library.container .issueEntry a p {
+        padding-bottom: 4%;
+        font-size: 1.25em;
+        font-weight: bold;
+        line-height: 1.2em; }

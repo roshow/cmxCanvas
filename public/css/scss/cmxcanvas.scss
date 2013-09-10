@@ -12,10 +12,14 @@ $bgGray: #BBB;
 
 body {
     background-color: $bgGray;
-    color: white;
+    color: black;
     font-family: Futura, Arial, sans-serif;
-    min-width: 960px;
+    //min-width: 960px;
     padding: 0px;
+}
+
+h1, h2, h3 {
+    font-family: Futura, Arial, sans-serif;
 }
 
 a, a:hover {
@@ -155,3 +159,40 @@ nav {
             }
         }
     }
+
+#library.container {
+    padding-top: 1%;
+    .issueEntry {
+        position:relative;
+        height: 100%;
+        color: black;
+        text-align: center;
+        cursor: pointer;
+        a {
+            color: black;
+            &:hover {
+                color: $liGray;
+            }
+
+            img {
+                display: block;
+                margin: auto;
+                border: 5px solid black;
+                margin: 8% auto 6% auto;
+                padding: 2%;
+                width: 70%;
+                background-color: white;
+                &:hover {
+                    border-color: $liGray;
+                }
+            }
+            p {
+                padding-bottom: 4%;
+                font-size: 1.25em;
+                font-weight: bold;
+                line-height: 1.2em;
+            }
+        }
+        
+    }
+}

@@ -17,5 +17,6 @@ app.use(express.static(__dirname + '/public'));
 app.listen(_port);
 app.get('/', handler.index);
 app.get('/getcomic', handler.getcomic);
+app.get('/library', handler.library);
 app.get('/db', handler.dbtest);
 console.log('cmxcanvas Listening on port ' + _port);

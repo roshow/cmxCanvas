@@ -1,5 +1,5 @@
 var db = require('mongojs').connect(CONFIG.mongo.uri, ['comics', 'qa'])
-    , env = 'qa';
+    , env = 'comics';
 
 exports.db_cmx = (function() {
     var db_cmx = {

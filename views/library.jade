@@ -1,0 +1,20 @@
+extends layouts/layout
+
+append head
+
+    title CMXCANVAS
+    link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
+    script(data-main='js/cmxcanvas', src='js/vendor/require.js')
+
+append #MAIN   
+        
+    #library.container 
+        .row
+            each issue in issues  
+                .col-md-4.issueEntry
+                    a(issueId=issue._id)
+                        img.img-responsive(src=issue.thumb)
+                        p
+                            = issue.series.name.toUpperCase() +':'
+                            br
+                            = issue.title

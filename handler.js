@@ -31,6 +31,16 @@ exports.handler = (function(){
                 res.send(r[0]);
             })
         },
+        library: function(req, res){
+            console.log('handling /library');
+            var _q = {};
+            dbc.issues.get(_q, function(r) {
+                res.render('library.jade', {
+                    issues: r
+                });
+            });
+            //res.render('library.jade')
+        },
         dbtest: function(req, res){
             var _q = {};
             function _cb(r) {
