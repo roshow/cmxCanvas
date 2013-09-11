@@ -237,7 +237,7 @@ buf.push('</span></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div><div class="row"><div class="col-md-12"><ul id="toc" class="nav navbar-nav">');
+buf.push('</ul></div><div class="col-md-6"><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate comic
 ;(function(){
