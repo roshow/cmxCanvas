@@ -12,10 +12,10 @@ function parse_issueNames(r) {
     return _issues;
 }
 
-exports.handler = (function(){
+exports.handler = (function() {
     
     var handler = {
-        index: function(req, res){
+        index: function(req, res) {
             var _q = {};
             dbc.issues.get(_q, function(r) {
                 res.render('index.jade', {
@@ -31,7 +31,7 @@ exports.handler = (function(){
                 res.send(r[0]);
             })
         },
-        library: function(req, res){
+        library: function(req, res) {
             console.log('handling /library');
             var _q = {};
             dbc.issues.get(_q, function(r) {
@@ -41,7 +41,17 @@ exports.handler = (function(){
             });
             //res.render('library.jade')
         },
-        dbtest: function(req, res){
+        read: function(req, res) {
+            console.log('handling /read');
+            dbc.issues.get({_id: req.query.id}, function(r) {
+                console.log(r);
+                res.render('index.jade', {
+                    issues: r,
+                    Id: req.query.id
+                });
+            });
+        },
+        dbtest: function(req, res) {
             var _q = {};
             function _cb(r) {
                 res.send(parse_issueNames(r));

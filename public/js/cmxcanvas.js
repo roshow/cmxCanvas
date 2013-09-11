@@ -63,7 +63,7 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
 
         //left & right buttons
 
-        cmxcanvas.loadFromURL(comicUrl + 'sov01', buildDetails);
+        cmxcanvas.loadFromURL(comicUrl + ID, buildDetails);
         
         $("#leftbutton").click(function() {
             goForward();

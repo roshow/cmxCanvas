@@ -11,8 +11,8 @@ append #MAIN
     #library.container 
         .row
             each issue in issues  
-                .col-md-4.issueEntry
-                    a(issueId=issue._id)
+                .col-sm-4.issueEntry
+                    a(issueId=issue._id, href="/read?id="+issue._id)
                         img.img-responsive(src=issue.thumb)
                         p
                             = issue.series.name.toUpperCase() +':'
