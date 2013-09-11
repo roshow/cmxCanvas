@@ -19,8 +19,16 @@
                     li
                         a(href=creator.url, target="_blank")= creator.name
                         span=" (" + creator.credit + ")"
+    .row
+        .col-md-12
+            ul#toc.nav.navbar-nav
+                - var i = 0
+                each p in comic
+                    li(id="toc" + i, panelNum=i)
+                        a= (i + 1)
+                    - i++
 
-.collapse.navbar-collapse.navbar-ex1-collapse
+//collapse.navbar-collapse.navbar-ex1-collapse
     ul#toc.nav.navbar-nav
         - var i = 0
         each p in comic

@@ -237,7 +237,7 @@ buf.push('</span></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul id="toc" class="nav navbar-nav">');
+buf.push('</ul></div></div><div class="row"><div class="col-md-12"><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate comic
 ;(function(){
@@ -268,7 +268,38 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul></div>');
+buf.push('</ul></div></div></div><!--collapse.navbar-collapse.navbar-ex1-collapse<ul id="toc" class="nav navbar-nav">');
+ var i = 0
+// iterate comic
+;(function(){
+  if ('number' == typeof comic.length) {
+    for (var $index = 0, $$l = comic.length; $index < $$l; $index++) {
+      var p = comic[$index];
+
+buf.push('<li');
+buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
+buf.push('><a>');
+var __val__ = (i + 1)
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a></li>');
+ i++
+    }
+  } else {
+    for (var $index in comic) {
+      var p = comic[$index];
+
+buf.push('<li');
+buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
+buf.push('><a>');
+var __val__ = (i + 1)
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a></li>');
+ i++
+   }
+  }
+}).call(this);
+
+buf.push('</ul>-->');
 }
 return buf.join("");
 }

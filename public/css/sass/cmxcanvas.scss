@@ -149,7 +149,7 @@ nav {
             overflow: hidden;
             @include anim-maxH(0.25s);
             &.open {
-                max-height: 100px;
+                max-height: 250px;
             }
             .issueDetails {
                 color: $liGray;
