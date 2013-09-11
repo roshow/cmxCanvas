@@ -106,7 +106,7 @@ nav {
     #library.container .issueEntry a {
       color: black; }
       #library.container .issueEntry a:hover {
-        color: #777777; }
+        color: #428bca; }
       #library.container .issueEntry a img {
         display: block;
         margin: auto;
@@ -116,7 +116,7 @@ nav {
         width: 70%;
         background-color: white; }
         #library.container .issueEntry a img:hover {
-          border-color: #777777; }
+          border-color: #428bca; }
       #library.container .issueEntry a p {
         padding-bottom: 4%;
         font-size: 1.25em;
