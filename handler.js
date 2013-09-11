@@ -16,9 +16,10 @@ exports.handler = (function() {
     
     var handler = {
         index: function(req, res) {
+            console.log('handling '+req.url);
             var _q = {};
             dbc.issues.get(_q, function(r) {
-                res.render('index.jade', {
+                res.render('library.jade', {
                     issues: r
                 });
             });
@@ -32,19 +33,10 @@ exports.handler = (function() {
             })
         },
         library: function(req, res) {
-            console.log('handling /library');
-            var _q = {};
-            dbc.issues.get(_q, function(r) {
-                res.render('library.jade', {
-                    issues: r
-                });
-            });
-            //res.render('library.jade')
         },
         read: function(req, res) {
             console.log('handling /read');
             dbc.issues.get({_id: req.query.id}, function(r) {
-                console.log(r);
                 res.render('index.jade', {
                     issues: r,
                     Id: req.query.id

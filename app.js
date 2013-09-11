@@ -15,9 +15,10 @@ var handler = require('./handler').handler;
 app.use(express.static(__dirname + '/public'));
 
 app.listen(_port);
-app.get('/', handler.library);
+app.get('/', handler.index);
+app.get('/library', handler.index);
 app.get('/getcomic', handler.getcomic);
-app.get('/library', handler.library);
+
 app.get('/read', handler.read);
 app.get('/db', handler.dbtest);
 console.log('cmxcanvas Listening on port ' + _port);
