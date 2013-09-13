@@ -3,6 +3,11 @@ extends layouts/layout
 append head
 
     title CMXCANVAS
+    script
+        //not the most elegant solution for this AT ALL.
+        $(function() { 
+            $('li.libNav').addClass('active');
+        });
 
 append #MAIN   
         
