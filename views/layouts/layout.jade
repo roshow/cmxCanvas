@@ -2,15 +2,19 @@
 html
     head
 
-        //- start bootstrap stuff
+        // META goes here
 
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        
+        // CSS goes here
 
-        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.min.css')
-        script(type="text/javascript", src="http://code.jquery.com/jquery-2.0.3.min.js")
-        script(type="text/javascript", src="bootstrap/js/bootstrap.js")
+        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.min.css')      
+        link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
+        
+        // JS goes here
 
-        //- end bootstrap stuff
+
+        // Extensions go here
 
         block head
 
@@ -31,7 +35,6 @@ html
                     li.libNav
                         a(href="/")
                             | library
-
                     li
                         a(class="dropdown-toggle", data-toggle="dropdown", href="#")
                             | contact  

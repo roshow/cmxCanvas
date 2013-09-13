@@ -3,8 +3,7 @@ extends layouts/layout
 append head
 
     title CMXCANVAS
-    link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
-    script(data-main='js/cmxcanvas', src='js/vendor/require.js')
+    script(data-main='js/cmxcanvas', src='js/libs/require.js')
     if Id
         script.
             var ID = !{JSON.stringify(Id)};

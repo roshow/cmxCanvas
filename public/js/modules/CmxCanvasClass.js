@@ -15,13 +15,16 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			thisPopup = 0,
 			direction = 1,
 			imgObj = new Image(),
-			imgObj_next = new Image();
+			imgObj_next = new Image(),
+			imgObj_prev = new Image();;
 
 		var cmxcanvas = {
 			config: {
 				transitionSpeed: 700
 			},
 			movePanels: function() {
+
+				var imgObj_target = (direction === 1) ? imgObj_next : imgObj_prev;
 
 				switch (cjson[thisPanel].transition) {
 
@@ -35,21 +38,21 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						var that = this,
 							imgObj_x = halfDiff(cnv.width, imgObj.width),
 							imgObj_y = halfDiff(cnv.height, imgObj.height),
-							imgObj_next_x = halfDiff(cnv.width, imgObj_next.width),
-							imgObj_next_y = halfDiff(cnv.height, imgObj_next.height);
+							imgObj_target_x = halfDiff(cnv.width, imgObj_target.width),
+							imgObj_target_y = halfDiff(cnv.height, imgObj_target.height);
 
-						ctx.drawImage(imgObj_next, imgObj_next_x + (direction * cnv.width), imgObj_next_y);
+						ctx.drawImage(imgObj_target, imgObj_target_x + (direction * cnv.width), imgObj_target_y);
 
 						jsAnimate.animation({
-							target: [imgObj, imgObj_next],
+							target: [imgObj, imgObj_target],
 							from: [
 			                {
 								x: imgObj_x,
 								y: imgObj_y
 							},
 			                   {
-								x: imgObj_next_x + (direction * cnv.width),
-								y: imgObj_next_y
+								x: imgObj_target_x + (direction * cnv.width),
+								y: imgObj_target_y
 							}
 			                ],
 							to: [
@@ -58,8 +61,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 								y: imgObj_y
 							},
 			                   {
-								x: imgObj_next_x,
-								y: imgObj_next_y
+								x: imgObj_target_x,
+								y: imgObj_target_y
 							}
 			                ],
 							canvas: cnv,
@@ -70,6 +73,12 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
 								imgObj.src = mjson.img.url + cjson[thisPanel].src;
+								if (thisPanel > 0) {
+									imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
+								}
+								if (thisPanel < cjson.length-1) {
+									imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
+								}
 								animating = false;
 							}
 						});
@@ -91,6 +100,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
 			goToNext: function(cb) {
+
+				var _this = this;
 				if (thisPanel <= cjson.length - 1 && !animating) {
 					var popups = cjson[thisPanel].popups || null;
 					if (popups && thisPopup < popups.length) {
@@ -105,19 +116,22 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						thisPanel = thisPanel + 1;
 						thisPopup = 0;
 						direction = 1;
-						imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
+						//imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
+						_this.movePanels();
 					}
 				}
 				return thisPanel;
 			},
 			goToPrev: function() {
+				var _this = this;
 				if (thisPanel > 0 && !animating) {
 					thisPanel = thisPanel - 1;
 					direction = -1;
 					thisPopup = 0;
 					switch (cjson[thisPanel].type) {
 						case 'panel':
-							imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
+							_this.movePanels();
+							//imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
 							break;
 						default:
 							this.goToPrev();
@@ -143,9 +157,15 @@ define(['modules/jsAnimate'], function(jsAnimate){
 		imgObj.onload = function() {
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
+			if (thisPanel > 0) {
+				imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
+			}
+			if (thisPanel < cjson.length-1) {
+				imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
+			}
 		};
 		imgObj_next.onload = function() {
-			cmxcanvas.movePanels();
+			console.log('next & prev loaded');
 		};
 
 		function init(canvasId, config) {
