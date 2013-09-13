@@ -1,15 +1,27 @@
 require.config({
     paths: {
-        'jade': 'templates/tmpl.cmxcanvas'
+        'jade': 'templates/tmpl.scatter',
+        'Backbone': 'libs/backbone-min',
+        'jquery': 'libs/jquery-2.0.3.min',
+        'underscore': 'libs/underscore-min',
+        'bootstrap': 'libs/bootstrap.min'
     },
     shim: {
         'jade': {
             exports: 'jade'
+        },
+        'bootstrap': {
+            deps: ['jquery'],
+            exports: '$'
+        },
+        'Backbone': {
+            deps: ['jquery', 'underscore'],
+            exports: 'Backbone'
         }
     }
 });
 
-require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){ 
+require(['bootstrap', 'Backbone', 'jade', 'modules/CmxCanvasClass'], function($, Backbone, jade, CmxCanvas) {
 
     $(function() {
 
@@ -95,5 +107,7 @@ require(['jade', 'modules/CmxCanvasClass'], function(jade, CmxCanvas){
         $('.readcomic').click(function(){
             cmxcanvas.loadFromURL(comicUrl + $(this).attr('issueId'), buildDetails);
         });
+
+        console.log('backboned');
     });
 });
