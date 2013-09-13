@@ -1,6 +1,6 @@
 require.config({
     paths: {
-        'jade': 'templates/tmpl.scatter',
+        'jade': 'templates/tmpl.cmxcanvas',
         'Backbone': 'libs/backbone-min',
         'jquery': 'libs/jquery-2.0.3.min',
         'underscore': 'libs/underscore-min',
