@@ -11,12 +11,13 @@ append head
 
 append #MAIN   
         
-    .container                           
+    .container#readcomic  
         #canvas_container
             #leftbutton
-            #centertap
+                span.ui-arrow.glyphicon.glyphicon-play.pull-left
             canvas#cmxcanvas(height='450px', width='800px')
             #rightbutton
+                span.ui-arrow.glyphicon.glyphicon-play.pull-right
 
     nav#footer.navbar.navbar-default(role="navigation")
         #footerContent

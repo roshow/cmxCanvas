@@ -35,11 +35,6 @@ a, a:hover {
 //end bootstrap overwriter
 
 
-.narrowernav {
-    max-width: 940px;
-    margin: auto;
-}
-
 nav {
     cursor: pointer;
     border-radius: 0;
@@ -72,27 +67,27 @@ nav {
     }
 }
 
-.container {
+#readcomic.container {
     //border: 2px dotted blue;
-    
 
     #canvas_container {
         position: relative;
         margin-top: 2%;
         margin-bottom: 2%;
+        width: 100%;
 
         #cmxcanvas {
             display: block;
             padding: 0px;
             margin: auto;
-            border: 1px solid grey;
+            //border: 1px solid grey;
         }
 
         #rightbutton {
-            width: 40%;
+            width: 50%;
             height: 100%;
             top: 0;
-            left: 60%;
+            right: 0;
             position: absolute;
             background-color: rgba(255, 0, 0, 0);
         }
@@ -107,15 +102,37 @@ nav {
         }
 
         #leftbutton {
-            width: 40%;
+            width: 50%;
             height: 100%;
             top: 0;
             left: 0;
             position: absolute;
             background-color: rgba(0, 0, 255, 0);
         }
+
+        .ui-arrow {
+            top: 43%;
+            font-size: 4.5em;
+            color: $liGray;
+            &.pull-left {
+                transform:scale(-1, 1);;
+                -ms-transform:scale(-1, 1);;  
+                -webkit-transform:scale(-1, 1);;
+            }
+            &:hover {
+                color: black;
+            }
+        }
+    }
+
+    .arrow {
+        position: relative;
+        line-height: 450px;
+        vertical-align: middle;
     }
 }
+
+
 
 //consider moving this to its own file so it loads with the js that generates it.
 

@@ -13,10 +13,6 @@ a, a:hover {
 .btn {
   border-radius: 0; }
 
-.narrowernav {
-  max-width: 940px;
-  margin: auto; }
-
 nav {
   cursor: pointer;
   border-radius: 0; }
@@ -34,36 +30,50 @@ nav {
     #topnav .instructionsmenu li {
       color: black; }
 
-.container #canvas_container {
+#readcomic.container #canvas_container {
   position: relative;
   margin-top: 2%;
-  margin-bottom: 2%; }
-  .container #canvas_container #cmxcanvas {
+  margin-bottom: 2%;
+  width: 100%; }
+  #readcomic.container #canvas_container #cmxcanvas {
     display: block;
     padding: 0px;
-    margin: auto;
-    border: 1px solid grey; }
-  .container #canvas_container #rightbutton {
-    width: 40%;
+    margin: auto; }
+  #readcomic.container #canvas_container #rightbutton {
+    width: 50%;
     height: 100%;
     top: 0;
-    left: 60%;
+    right: 0;
     position: absolute;
     background-color: rgba(255, 0, 0, 0); }
-  .container #canvas_container #centertap {
+  #readcomic.container #canvas_container #centertap {
     width: 20%;
     height: 100%;
     top: 0;
     left: 40%;
     position: absolute;
     background-color: rgba(0, 0, 0, 0); }
-  .container #canvas_container #leftbutton {
-    width: 40%;
+  #readcomic.container #canvas_container #leftbutton {
+    width: 50%;
     height: 100%;
     top: 0;
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
+  #readcomic.container #canvas_container .ui-arrow {
+    top: 43%;
+    font-size: 4.5em;
+    color: #777777; }
+    #readcomic.container #canvas_container .ui-arrow.pull-left {
+      transform: scale(-1, 1);
+      -ms-transform: scale(-1, 1);
+      -webkit-transform: scale(-1, 1); }
+    #readcomic.container #canvas_container .ui-arrow:hover {
+      color: black; }
+#readcomic.container .arrow {
+  position: relative;
+  line-height: 450px;
+  vertical-align: middle; }
 
 #footer a.navbar-brand {
   padding-top: 5px;
