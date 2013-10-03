@@ -1,0 +1,45 @@
+.container#readcomic  
+        #canvas_container
+            #leftbutton
+                span.ui-arrow.glyphicon.glyphicon-play.pull-left
+            canvas#cmxcanvas(height='450px', width='800px')
+            #rightbutton
+                span.ui-arrow.glyphicon.glyphicon-play.pull-right
+
+    nav#footer.navbar.navbar-default(role="navigation")
+        .navbar-header
+            a.navbar-brand.moreinfoBtn
+                | more info 
+                span.caret
+
+        #moreinfo.anim
+            .row
+                .col-md-3
+                    ul.issueDetails
+                        li= "Series: " + series.name
+                        if (issue)
+                            li= "Issue: " + issue
+                        li= "Title: " + title
+                .col-md-3
+                    ul.issueDetails
+                        li
+                            | Creators:
+                        each creator in creators
+                            li
+                                a(href=creator.url, target="_blank")= creator.name
+                                span=" (" + creator.credit + ")"
+                .col-md-6
+                    ul#toc.nav.navbar-nav
+                        - var i = 0
+                        each p in cmxJSON
+                            li(id="toc" + i, panelNum=i)
+                                a= (i + 1)
+                            - i++
+
+        //collapse.navbar-collapse.navbar-ex1-collapse
+            ul#toc.nav.navbar-nav
+                - var i = 0
+                each p in cmxJSON
+                    li(id="toc" + i, panelNum=i)
+                        a= (i + 1)
+                    - i++

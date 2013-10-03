@@ -1,29 +1,6 @@
-require.config({
-    paths: {
-        'jade': 'templates/tmpl.cmxcanvas',
-        'Backbone': 'libs/backbone-min',
-        'jquery': 'libs/jquery-2.0.3.min',
-        'underscore': 'libs/underscore-min',
-        'bootstrap': 'libs/bootstrap.min'
-    },
-    shim: {
-        'jade': {
-            exports: 'jade'
-        },
-        'bootstrap': {
-            deps: ['jquery'],
-            exports: '$'
-        },
-        'Backbone': {
-            deps: ['jquery', 'underscore'],
-            exports: 'Backbone'
-        }
-    }
-});
+define(['bootstrap', 'Backbone', 'jade', 'modules/CmxCanvasClass'], function($, Backbone, jade, CmxCanvas) {
 
-require(['bootstrap', 'Backbone', 'jade', 'modules/CmxCanvasClass'], function($, Backbone, jade, CmxCanvas) {
-
-    $(function() {
+    function() {
 
         // begin helpers
 

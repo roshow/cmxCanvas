@@ -16,13 +16,8 @@ exports.handler = (function() {
     
     var handler = {
         index: function(req, res) {
-            console.log('handling '+req.url);
-            var _q = {};
-            dbc.metadata.get(_q, function(r) {
-                res.render('library.jade', {
-                    issues: r
-                });
-            });
+            console.log('handling /');
+            res.render('layouts/layout.jade')
         },
         getcomic: function(req, res) {
             var _q = {

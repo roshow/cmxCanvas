@@ -4,8 +4,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/CmxIssueModel'
-], function($, _, Backbone, CmxIssueModel) {
+  'models/CmxIssueModel',
+  'views/CmxView'
+], function($, _, Backbone, CmxIssueModel, CmxView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -23,18 +24,9 @@ define([
         console.log('default action!!!');
     });
     app_router.on('route:seeJSON', function (id) {
-        var cmxmodel = new CmxIssueModel({ id: id});
-        console.log(cmxmodel);
-        cmxmodel.fetch({
-          success: function(model, response, options) {
-            console.log(model);
-          }
-        });
+        var cmxview = new CmxView({cmxID: id});
+        cmxview.render();
     });
-
-    /*app_router.on('route:id', function (id) {
-        var batView = new BatView({ id: id});
-    });*/
 
     Backbone.history.start();
   
