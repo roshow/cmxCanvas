@@ -3,7 +3,7 @@ extends layouts/layout
 append head
 
     title CMXCANVAS
-    script(src='js/libs/jquery-2.0.3.min.js')
+    script(data-main='js/app.frontend', src='js/libs/require.js')
     script
         //not the most elegant solution for this AT ALL.
         $(function() { 

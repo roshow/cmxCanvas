@@ -18,7 +18,7 @@ exports.handler = (function() {
         index: function(req, res) {
             console.log('handling '+req.url);
             var _q = {};
-            dbc.issues.get(_q, function(r) {
+            dbc.metadata.get(_q, function(r) {
                 res.render('library.jade', {
                     issues: r
                 });
@@ -33,6 +33,13 @@ exports.handler = (function() {
             })
         },
         library: function(req, res) {
+            console.log('handling '+req.url);
+            var _q = {};
+            dbc.metadata.get(_q, function(r) {
+                res.render('library.jade', {
+                    issues: r
+                });
+            });
         },
         read: function(req, res) {
             console.log('handling /read');
@@ -49,6 +56,34 @@ exports.handler = (function() {
                 res.send(parse_issueNames(r));
             }
             dbc.issues.get(_q, _cb);
+        },
+
+        getcmxmetadata: function(req, res) {
+            console.log('handling /get_cmx_metadata');
+            var _q = {};
+            dbc.metadata.get(_q, function(r) {
+                res.render('library.jade', {
+                    issues: r
+                });
+                //res.send(r);
+            });
+        },
+
+        getcmxjson: function(req, res){
+            console.log('handling /getcmxjson');
+            var _q = {
+                _id: req.params.id
+            };
+            console.log(_q);
+            dbc.metadata.get(_q, function(r){
+                var _ish = r[0];
+                dbc.cmxjson.get({
+                    _id: r[0].cmxJSON
+                }, function(j) {
+                    _ish.cmxJSON = j[0].JSON;
+                    res.send(_ish);
+                });
+            });
         }
     };
     
