@@ -1,7 +1,8 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
+/*global define*/
 
 define(['modules/jsAnimate'], function(jsAnimate){
-	var CmxCanvas = (function() {
+	//var CmxCanvas = (function() {
 
 		// Begin Helpers
 		function halfDiff(a, b) {
@@ -16,7 +17,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			direction = 1,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
-			imgObj_prev = new Image();;
+			imgObj_prev = new Image();
 
 		var cmxcanvas = {
 			config: {
@@ -32,7 +33,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						this.goToPanel(thisPanel);
 						break;
 
-					case 'elastic':
+					//case 'elastic': //case for this transition if it's not default
 					default:
 						animating = true;
 						var that = this,
@@ -140,17 +141,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				}
 				return thisPanel;
 			},
-			loadFromURL: function(comicURI, cb) {
-				var that = this;
-				$.getJSON(comicURI, function(data) {
-					mjson = data;
-					cjson = data.comic;
-					thisPanel = 0;
-					imgObj.src = mjson.img.url + cjson[thisPanel].src;
-					if (cb) {
-						cb(data);
-					}
-				});
+			bind: function(canvasId) {
+				cnv = document.getElementById(canvasId);
+				ctx = cnv.getContext('2d');
 			}
 		};
 
@@ -168,17 +161,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			console.log('next & prev loaded');
 		};
 
-		function init(canvasId, config) {
-			cnv = document.getElementById(canvasId);
-			ctx = cnv.getContext('2d');
-			for (key in config) {
-				cmxcanvas.config[key] = config[key];
-			}
-			return cmxcanvas;
-		};
+		return cmxcanvas;
+	//}());
 
-		return init;
-	}());
-
-	return CmxCanvas;
+	//return CmxCanvas;
 });

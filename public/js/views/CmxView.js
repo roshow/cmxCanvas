@@ -1,4 +1,5 @@
 //public/js/views/CmxView.js
+/*global define*/
 
 define([
   'jquery',
@@ -7,6 +8,7 @@ define([
   'jade',
   'bootstrap',
   'models/CmxIssueModel',
+  'modules/CmxCanvasClass'
 ], function($, _, Backbone, jade, bootstrap, CmxIssueModel) {
 
   var CmxView = Backbone.View.extend({
