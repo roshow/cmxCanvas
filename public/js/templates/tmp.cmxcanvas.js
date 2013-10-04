@@ -387,7 +387,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div></div><!--collapse.navbar-collapse.navbar-ex1-collapse<ul id="toc" class="nav navbar-nav">');
+buf.push('</ul></div></div><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate cmxJSON
 ;(function(){
@@ -418,7 +418,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul>--></nav>');
+buf.push('</ul></div></nav>');
 }
 return buf.join("");
 }
