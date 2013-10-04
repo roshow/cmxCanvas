@@ -15,6 +15,16 @@ define([
     }
   });
   
+
+  var currentView;
+
+  function clearCurrentView(v) {
+    if (v) {
+      v.$el.empty();
+      v.undelegateEvents();
+    }
+  }
+
   var initialize = function(){
 
     var app_router = new AppRouter;
@@ -24,8 +34,9 @@ define([
         console.log('default action!!!');
     });
     app_router.on('route:seeJSON', function (id) {
-        var cmxview = new CmxView({cmxID: id});
-        cmxview.render();
+        clearCurrentView(currentView);
+        currentView = new CmxView({cmxID: id});
+        currentView.render();
     });
 
     Backbone.history.start();

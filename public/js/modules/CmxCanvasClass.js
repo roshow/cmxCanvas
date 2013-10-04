@@ -2,7 +2,7 @@
 /*global define*/
 
 define(['modules/jsAnimate'], function(jsAnimate){
-	//var CmxCanvas = (function() {
+	var CmxCanvas = (function() {
 
 		// Begin Helpers
 		function halfDiff(a, b) {
@@ -23,6 +23,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			config: {
 				transitionSpeed: 700
 			},
+
+			//methods for making stuff happen on the canvas
 			movePanels: function() {
 
 				var imgObj_target = (direction === 1) ? imgObj_next : imgObj_prev;
@@ -86,11 +88,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						break;
 				}
 			},
-			goToPanel: function(panel) {
-				thisPanel = panel;
-				thisPopup = 0;
-				imgObj.src = mjson.img.url + cjson[thisPanel].src;
-			},
 			popUp: function(popup) {
 				var x = popup.x || 0;
 				var y = popup.y || 0;
@@ -100,6 +97,8 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				};
 				img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
+
+			//methods for navigating pages
 			goToNext: function(cb) {
 
 				var _this = this;
@@ -141,9 +140,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				}
 				return thisPanel;
 			},
-			bind: function(canvasId) {
-				cnv = document.getElementById(canvasId);
-				ctx = cnv.getContext('2d');
+			goToPanel: function(panel) {
+				thisPanel = panel;
+				thisPopup = 0;
+				imgObj.src = mjson.img.url + cjson[thisPanel].src;
 			}
 		};
 
@@ -161,8 +161,20 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			console.log('next & prev loaded');
 		};
 
-		return cmxcanvas;
+		var init = function(data, canvasId) {
+			console.log('initializing cmxcanvas class');
+			cnv = document.getElementById(canvasId);
+			ctx = cnv.getContext('2d');
+			mjson = data;
+			cjson = data.cmxJSON;
+			thisPanel = 0;
+			imgObj.src = mjson.img.url + cjson[thisPanel].src;
+			return cmxcanvas;
+		};
+
+		return init;
+	}());
 	//}());
 
-	//return CmxCanvas;
+	return CmxCanvas;
 });

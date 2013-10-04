@@ -387,38 +387,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div><ul id="toc" class="nav navbar-nav">');
- var i = 0
-// iterate cmxJSON
-;(function(){
-  if ('number' == typeof cmxJSON.length) {
-    for (var $index = 0, $$l = cmxJSON.length; $index < $$l; $index++) {
-      var p = cmxJSON[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
-buf.push('><a>');
-var __val__ = (i + 1)
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a></li>');
- i++
-    }
-  } else {
-    for (var $index in cmxJSON) {
-      var p = cmxJSON[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
-buf.push('><a>');
-var __val__ = (i + 1)
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a></li>');
- i++
-   }
-  }
-}).call(this);
-
-buf.push('</ul></div></nav>');
+buf.push('</ul></div></div></div></nav>');
 }
 return buf.join("");
 }
