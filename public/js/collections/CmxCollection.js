@@ -11,11 +11,11 @@ define([
       model: CmxIssueModel,
 
       initialize : function(models, options) {
-        
+        console.log('initializing CmxCollection');
       },
       
       url : function() {
-        return '/';
+        return '/getallcmx';
       },       
      
   });

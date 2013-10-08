@@ -5,21 +5,20 @@ define([
   'underscore',
   'backbone',
   'jade',
-  'bootstrap',
-  //'models/',
-  //'collections/CmxCollection'
+  'bootstrap'
   ], function($, _, Backbone, jade, bootstrap) {
 
     var LibraryView = Backbone.View.extend({
     
-        el: $('#cmx.container'),
+        el: $('#CmxCanvas'),
 
         initialize: function() {
-            console.log('new LibraryView initializing')
+            this.collection = this.options.collection
         },
 
-        render: function(model) {
-            this.$el.html(jade.templates['library'](model));
+        render: function() {
+            var _collectionJSON = this.collection.toJSON();
+            this.$el.html(jade.templates['library']({issues: _collectionJSON}));
         },
 
         events: {

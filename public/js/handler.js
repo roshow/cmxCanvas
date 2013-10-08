@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'views/CmxView',
-  //'views/LibraryView',
+  'views/LibraryView',
+  'collections/CmxCollection',
   'models/CmxIssueModel'
-], function($, _, Backbone, CmxView, CmxIssueModel) {
+], function($, _, Backbone, CmxView, LibraryView, CmxCollection, CmxIssueModel) {
     var currentView;
 
     function clearCurrentView(v) {
@@ -15,9 +16,9 @@ define([
         }
     }
 
-    function loadView(V, m) {
+    function loadView(V, o) {
         clearCurrentView(currentView);
-        currentView = new V({model: m});
+        currentView = new V(o);
         currentView.render();
     }
 
@@ -32,12 +33,17 @@ define([
             this.model = new CmxIssueModel({id: id});
             this.model.fetch({
                 success: function(m, r, o){
-                    loadView(CmxView, m);
+                    loadView(CmxView, {model: m});
                 }
             });
         },
         loadLibrary: function(){
-            //this.collection = new;
+            this.collection = new CmxCollection();
+            this.collection.fetch({
+                success: function(c, r, o){
+                    loadView(LibraryView, {collection: c});
+                }
+            });
         }
     };
 

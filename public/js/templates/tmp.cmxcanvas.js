@@ -184,6 +184,141 @@ jade.render = function(node, template, data) {
   node.innerHTML = tmp;
 };
 
+jade.templates["cmxreader"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><canvas id="cmxcanvas" height="450px" width="800px"></canvas><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
+var __val__ = "Series: " + series.name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</li>');
+if ( (issue))
+{
+buf.push('<li>');
+var __val__ = "Issue: " + issue
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</li>');
+}
+buf.push('<li>');
+var __val__ = "Title: " + title
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</li></ul></div><div class="col-md-3"><ul class="issueDetails"><li>Creators:</li>');
+// iterate creators
+;(function(){
+  if ('number' == typeof creators.length) {
+    for (var $index = 0, $$l = creators.length; $index < $$l; $index++) {
+      var creator = creators[$index];
+
+buf.push('<li><a');
+buf.push(attrs({ 'href':(creator.url), 'target':("_blank") }, {"href":true,"target":true}));
+buf.push('>');
+var __val__ = creator.name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a><span>');
+var __val__ = " (" + creator.credit + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></li>');
+    }
+  } else {
+    for (var $index in creators) {
+      var creator = creators[$index];
+
+buf.push('<li><a');
+buf.push(attrs({ 'href':(creator.url), 'target':("_blank") }, {"href":true,"target":true}));
+buf.push('>');
+var __val__ = creator.name
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a><span>');
+var __val__ = " (" + creator.credit + ")"
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</span></li>');
+   }
+  }
+}).call(this);
+
+buf.push('</ul></div><div class="col-md-6"><ul id="toc" class="nav navbar-nav">');
+ var i = 0
+// iterate cmxJSON
+;(function(){
+  if ('number' == typeof cmxJSON.length) {
+    for (var $index = 0, $$l = cmxJSON.length; $index < $$l; $index++) {
+      var p = cmxJSON[$index];
+
+buf.push('<li');
+buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
+buf.push('><a>');
+var __val__ = (i + 1)
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a></li>');
+ i++
+    }
+  } else {
+    for (var $index in cmxJSON) {
+      var p = cmxJSON[$index];
+
+buf.push('<li');
+buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
+buf.push('><a>');
+var __val__ = (i + 1)
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</a></li>');
+ i++
+   }
+  }
+}).call(this);
+
+buf.push('</ul></div></div></div></nav>');
+}
+return buf.join("");
+}
+jade.templates["library"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<div id="library" class="container"> <div class="row">');
+// iterate issues  
+;(function(){
+  if ('number' == typeof issues  .length) {
+    for (var $index = 0, $$l = issues  .length; $index < $$l; $index++) {
+      var issue = issues  [$index];
+
+buf.push('<div class="col-sm-4 issueEntry"><a');
+buf.push(attrs({ 'issueId':(issue._id), 'href':("/#/comic/"+issue._id) }, {"issueId":true,"href":true}));
+buf.push('><img');
+buf.push(attrs({ 'src':(issue.thumb), "class": ('img-responsive') }, {"src":true}));
+buf.push('/><p>');
+var __val__ = issue.series.name.toUpperCase() +':'
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('<br/>');
+var __val__ = issue.title
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</p></a></div>');
+    }
+  } else {
+    for (var $index in issues  ) {
+      var issue = issues  [$index];
+
+buf.push('<div class="col-sm-4 issueEntry"><a');
+buf.push(attrs({ 'issueId':(issue._id), 'href':("/#/comic/"+issue._id) }, {"issueId":true,"href":true}));
+buf.push('><img');
+buf.push(attrs({ 'src':(issue.thumb), "class": ('img-responsive') }, {"src":true}));
+buf.push('/><p>');
+var __val__ = issue.series.name.toUpperCase() +':'
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('<br/>');
+var __val__ = issue.title
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</p></a></div>');
+   }
+  }
+}).call(this);
+
+buf.push('</div></div>');
+}
+return buf.join("");
+}
 jade.templates["toc"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
@@ -300,94 +435,6 @@ buf.push('</a></li>');
 }).call(this);
 
 buf.push('</ul>-->');
-}
-return buf.join("");
-}
-jade.templates["cmxreader"] = function(locals, attrs, escape, rethrow, merge) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
-var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><canvas id="cmxcanvas" height="450px" width="800px"></canvas><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
-var __val__ = "Series: " + series.name
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-if ( (issue))
-{
-buf.push('<li>');
-var __val__ = "Issue: " + issue
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li>');
-}
-buf.push('<li>');
-var __val__ = "Title: " + title
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li></ul></div><div class="col-md-3"><ul class="issueDetails"><li>Creators:</li>');
-// iterate creators
-;(function(){
-  if ('number' == typeof creators.length) {
-    for (var $index = 0, $$l = creators.length; $index < $$l; $index++) {
-      var creator = creators[$index];
-
-buf.push('<li><a');
-buf.push(attrs({ 'href':(creator.url), 'target':("_blank") }, {"href":true,"target":true}));
-buf.push('>');
-var __val__ = creator.name
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a><span>');
-var __val__ = " (" + creator.credit + ")"
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</span></li>');
-    }
-  } else {
-    for (var $index in creators) {
-      var creator = creators[$index];
-
-buf.push('<li><a');
-buf.push(attrs({ 'href':(creator.url), 'target':("_blank") }, {"href":true,"target":true}));
-buf.push('>');
-var __val__ = creator.name
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a><span>');
-var __val__ = " (" + creator.credit + ")"
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</span></li>');
-   }
-  }
-}).call(this);
-
-buf.push('</ul></div><div class="col-md-6"><ul id="toc" class="nav navbar-nav">');
- var i = 0
-// iterate cmxJSON
-;(function(){
-  if ('number' == typeof cmxJSON.length) {
-    for (var $index = 0, $$l = cmxJSON.length; $index < $$l; $index++) {
-      var p = cmxJSON[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
-buf.push('><a>');
-var __val__ = (i + 1)
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a></li>');
- i++
-    }
-  } else {
-    for (var $index in cmxJSON) {
-      var p = cmxJSON[$index];
-
-buf.push('<li');
-buf.push(attrs({ 'id':("toc" + i), 'panelNum':(i) }, {"id":true,"panelNum":true}));
-buf.push('><a>');
-var __val__ = (i + 1)
-buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</a></li>');
- i++
-   }
-  }
-}).call(this);
-
-buf.push('</ul></div></div></div></nav>');
 }
 return buf.join("");
 }

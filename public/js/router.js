@@ -10,6 +10,7 @@ define([
   var AppRouter = Backbone.Router.extend({
     routes: {
       'comic/:id': 'readComic',
+      'library': 'loadLibrary',
       '*actions': 'defaultAction'
     }
   });
@@ -20,6 +21,9 @@ define([
 
     app_router.on('route:defaultAction', function(action) {
         handler.defaultAction(action);
+    });
+    app_router.on('route:loadLibrary', function(id) {
+        handler.loadLibrary(id);
     });
     app_router.on('route:readComic', function(id) {
         handler.readComic(id);

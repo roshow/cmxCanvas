@@ -1,0 +1,10 @@
+#library.container 
+    .row
+        each issue in issues  
+            .col-sm-4.issueEntry
+                a(issueId=issue._id, href="/#/comic/"+issue._id)
+                    img.img-responsive(src=issue.thumb)
+                    p
+                        = issue.series.name.toUpperCase() +':'
+                        br
+                        = issue.title
