@@ -19,6 +19,7 @@ define([
         render: function() {
             var _collectionJSON = this.collection.toJSON();
             this.$el.html(jade.templates['library']({issues: _collectionJSON}));
+            $('li.libNav').addClass('active');
         },
 
         
