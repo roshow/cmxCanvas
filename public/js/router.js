@@ -4,8 +4,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'handler'
-], function($, _, Backbone, handler) {
+  'handler',
+  'views/NavView'
+], function($, _, Backbone, handler, NavView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -20,10 +21,11 @@ define([
     var app_router = new AppRouter;
 
     app_router.on('route:defaultAction', function(action) {
-        handler.defaultAction(action);
+        //handler.defaultAction(action);
+        handler.loadLibrary();
     });
-    app_router.on('route:loadLibrary', function(id) {
-        handler.loadLibrary(id);
+    app_router.on('route:loadLibrary', function() {
+        handler.loadLibrary();
     });
     app_router.on('route:readComic', function(id) {
         handler.readComic(id);

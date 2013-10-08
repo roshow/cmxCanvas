@@ -272,6 +272,15 @@ buf.push('</ul></div></div></div></nav>');
 }
 return buf.join("");
 }
+jade.templates["index"] = function(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<nav id="topnav" role="navigation" class="navbar navbar-default"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">CMXCANVAS</a></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul class="nav navbar-nav"><li class="libNav"><a>library</a></li><li><a data-toggle="dropdown" href="#" class="dropdown-toggle">contact  <span class="caret"></span></a><ul class="dropdown-menu contactmenu"><li><a href="http://twitter.com/roshow" target="_blank">twitter @roshow</a></li><li><a href="mailto:rolando@roshow.net">email rolando@roshow.net</a></li></ul></li></ul></div></nav>');
+}
+return buf.join("");
+}
 jade.templates["library"] = function(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];

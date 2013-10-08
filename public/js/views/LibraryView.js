@@ -21,9 +21,14 @@ define([
             this.$el.html(jade.templates['library']({issues: _collectionJSON}));
         },
 
+        
         events: {
-            //'click #thought': 'newThought'
+            'click .col-sm-4.issueEntry': 'goToComic'
+        },
+        goToComic: function(e){
+            $('li.libNav').removeClass('active');
         }
+
 
     });
 

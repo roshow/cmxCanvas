@@ -2,18 +2,23 @@
 html
     head
 
-        //- start bootstrap stuff
+        // META goes here
 
-        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.min.css')
-        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap-responsive.min.css')
-        script(type="text/javascript", src="http://code.jquery.com/jquery-2.0.3.min.js")
-        script(type="text/javascript", src="bootstrap/js/bootstrap.js")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        
+        // CSS goes here
 
-        //- end bootstrap stuff
+        link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.min.css')      
+        link(rel='stylesheet', type='text/css', href='css/cmxcanvas.css')
+        
+        // JS goes here
+        
+        script(data-main='js/app.frontend', src='js/libs/require.js')
 
-        block head
+
+        // Extensions go here
 
     body
-    #MAIN
-        block #MAIN
+        #MAIN
+        #CmxCanvas
 

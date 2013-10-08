@@ -17,7 +17,7 @@ exports.handler = (function() {
     var handler = {
         index: function(req, res) {
             console.log('handling /');
-            res.render('layouts/layout.jade')
+            res.render('layouts/basic.jade')
         },
         getcomic: function(req, res) {
             var _q = {

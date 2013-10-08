@@ -6,7 +6,7 @@ require.config({
         underscore: 'libs/underscore-min',
         backbone: 'libs/backbone-min',
         bootstrap: 'libs/bootstrap.min',
-        jade: 'templates/tmp.cmxcanvas'
+        jade: 'templates/cmxtemplates'
     },
     shim: {
         jade: {
