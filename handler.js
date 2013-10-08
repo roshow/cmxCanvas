@@ -64,6 +64,14 @@ exports.handler = (function() {
             });
         },
 
+        getallcmx: function(req, res) {
+            console.log('handling /getallcmx');
+            var _q = {};
+            dbc.metadata.get(_q, function(r) {
+                res.send(r);
+            });
+        },
+
         getcmxjson: function(req, res){
             console.log('handling /getcmxjson');
             var _q = {

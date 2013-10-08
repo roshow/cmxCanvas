@@ -22,6 +22,6 @@ require.config({
     }
 });
 
-require(['boot'], function(boot){
-    boot.initialize();
+require(['router'], function(Router){
+    Router.initialize();
 });

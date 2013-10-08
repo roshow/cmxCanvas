@@ -7,35 +7,25 @@ define([
   'backbone',
   'jade',
   'bootstrap',
-  'models/CmxIssueModel',
   'modules/CmxCanvasClass'
-], function($, _, Backbone, jade, bootstrap, CmxIssueModel, CmxCanvas) {
+], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
 
   var CmxView = Backbone.View.extend({
     el: $("#CmxCanvas"),
 
     initialize: function() {
-      //console.log(this);
+      this.model = this.options.model;
     },
 
     render: function() {
-      
-      var that = this;
 
-      this.model = new CmxIssueModel({id: that.options.cmxID});
-      this.model.fetch({  
-        success: function(model, response, options) {
+      var _modeljson = this.model.toJSON();
+      this.$el.html(jade.templates['cmxreader'](_modeljson));
 
-          var _modeljson = that.model.toJSON();
-          //load templates
-          that.$el.html(jade.templates['cmxreader'](_modeljson));
-          //create cmxcanvas class with methods to make life easier
-          
-          that.cmxcanvas = new CmxCanvas(_modeljson, 'cmxcanvas');
-          //select first (0) panel in TOC
-          $('#toc0').addClass('active');
-        }
-      });
+      //create cmxcanvas class with methods to make life easier
+      this.cmxcanvas = new CmxCanvas(_modeljson, 'cmxcanvas');
+      //select first (0) panel in TOC
+      $('#toc0').addClass('active');
     },
 
     events: {

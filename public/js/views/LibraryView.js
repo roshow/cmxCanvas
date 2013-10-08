@@ -5,9 +5,9 @@ define([
   'underscore',
   'backbone',
   'jade',
-  'bootstrap'
+  'bootstrap',
   //'models/',
-  //'collections/'
+  //'collections/CmxCollection'
   ], function($, _, Backbone, jade, bootstrap) {
 
     var LibraryView = Backbone.View.extend({

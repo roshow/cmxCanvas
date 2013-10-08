@@ -19,6 +19,7 @@ app.get('/library', handler.library);
 app.get('/getcomic', handler.getcomic);
 app.get('/getcmxmetadata', handler.getcmxmetadata);
 app.get('/getcmxjson/:id', handler.getcmxjson);
+app.get('/getallcmx', handler.getallcmx);
 app.get('*', handler.index);
 
 app.get('/read', handler.read);
