@@ -13,6 +13,9 @@ a, a:hover {
 .btn {
   border-radius: 0; }
 
+.navbar {
+  border-radius: 0; }
+
 nav {
   cursor: pointer;
   border-radius: 0; }
