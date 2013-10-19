@@ -104,12 +104,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					var _startT = new Date();
 					var _f = 0;
 
-			        var imgFadeInter = setInterval(function(){
+			        var _fadeIn = setInterval(function(){
 						_f++;
 
 			        	ctx.globalAlpha = (ctx.globalAlpha >= 0.9) ? 1 : (ctx.globalAlpha += 0.1);
-
-			        	//ctx.globalAlpha = Math.ceil(ctx.globalAlpha += 0.1);
 			        	console.log('global Alpha: ' + ctx.globalAlpha);
 
 						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
@@ -122,10 +120,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							var _dur = _endT - _startT;
 
 							console.log('total frames: ', _f);
-							console.log(Math.ceil(_dur)/1000);
-							console.log(Math.ceil(_f/(_dur/1000)));
+							console.log('total milliseconds: ' + Math.ceil(_dur));
+							console.log('fps: ' + Math.ceil(_f/(_dur/1000)));
 
-							clearInterval(imgFadeInter); 
+							clearInterval(_fadeIn); 
 						}
 
 				    }, 11);
