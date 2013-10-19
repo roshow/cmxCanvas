@@ -89,14 +89,47 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				}
 			},
 			popUp: function(popup) {
+				var that = this;
 				var x = popup.x || 0;
 				var y = popup.y || 0;
 				var img_Pop = new Image();
 				img_Pop.onload = function() {
-					ctx.drawImage(img_Pop, x, y);
-				};
-				img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
+					that.loadPopUp(img_Pop, x, y);
+        		}
+        		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
+			loadPopUp: function(img_Pop, x, y){
+				var bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
+					ctx.globalAlpha = 0;
+					var _startT = new Date();
+					var _f = 0;
+
+			        var imgFadeInter = setInterval(function(){
+						_f++;
+
+			        	ctx.globalAlpha = (ctx.globalAlpha >= 0.9) ? 1 : (ctx.globalAlpha += 0.1);
+
+			        	//ctx.globalAlpha = Math.ceil(ctx.globalAlpha += 0.1);
+			        	console.log('global Alpha: ' + ctx.globalAlpha);
+
+						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
+						ctx.putImageData(bkgPartial, x, y);
+						ctx.drawImage(img_Pop, x, y);
+
+						if (ctx.globalAlpha == 1) {
+							
+							var _endT = new Date();
+							var _dur = _endT - _startT;
+
+							console.log('total frames: ', _f);
+							console.log(Math.ceil(_dur)/1000);
+							console.log(Math.ceil(_f/(_dur/1000)));
+
+							clearInterval(imgFadeInter); 
+						}
+
+				    }, 11);
+				},
 
 			//methods for navigating pages
 			goToNext: function(cb) {
