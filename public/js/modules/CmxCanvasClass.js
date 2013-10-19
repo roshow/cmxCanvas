@@ -99,15 +99,18 @@ define(['modules/jsAnimate'], function(jsAnimate){
         		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
 			loadPopUp: function(img_Pop, x, y){
-				var bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
+					var _totalFrames = 10;
+					var _dur = 100;
+
+					var bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
 					ctx.globalAlpha = 0;
 					var _startT = new Date();
 					var _f = 0;
-
+					var _frameIncrement = 1/_totalFrames;
+					var _int = _dur/_totalFrames;
 			        var _fadeIn = setInterval(function(){
 						_f++;
-
-			        	ctx.globalAlpha = (ctx.globalAlpha >= 0.9) ? 1 : (ctx.globalAlpha += 0.1);
+			        	ctx.globalAlpha = parseFloat((ctx.globalAlpha += _frameIncrement).toFixed(1), 10);
 			        	console.log('global Alpha: ' + ctx.globalAlpha);
 
 						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
@@ -126,7 +129,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							clearInterval(_fadeIn); 
 						}
 
-				    }, 11);
+				    }, _int);
 				},
 
 			//methods for navigating pages
