@@ -6,4 +6,4 @@ exports.mongo = {
     username: 'roshow',
     password: 'cmx11111111~'
 };
-exports.port = 80;
+exports.port = process.env.PORT || 5000;
