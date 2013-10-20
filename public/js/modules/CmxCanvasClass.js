@@ -106,10 +106,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					var _totalFrames = 10,
 						_dur = 100,
 						_frameIncrement = 1/_totalFrames,
-						_int = _dur/_totalFrames;
-							_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
-							_frame = 0,
-							_time1 = new Date();
+						_int = _dur/_totalFrames,
+						_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height),
+						_frame = 0,
+						_time1 = new Date();
 
 					ctx.globalAlpha = 0;
 
@@ -153,9 +153,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					var _scale = 0;
 
 			        var _scaleIn = setInterval(function(){
-						
+
 						_frame++;
-						_scale = _scale + 10;
+						_scale += 10;
 						_scalePercent = _scale/100;
 
 						_scaledW = img_Pop.width*_scalePercent,
