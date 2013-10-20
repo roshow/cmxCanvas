@@ -90,17 +90,14 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				}
 			},
 			popUp: function(popup) {
-
-				var that = this
-					, x = popup.x || 0
-					, y = popup.y || 0;
+				var that = this;
 
 				var img_Pop = new Image();
 				img_Pop.onload = function() {
 					that.animatePopUp({
 						imgPop: img_Pop,
-						x: x,
-						y: y,
+						x: popup.x || 0,
+						y: popup.y || 0,
 						animation: popup.animation || 'scaleIn'
 					});
         		}
@@ -125,11 +122,11 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					clearInterval(interval);
 					_time2 = new Date();	
 					_dTime = _time2 - _time1;
-					console.log('total frames: ', _frame);
+					/*console.log('total frames: ', _frame);
 					console.log('total milliseconds: ' + Math.ceil(_dTime));
-					console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));
+					console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));*/
 				}
-				
+
 				switch (options.animation) {
 					case 'fadeIn':
 						ctx.globalAlpha = 0;
@@ -177,8 +174,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 			//methods for navigating pages
 			goToNext: function(cb) {
-
-				var _this = this;
+				var that = this;
 				if (thisPanel <= cjson.length - 1 && !animating) {
 					var popups = cjson[thisPanel].popups || null;
 					if (popups && thisPopup < popups.length) {
@@ -194,20 +190,20 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						thisPopup = 0;
 						direction = 1;
 						//imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
-						_this.movePanels();
+						that.movePanels();
 					}
 				}
 				return thisPanel;
 			},
 			goToPrev: function() {
-				var _this = this;
+				var that = this;
 				if (thisPanel > 0 && !animating) {
 					thisPanel = thisPanel - 1;
 					direction = -1;
 					thisPopup = 0;
 					switch (cjson[thisPanel].type) {
 						case 'panel':
-							_this.movePanels();
+							that.movePanels();
 							//imgObj_next.src = mjson.img.url + cjson[thisPanel].src;
 							break;
 						default:
