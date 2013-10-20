@@ -95,13 +95,13 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					, x = popup.x || 0
 					, y = popup.y || 0;
 
-				var img_Pop = new Image()
+				var img_Pop = new Image();
 				img_Pop.onload = function() {
 					that.animatePopUp({
 						imgPop: img_Pop,
 						x: x,
 						y: y,
-						animation: popup.animation || 'popUpScaleIn'
+						animation: popup.animation || 'scaleIn'
 					});
         		}
         		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
@@ -129,9 +129,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					console.log('total milliseconds: ' + Math.ceil(_dTime));
 					console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));
 				}
-
+				
 				switch (options.animation) {
-					case 'popUpFadeIn':
+					case 'fadeIn':
 						ctx.globalAlpha = 0;
 				        var _fadeIn = setInterval(function(){
 
@@ -151,15 +151,14 @@ define(['modules/jsAnimate'], function(jsAnimate){
 					    }, _int);
 					    break;
 
-					case 'popUpScaleIn':
+					case 'scaleIn':
 					default:
-
 						var _scale = 0;
 				        var _scaleIn = setInterval(function(){
-
+							
 							_scale += 10;
+							
 							_scalePercent = _scale/100;
-
 							_scaledW = _imgPop.width*_scalePercent,
 							_scaledH = _imgPop.height*_scalePercent,
 							_dX = _x + ((_imgPop.width - _scaledW)/2),
