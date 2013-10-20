@@ -2,6 +2,7 @@
 /*global define*/
 
 define(['modules/jsAnimate'], function(jsAnimate){
+
 	var CmxCanvas = (function() {
 
 		// Begin Helpers
@@ -89,48 +90,101 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				}
 			},
 			popUp: function(popup) {
-				var that = this;
-				var x = popup.x || 0;
-				var y = popup.y || 0;
-				var img_Pop = new Image();
+
+				var that = this
+					, x = popup.x || 0
+					, y = popup.y || 0;
+
+				var img_Pop = new Image()
 				img_Pop.onload = function() {
-					that.loadPopUp(img_Pop, x, y);
+					that.popUpScale(img_Pop, x, y);
         		}
         		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
-			loadPopUp: function(img_Pop, x, y){
-					var _totalFrames = 10;
-					var _dur = 100;
+			popUpFadeIn: function(img_Pop, x, y){
 
-					var bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
+					var _totalFrames = 10,
+						_dur = 100,
+						_frameIncrement = 1/_totalFrames,
+						_int = _dur/_totalFrames;
+							_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height);
+							_frame = 0,
+							_time1 = new Date();
+
 					ctx.globalAlpha = 0;
-					var _startT = new Date();
-					var _f = 0;
-					var _frameIncrement = 1/_totalFrames;
-					var _int = _dur/_totalFrames;
+
 			        var _fadeIn = setInterval(function(){
-						_f++;
-			        	ctx.globalAlpha = parseFloat((ctx.globalAlpha += _frameIncrement).toFixed(1), 10);
-			        	console.log('global Alpha: ' + ctx.globalAlpha);
+						_frame++;
+						
+						var gA = ctx.globalAlpha;
+							gA += _frameIncrement;
+							gA = gA.toFixed(1);
+							gA = parseFloat(gA, 10);
+
+						ctx.globalAlpha = gA;
 
 						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
-						ctx.putImageData(bkgPartial, x, y);
+						ctx.putImageData(_bkgPartial, x, y);
+						
 						ctx.drawImage(img_Pop, x, y);
 
 						if (ctx.globalAlpha == 1) {
 							
-							var _endT = new Date();
-							var _dur = _endT - _startT;
-
-							console.log('total frames: ', _f);
+							var _time2 = new Date();
+							var _dur = _time2 - _time1;
+							/*console.log('total frames: ', _frame);
 							console.log('total milliseconds: ' + Math.ceil(_dur));
-							console.log('fps: ' + Math.ceil(_f/(_dur/1000)));
+							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));*/
 
 							clearInterval(_fadeIn); 
 						}
-
 				    }, _int);
-				},
+			},
+			popUpScale: function(img_Pop, x, y){
+
+					var _totalFrames = 10,
+						_dur = 100,
+						_frameIncrement = 1/_totalFrames,
+						_int = _dur/_totalFrames,
+						_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height),
+						_frame = 0,
+						_time1 = new Date();
+
+					var _scale = 0;
+
+			        var _scaleIn = setInterval(function(){
+						
+						_frame++;
+						_scale = _scale + 10;
+						_scalePercent = _scale/100;
+
+						_scaledW = img_Pop.width*_scalePercent,
+						_scaledH = img_Pop.height*_scalePercent,
+						_dX = x + ((img_Pop.width - _scaledW)/2),
+						_dY = y + ((img_Pop.height - _scaledH)/2);
+
+						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
+						ctx.putImageData(_bkgPartial, x, y);
+
+						ctx.drawImage(
+							img_Pop,
+							_dX,
+							_dY,
+							_scaledW,
+							_scaledH
+						);
+
+						if (_scale == 100) {
+							var _time2 = new Date();
+							var _dur = _time2 - _time1;
+							/*console.log('total frames: ', _frame);
+							console.log('total milliseconds: ' + Math.ceil(_dur));
+							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));*/
+
+							clearInterval(_scaleIn); 
+						}
+				    }, _int);
+			},
 
 			//methods for navigating pages
 			goToNext: function(cb) {
@@ -192,11 +246,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			}
 		};
 		imgObj_next.onload = function() {
-			console.log('next & prev loaded');
+			//console.log('next & prev loaded');
 		};
 
 		var init = function(data, canvasId) {
-			console.log('initializing cmxcanvas class');
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
 			mjson = data;
@@ -208,7 +261,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 		return init;
 	}());
-	//}());
 
 	return CmxCanvas;
 });

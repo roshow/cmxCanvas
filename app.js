@@ -8,9 +8,9 @@ catch(e){ CONFIG = {
 
 var express = require('express'),
     app = express(),
-    _port = CONFIG.port;
-
-var handler = require('./handler').handler;
+    _port = CONFIG.port,
+    exec = require('child_process').exec,
+    handler = require('./handler').handler;
 
 app.use(express.static(__dirname + '/public'));
 
@@ -25,3 +25,5 @@ app.get('*', handler.index);
 app.get('/read', handler.read);
 app.get('/db', handler.dbtest);
 console.log('cmxcanvas Listening on port ' + _port);
+//Open Safari when cmxcanvas has begun to listen:
+exec('open -a Safari "http://localhost:5000/#comic/sov01"');

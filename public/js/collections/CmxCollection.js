@@ -11,7 +11,7 @@ define([
       model: CmxIssueModel,
 
       initialize : function(models, options) {
-        console.log('initializing CmxCollection');
+        console.log('initializing CmxCollectionsss');
       },
       
       url : function() {

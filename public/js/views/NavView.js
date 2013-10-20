@@ -15,7 +15,6 @@ define([
         },
         render: function() {
             this.$el.html(jade.templates['index']());
-            console.log("rendering new app view");
         },
         events: {
             'click li.libNav': 'goToLibrary',
