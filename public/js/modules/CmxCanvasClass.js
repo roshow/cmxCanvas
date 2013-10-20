@@ -108,71 +108,72 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			},
 
 			animatePopUp: function(options){
-					var _imgPop = options.imgPop,
-						_x = options.x,
-						_y = options.y;
-						_totalFrames = options.frames || 10;
-						_dur = options.duration || 100;
+				var _imgPop = options.imgPop,
+					_x = options.x,
+					_y = options.y;
+					_totalFrames = options.frames || 10;
+					_dur = options.duration || 100;
 
-					var _time2, _dTime,
-						_frameIncrement = 1/_totalFrames,
-						_int = _dur/_totalFrames,
-						_bkgPartial = ctx.getImageData(_x, _y, _imgPop.width, _imgPop.height),
-						_frame = 0,
-						_time1 = new Date();
+				var _time2, _dTime,
+					_frameIncrement = 1/_totalFrames,
+					_int = _dur/_totalFrames,
+					_bkgPartial = ctx.getImageData(_x, _y, _imgPop.width, _imgPop.height),
+					_frame = 0,
+					_time1 = new Date();
 
-					function killInterval(interval) {
-						clearInterval(interval);
-						_time2 = new Date();	
-						_dTime = _time2 - _time1;
-						console.log('total frames: ', _frame);
-						console.log('total milliseconds: ' + Math.ceil(_dTime));
-						console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));
-					}
+				function killInterval(interval) {
+					clearInterval(interval);
+					_time2 = new Date();	
+					_dTime = _time2 - _time1;
+					console.log('total frames: ', _frame);
+					console.log('total milliseconds: ' + Math.ceil(_dTime));
+					console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));
+				}
 
-					switch (options.animation) {
-						case 'popUpFadeIn':
-							ctx.globalAlpha = 0;
-					        var _fadeIn = setInterval(function(){
+				switch (options.animation) {
+					case 'popUpFadeIn':
+						ctx.globalAlpha = 0;
+				        var _fadeIn = setInterval(function(){
 
-								var gA = ctx.globalAlpha;
-									gA += _frameIncrement;
-									gA = gA.toFixed(1);
-									gA = parseFloat(gA, 10);
-								ctx.globalAlpha = gA;
+							var gA = ctx.globalAlpha;
+								gA += _frameIncrement;
+								gA = gA.toFixed(1);
+								gA = parseFloat(gA, 10);
+							ctx.globalAlpha = gA;
 
-								ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
-								ctx.putImageData(_bkgPartial, _x, _y);
-								ctx.drawImage(_imgPop, _x, _y);
+							ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
+							ctx.putImageData(_bkgPartial, _x, _y);
+							ctx.drawImage(_imgPop, _x, _y);
 
-								_frame++;
-								if (ctx.globalAlpha === 1) killInterval(_fadeIn);
+							_frame++;
+							if (ctx.globalAlpha === 1) killInterval(_fadeIn);
 
-						    }, _int);
-						    break;
-						case 'popUpScaleIn':
-						default:
+					    }, _int);
+					    break;
 
-							var _scale = 0;
-					        var _scaleIn = setInterval(function(){
+					case 'popUpScaleIn':
+					default:
 
-								_scale += 10;
-								_scalePercent = _scale/100;
+						var _scale = 0;
+				        var _scaleIn = setInterval(function(){
 
-								_scaledW = _imgPop.width*_scalePercent,
-								_scaledH = _imgPop.height*_scalePercent,
-								_dX = _x + ((_imgPop.width - _scaledW)/2),
-								_dY = _y + ((_imgPop.height - _scaledH)/2);
+							_scale += 10;
+							_scalePercent = _scale/100;
 
-								ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
-								ctx.putImageData(_bkgPartial, _x, _y);
-								ctx.drawImage(_imgPop, _dX, _dY, _scaledW, _scaledH);
+							_scaledW = _imgPop.width*_scalePercent,
+							_scaledH = _imgPop.height*_scalePercent,
+							_dX = _x + ((_imgPop.width - _scaledW)/2),
+							_dY = _y + ((_imgPop.height - _scaledH)/2);
 
-								_frame++;
-								if (_scale === 100) killInterval(_scaleIn);
-						    }, _int);
-						    break;
-				    }
+							ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
+							ctx.putImageData(_bkgPartial, _x, _y);
+							ctx.drawImage(_imgPop, _dX, _dY, _scaledW, _scaledH);
+
+							_frame++;
+							if (_scale === 100) killInterval(_scaleIn);
+					    }, _int);
+					    break;
+			    }
 			},
 
 			//methods for navigating pages
