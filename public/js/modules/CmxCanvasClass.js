@@ -97,93 +97,82 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 				var img_Pop = new Image()
 				img_Pop.onload = function() {
-					that[popup.animation || 'popUpScale'](img_Pop, x, y);
+					that.animatePopUp({
+						imgPop: img_Pop,
+						x: x,
+						y: y,
+						animation: popup.animation || 'popUpScaleIn'
+					});
         		}
         		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
-			popUpFadeIn: function(img_Pop, x, y){
 
-					var _totalFrames = 10,
-						_dur = 100,
+			animatePopUp: function(options){
+					var _imgPop = options.imgPop,
+						_x = options.x,
+						_y = options.y;
+						_totalFrames = options.frames || 10;
+						_dur = options.duration || 100;
+
+					var _time2, _dTime,
 						_frameIncrement = 1/_totalFrames,
 						_int = _dur/_totalFrames,
-						_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height),
+						_bkgPartial = ctx.getImageData(_x, _y, _imgPop.width, _imgPop.height),
 						_frame = 0,
 						_time1 = new Date();
 
-					ctx.globalAlpha = 0;
+					function killInterval(interval) {
+						clearInterval(interval);
+						_time2 = new Date();	
+						_dTime = _time2 - _time1;
+						console.log('total frames: ', _frame);
+						console.log('total milliseconds: ' + Math.ceil(_dTime));
+						console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));
+					}
 
-			        var _fadeIn = setInterval(function(){
-						_frame++;
-						
-						var gA = ctx.globalAlpha;
-							gA += _frameIncrement;
-							gA = gA.toFixed(1);
-							gA = parseFloat(gA, 10);
+					switch (options.animation) {
+						case 'popUpFadeIn':
+							ctx.globalAlpha = 0;
+					        var _fadeIn = setInterval(function(){
 
-						ctx.globalAlpha = gA;
+								var gA = ctx.globalAlpha;
+									gA += _frameIncrement;
+									gA = gA.toFixed(1);
+									gA = parseFloat(gA, 10);
+								ctx.globalAlpha = gA;
 
-						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
-						ctx.putImageData(_bkgPartial, x, y);
-						
-						ctx.drawImage(img_Pop, x, y);
+								ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
+								ctx.putImageData(_bkgPartial, _x, _y);
+								ctx.drawImage(_imgPop, _x, _y);
 
-						if (ctx.globalAlpha == 1) {
-							
-							var _time2 = new Date();
-							var _dur = _time2 - _time1;
-							console.log('total frames: ', _frame);
-							console.log('total milliseconds: ' + Math.ceil(_dur));
-							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));
+								_frame++;
+								if (ctx.globalAlpha === 1) killInterval(_fadeIn);
 
-							clearInterval(_fadeIn); 
-						}
-				    }, _int);
-			},
-			popUpScale: function(img_Pop, x, y){
+						    }, _int);
+						    break;
+						case 'popUpScaleIn':
+						default:
 
-					var _totalFrames = 10,
-						_dur = 100,
-						_frameIncrement = 1/_totalFrames,
-						_int = _dur/_totalFrames,
-						_bkgPartial = ctx.getImageData(x, y, img_Pop.width, img_Pop.height),
-						_frame = 0,
-						_time1 = new Date();
+							var _scale = 0;
+					        var _scaleIn = setInterval(function(){
 
-					var _scale = 0;
+								_scale += 10;
+								_scalePercent = _scale/100;
 
-			        var _scaleIn = setInterval(function(){
+								_scaledW = _imgPop.width*_scalePercent,
+								_scaledH = _imgPop.height*_scalePercent,
+								_dX = _x + ((_imgPop.width - _scaledW)/2),
+								_dY = _y + ((_imgPop.height - _scaledH)/2);
 
-						_frame++;
-						_scale += 10;
-						_scalePercent = _scale/100;
+								ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
+								ctx.putImageData(_bkgPartial, _x, _y);
+								ctx.drawImage(_imgPop, _dX, _dY, _scaledW, _scaledH);
 
-						_scaledW = img_Pop.width*_scalePercent,
-						_scaledH = img_Pop.height*_scalePercent,
-						_dX = x + ((img_Pop.width - _scaledW)/2),
-						_dY = y + ((img_Pop.height - _scaledH)/2);
-
-						ctx.clearRect(x, y, img_Pop.width, img_Pop.height);
-						ctx.putImageData(_bkgPartial, x, y);
-
-						ctx.drawImage(
-							img_Pop,
-							_dX,
-							_dY,
-							_scaledW,
-							_scaledH
-						);
-
-						if (_scale == 100) {
-							var _time2 = new Date();
-							var _dur = _time2 - _time1;
-							console.log('total frames: ', _frame);
-							console.log('total milliseconds: ' + Math.ceil(_dur));
-							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));
-
-							clearInterval(_scaleIn); 
-						}
-				    }, _int);
+								_frame++;
+								if (_scale === 100) killInterval(_scaleIn);
+						    }, _int);
+						    break;
+				    }
 			},
 
 			//methods for navigating pages
