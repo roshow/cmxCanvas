@@ -97,7 +97,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 				var img_Pop = new Image()
 				img_Pop.onload = function() {
-					that.popUpScale(img_Pop, x, y);
+					that[popup.animation || 'popUpScale'](img_Pop, x, y);
         		}
         		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
 			},
@@ -132,9 +132,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							
 							var _time2 = new Date();
 							var _dur = _time2 - _time1;
-							/*console.log('total frames: ', _frame);
+							console.log('total frames: ', _frame);
 							console.log('total milliseconds: ' + Math.ceil(_dur));
-							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));*/
+							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));
 
 							clearInterval(_fadeIn); 
 						}
@@ -177,9 +177,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						if (_scale == 100) {
 							var _time2 = new Date();
 							var _dur = _time2 - _time1;
-							/*console.log('total frames: ', _frame);
+							console.log('total frames: ', _frame);
 							console.log('total milliseconds: ' + Math.ceil(_dur));
-							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));*/
+							console.log('fps: ' + Math.ceil(_frame/(_dur/1000)));
 
 							clearInterval(_scaleIn); 
 						}
