@@ -18,7 +18,14 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			direction = 1,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
-			imgObj_prev = new Image();
+			imgObj_prev = new Image(),
+			img_Pop = new Image();
+
+		imgObj.crossOrigin = "Anonymous";
+		imgObj_next.crossOrigin = "Anonymous";
+		imgObj_prev.crossOrigin = "Anonymous";
+		img_Pop.crossOrigin = "Anonymous";
+
 
 		var cmxcanvas = {
 			config: {
@@ -92,7 +99,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			popUp: function(popup) {
 				var that = this;
 
-				var img_Pop = new Image();
 				img_Pop.onload = function() {
 					that.animatePopUp({
 						imgPop: img_Pop,
