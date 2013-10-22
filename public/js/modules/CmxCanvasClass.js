@@ -26,7 +26,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
 		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
 
-
 		var cmxcanvas = {
 			config: {
 				transitionSpeed: 700
