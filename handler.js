@@ -36,15 +36,6 @@ exports.handler = (function() {
                 });
             });
         },
-        read: function(req, res) {
-            console.log('handling /read');
-            dbc.issues.get({_id: req.query.id}, function(r) {
-                res.render('index.jade', {
-                    issues: r,
-                    Id: req.query.id
-                });
-            });
-        },
         dbtest: function(req, res) {
             var _q = {};
             function _cb(r) {
@@ -53,20 +44,11 @@ exports.handler = (function() {
             dbc.issues.get(_q, _cb);
         },
 
-        getcmxmetadata: function(req, res) {
-            console.log('handling /get_cmx_metadata');
-            var _q = {};
-            dbc.metadata.get(_q, function(r) {
-                res.render('library.jade', {
-                    issues: r
-                });
-                //res.send(r);
-            });
-        },
-
         getallcmx: function(req, res) {
             console.log('handling /getallcmx');
-            var _q = {};
+            var _q = {
+                published: 1
+            };
             dbc.metadata.get(_q, function(r) {
                 res.send(r);
             });

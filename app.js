@@ -17,13 +17,10 @@ app.use(express.static(__dirname + '/public'));
 app.listen(_port);
 app.get('/library', handler.library);
 app.get('/getcomic', handler.getcomic);
-app.get('/getcmxmetadata', handler.getcmxmetadata);
 app.get('/getcmxjson/:id', handler.getcmxjson);
 app.get('/getallcmx', handler.getallcmx);
 app.get('*', handler.index);
 
-app.get('/read', handler.read);
-app.get('/db', handler.dbtest);
 console.log('cmxcanvas Listening on port ' + _port);
 //Open Safari when cmxcanvas has begun to listen:
 exec('open -a Safari "http://localhost:5000/#comic/sov01"');
