@@ -2,6 +2,7 @@ $canvas-h: 450px;
 $canvas-w: 800px;
 $liGray: #777;
 $bgGray: #BBB;
+$cmxcanvasBlue: #428bca;
 
 @mixin anim-maxH($dur){
     -moz-transition: max-height $dur ease;
@@ -126,6 +127,20 @@ nav {
             &:hover {
                 color: black;
             }
+            &.clicked {
+                //background: black;
+                animation-name:myfirst;
+                animation-duration:0.5s;
+                animation-timing-function:linear;
+                animation-iteration-count:1;
+
+                /* Safari and Chrome: */
+                -webkit-animation-name:myfirst;
+                -webkit-animation-duration:0.5s;
+                -webkit-animation-timing-function:linear;
+                -webkit-animation-iteration-count:1;
+            }
+
         }
     }
 
@@ -136,6 +151,17 @@ nav {
     }
 }
 
+@keyframes myfirst {
+    0%   {color:$cmxcanvasBlue;}
+    99%   {color:$cmxcanvasBlue;}
+    100% {color:black;}
+}
+
+@-webkit-keyframes myfirst { /* Safari and Chrome */
+     0%   {color:$cmxcanvasBlue;}
+    99%   {color:$cmxcanvasBlue;}
+    100% {color:black;}
+}
 
 
 //consider moving this to its own file so it loads with the js that generates it.
@@ -192,7 +218,7 @@ nav {
         a {
             color: black;
             &:hover {
-                color: #428bca;
+                color: $cmxcanvasBlue;
             }
 
             img {
@@ -204,7 +230,7 @@ nav {
                 width: 70%;
                 background-color: white;
                 &:hover {
-                    border-color: #428bca;
+                    border-color: $cmxcanvasBlue;
                 }
             }
             p {

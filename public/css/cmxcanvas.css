@@ -73,10 +73,41 @@ nav {
       -webkit-transform: scale(-1, 1); }
     #readcomic.container #canvas_container .ui-arrow:hover {
       color: black; }
+    #readcomic.container #canvas_container .ui-arrow.clicked {
+      animation-name: myfirst;
+      animation-duration: 0.5s;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+      /* Safari and Chrome: */
+      -webkit-animation-name: myfirst;
+      -webkit-animation-duration: 0.5s;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-iteration-count: 1; }
 #readcomic.container .arrow {
   position: relative;
   line-height: 450px;
   vertical-align: middle; }
+
+@keyframes myfirst {
+  0% {
+    color: #428bca; }
+
+  99% {
+    color: #428bca; }
+
+  100% {
+    color: black; } }
+
+@-webkit-keyframes myfirst {
+  /* Safari and Chrome */
+  0% {
+    color: #428bca; }
+
+  99% {
+    color: #428bca; }
+
+  100% {
+    color: black; } }
 
 #footer a.navbar-brand {
   padding-top: 5px;
