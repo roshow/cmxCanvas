@@ -10,22 +10,25 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			return (a - b)/2;
 		}
 
-		var loadingFlag = 0;
-		var addFlag = function(x){
-			loadingFlag++;
-			console.log('addFlag '+x);
-			console.log(loadingFlag);
-		}
-		var removeFlag = function(x){
-			loadingFlag--;
-			console.log('removeFlag '+ x);
-			console.log(loadingFlag);
-		}
+		var loadingFlag = (function(){
+			var flag = 0;
+			var lflag = {
+				addFlag: function(x){
+					flag++;
+				},
+				removeFlag: function(x){
+					flag--;
+				},
+				hasFlag: function(){
+					return (flag === 0) ? false: true;
+				}
+			};
+			return lflag
+		}());
 
 		//End Helpers
 
 		var i, cnv, ctx, cjson, mjson,
-			loadingFlag = 0,
 			animating = false,
 			thisPanel = 0,
 			thisPopup = 0,
@@ -91,9 +94,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							friction: 100,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.quad),
 							onComplete: function() {
-								//console.log("onComplete: " + mjson.img.url + cjson[thisPanel].src);
 								imgObj.src = mjson.img.url + cjson[thisPanel].src;
-								//addFlag("imgObj complete " + imgObj.src);
 								animating = false;
 							}
 						});
@@ -109,10 +110,10 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						y: popup.y || 0,
 						animation: popup.animation || 'scaleIn'
 					});
-					removeFlag("img_Pop " + img_Pop.src);
+					loadingFlag.removeFlag("img_Pop " + img_Pop.src);
         		}
         		img_Pop.src = mjson.img.url + popup.src;
-        		addFlag("img_Pop");
+        		loadingFlag.addFlag("img_Pop");
 			},
 
 			animatePopUp: function(popup){
@@ -177,7 +178,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			//methods for navigating pages
 			goToNext: function() {
 				var that = this;
-				if (thisPanel <= cjson.length - 1 && !animating && loadingFlag === 0) {
+				if (thisPanel <= cjson.length - 1 && !animating && !loadingFlag.hasFlag()) {
 					var popups = cjson[thisPanel].popups || null;
 					if (popups && thisPopup < popups.length) {
 						switch (popups[thisPopup].type) {
@@ -197,7 +198,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			},
 			goToPrev: function() {
 				var that = this;
-				if (thisPanel > 0 && !animating && loadingFlag === 0) {
+				if (thisPanel > 0 && !animating && !loadingFlag.hasFlag()) {
 					thisPanel = thisPanel - 1;
 					thisPopup = 0;
 					that.movePanels(imgObj_prev, -1);
@@ -208,32 +209,29 @@ define(['modules/jsAnimate'], function(jsAnimate){
 				thisPanel = panel;
 				thisPopup = 0;
 				imgObj.src = mjson.img.url + cjson[thisPanel].src;
-				//addFlag("imgObj goToPanel " + imgObj.src);
 			}
 		};
 		imgObj_next.onload = function() {
-			//console.log(cjson[thisPanel + 1].src + "(imgObj_next) onload: { x: " + (halfDiff(cnv.width, this.width) + cnv.width) + ", y: " + halfDiff(cnv.height, this.height) + " }");
 			ctx.drawImage(this, halfDiff(cnv.width, this.width) + cnv.width, halfDiff(cnv.height, this.height));
-			removeFlag("imgObj_next " + imgObj_next.src);
+			loadingFlag.removeFlag("imgObj_next " + imgObj_next.src);
 		};
 		imgObj_prev.onload = function() {
-			console.log("loading imgObj_prev");
 			ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
-			removeFlag("imgObj_prev " + imgObj_prev.src);
+			loadingFlag.removeFlag("imgObj_prev " + imgObj_prev.src);
 		};
 
 		imgObj.onload = function() {
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (thisPanel < cjson.length-1) {
-				if (imgObj_next.src !== mjson.img.url + cjson[thisPanel + 1].src) addFlag("imgObj_next " + imgObj_prev.src);
+				if (imgObj_next.src !== mjson.img.url + cjson[thisPanel + 1].src) loadingFlag.addFlag("imgObj_next " + imgObj_prev.src);
 				imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
 			}
 			if (thisPanel > 0) {
-				if (imgObj_prev.src !== mjson.img.url + cjson[thisPanel - 1].src) addFlag("imgObj_prev " + imgObj_prev.src);
+				if (imgObj_prev.src !== mjson.img.url + cjson[thisPanel - 1].src) loadingFlag.addFlag("imgObj_prev " + imgObj_prev.src);
 				imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
 			}
-			//removeFlag("imgObj " + imgObj.src);
+			//loadingFlag.removeFlag("imgObj " + imgObj.src);
 		};
 
 		var init = function(data, canvasId) {
@@ -243,7 +241,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			cjson = data.cmxJSON;
 			thisPanel = 0;
 			imgObj.src = mjson.img.url + cjson[thisPanel].src;
-			//addFlag("imgObj init " + imgObj.src);
+			//loadingFlag.addFlag("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};
 
