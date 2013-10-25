@@ -3,3 +3,4 @@
 * CmxCanvasClass.js: getters and setters for panel and popups.
 * Traditional reading/display mode (ambitious).
 * Fading transition between panels.
+* Forward/Back Buttons - change color or something on click, maybe even nothing on hover.
