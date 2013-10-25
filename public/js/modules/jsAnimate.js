@@ -84,7 +84,7 @@ define([], function(){
                       }
                   }
 
-                },animObj.aInt || 100);
+                },animObj.interval || 100);
 
 
           },animObj.delay);   

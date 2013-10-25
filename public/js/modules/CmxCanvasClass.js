@@ -28,7 +28,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 		var cmxcanvas = {
 			config: {
-				transitionSpeed: 700
+				transitionSpeed: 100
 			},
 
 			//methods for making stuff happen on the canvas
@@ -56,39 +56,34 @@ define(['modules/jsAnimate'], function(jsAnimate){
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
 							from: [
-			                {
-								x: imgObj_x,
-								y: imgObj_y
-							},
-			                   {
-								x: imgObj_target_x + (direction * cnv.width),
-								y: imgObj_target_y
-							}
+				                {
+									x: imgObj_x,
+									y: imgObj_y
+								},
+				                   {
+									x: imgObj_target_x + (direction * cnv.width),
+									y: imgObj_target_y
+								}
 			                ],
 							to: [
-			                {
-								x: imgObj_x - (direction * cnv.width),
-								y: imgObj_y
-							},
-			                   {
-								x: imgObj_target_x,
-								y: imgObj_target_y
-							}
+				                {
+									x: imgObj_x - (direction * cnv.width),
+									y: imgObj_y
+								},
+				                   {
+									x: imgObj_target_x,
+									y: imgObj_target_y
+								}
 			                ],
 							canvas: cnv,
 							ctx: ctx,
-							duration: that.config.transitionSpeed || 500,
-							aInt: 20,
-							friction: 0,
-							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
+							duration: 500,
+							interval: 40,
+							friction: 100,
+							aFunction: jsAnimate.makeEaseOut(jsAnimate.quad),
 							onComplete: function() {
+								console.log("onComplete: " + mjson.img.url + cjson[thisPanel].src);
 								imgObj.src = mjson.img.url + cjson[thisPanel].src;
-								if (thisPanel > 0) {
-									imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
-								}
-								if (thisPanel < cjson.length-1) {
-									imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
-								}
 								animating = false;
 							}
 						});
@@ -97,55 +92,46 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			},
 			popUp: function(popup) {
 				var that = this;
-
 				img_Pop.onload = function() {
 					that.animatePopUp({
-						imgPop: img_Pop,
+						img: img_Pop,
 						x: popup.x || 0,
 						y: popup.y || 0,
 						animation: popup.animation || 'scaleIn'
 					});
         		}
-        		img_Pop.src = mjson.img.url + cjson[thisPanel].popups[thisPopup].src;
+        		img_Pop.src = mjson.img.url + popup.src;
 			},
 
-			animatePopUp: function(options){
-				var _imgPop = options.imgPop,
-					_x = options.x,
-					_y = options.y;
-					_totalFrames = options.frames || 10;
-					_dur = options.duration || 100;
-
-				var _time2, _dTime,
-					_frameIncrement = 1/_totalFrames,
-					_int = _dur/_totalFrames,
-					_bkgPartial = ctx.getImageData(_x, _y, _imgPop.width, _imgPop.height),
-					_frame = 0,
-					_time1 = new Date();
-
+			animatePopUp: function(popup){
+				popup.dur = popup.dur || 100;
+				popup.totalFrames = popup.totalFrames || 10;
+				var _int = popup.dur/popup.totalFrames,
+					_bkgPartial = ctx.getImageData(popup.x, popup.y, popup.img.width, popup.img.height),
+					_frame = 0;
+					
+				var _time1 = new Date();
 				function killInterval(interval) {
 					clearInterval(interval);
-					_time2 = new Date();	
-					_dTime = _time2 - _time1;
+					var _time2 = new Date();	
+					var _dTime = _time2 - _time1;
 					/*console.log('total frames: ', _frame);
 					console.log('total milliseconds: ' + Math.ceil(_dTime));
 					console.log('fps: ' + Math.ceil(_frame/(_dTime/1000)));*/
 				}
 
-				switch (options.animation) {
+				switch (popup.animation) {
 					case 'fadeIn':
 						ctx.globalAlpha = 0;
 				        var _fadeIn = setInterval(function(){
 
-							var gA = ctx.globalAlpha;
-								gA += _frameIncrement;
-								gA = gA.toFixed(1);
-								gA = parseFloat(gA, 10);
-							ctx.globalAlpha = gA;
+							//increase globalAlpha by 1 / total frames and make it into a normal fraction
+							var ga = ctx.globalAlpha + 1/popup.totalFrames;
+							ctx.globalAlpha = parseFloat(ga.toFixed(1), 10);
 
-							ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
-							ctx.putImageData(_bkgPartial, _x, _y);
-							ctx.drawImage(_imgPop, _x, _y);
+							ctx.clearRect(popup.x, popup.y, popup.img.width, popup.img.height);
+							ctx.putImageData(_bkgPartial, popup.x, popup.y);
+							ctx.drawImage(popup.img, popup.x, popup.y);
 
 							_frame++;
 							if (ctx.globalAlpha === 1) killInterval(_fadeIn);
@@ -160,15 +146,14 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							
 							_scale += 10;
 							
-							_scalePercent = _scale/100;
-							_scaledW = _imgPop.width*_scalePercent,
-							_scaledH = _imgPop.height*_scalePercent,
-							_dX = _x + ((_imgPop.width - _scaledW)/2),
-							_dY = _y + ((_imgPop.height - _scaledH)/2);
+							var _scaledW = popup.img.width*(_scale/100),
+							_scaledH = popup.img.height*(_scale/100),
+							_dX = popup.x + ((popup.img.width - _scaledW)/2),
+							_dY = popup.y + ((popup.img.height - _scaledH)/2);
 
-							ctx.clearRect(_x, _y, _imgPop.width, _imgPop.height);
-							ctx.putImageData(_bkgPartial, _x, _y);
-							ctx.drawImage(_imgPop, _dX, _dY, _scaledW, _scaledH);
+							ctx.clearRect(popup.x, popup.y, popup.img.width, popup.img.height);
+							ctx.putImageData(_bkgPartial, popup.x, popup.y);
+							ctx.drawImage(popup.img, _dX, _dY, _scaledW, _scaledH);
 
 							_frame++;
 							if (_scale === 100) killInterval(_scaleIn);
@@ -230,9 +215,11 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
 			if (thisPanel > 0) {
 				imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
+				console.log("loaded previous image");
 			}
 			if (thisPanel < cjson.length-1) {
 				imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
+				console.log("next image: " + mjson.img.url + cjson[thisPanel + 1].src);
 			}
 		};
 		imgObj_next.onload = function() {
