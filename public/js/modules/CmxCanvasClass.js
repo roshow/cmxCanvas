@@ -51,10 +51,11 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							imgObj_target_x = halfDiff(cnv.width, imgObj_target.width),
 							imgObj_target_y = halfDiff(cnv.height, imgObj_target.height);
 
-						ctx.drawImage(imgObj_target, imgObj_target_x + (direction * cnv.width), imgObj_target_y);
+						//ctx.drawImage(imgObj_target, imgObj_target_x + (direction * cnv.width), imgObj_target_y);
 
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
+							names: [cjson[thisPanel - (1 * direction)].src, cjson[thisPanel].src],
 							from: [
 				                {
 									x: imgObj_x,
@@ -77,12 +78,12 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			                ],
 							canvas: cnv,
 							ctx: ctx,
-							duration: 500,
-							interval: 40,
+							duration: 200,
+							interval: 10,
 							friction: 100,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.quad),
 							onComplete: function() {
-								console.log("onComplete: " + mjson.img.url + cjson[thisPanel].src);
+								//console.log("onComplete: " + mjson.img.url + cjson[thisPanel].src);
 								imgObj.src = mjson.img.url + cjson[thisPanel].src;
 								animating = false;
 							}
@@ -212,18 +213,22 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 		imgObj.onload = function() {
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
-			ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
+			//console.log("imgObj.onload:\nx: " + halfDiff(cnv.width, this.width) + ", y: " + halfDiff(cnv.height, this.height));
+			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (thisPanel > 0) {
 				imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
-				console.log("loaded previous image");
 			}
 			if (thisPanel < cjson.length-1) {
 				imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
-				console.log("next image: " + mjson.img.url + cjson[thisPanel + 1].src);
 			}
 		};
 		imgObj_next.onload = function() {
-			//console.log('next & prev loaded');
+			//console.log("imgObj_next.onload:\nx: " + (halfDiff(cnv.width, this.width) + cnv.width) + ", y: " + halfDiff(cnv.height, this.height));
+			ctx.drawImage(this, halfDiff(cnv.width, this.width) + cnv.width, halfDiff(cnv.height, this.height));
+		};
+		imgObj_prev.onload = function() {
+			//console.log("imgObj_prev.onload:\nx: " + (halfDiff(cnv.width, this.width) - cnv.width) + ", y: " + halfDiff(cnv.height, this.height));
+			ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
 		};
 
 		var init = function(data, canvasId) {
