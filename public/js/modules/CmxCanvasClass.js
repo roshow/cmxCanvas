@@ -174,7 +174,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 			// These are really the only methods that should be publid:
 			goToNext: function() {
 				var that = this;
-				if (!panelCounter.isLast && !animating && !loadingFlag.hasFlag()) {
+				if (!animating && !loadingFlag.hasFlag()) {
 					//check for popups and load those first
 					var popups = cjson[panelCounter.curr].popups || null;
 					if (popups && thisPopup < popups.length) {
@@ -186,7 +186,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 						}
 					}
 					//otherwise, load the next panel
-					else  if (!panelCounter.isLast) {
+					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
 						console.log(panelCounter);
 						thisPopup = 0;
