@@ -188,7 +188,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 					//otherwise, load the next panel
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
-						console.log(panelCounter);
+						//var popupCounter = new PanelCounter(cjson[panelCounter.curr].popups);
+						//console.log(popupCounter);
 						thisPopup = 0;
 						that.movePanels(imgObj_next, 1);
 					}
