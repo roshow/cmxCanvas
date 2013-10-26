@@ -29,8 +29,8 @@ define([], function(){
                     else {
                         this.next = this.curr;
                         this.curr = this.prev;
-                        this.prev = (this.curr >= 0) ? this.curr - 1 : false;
-                        this.isFirst = this.prev ? false : true;
+                        this.prev = (this.curr - 1 >= 0) ? this.curr - 1 : false;
+                        this.isFirst = (this.curr === 0) ? true : false;
                         this.isLast = false;
                         return this.curr;
                     }   

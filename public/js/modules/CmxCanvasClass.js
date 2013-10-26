@@ -194,7 +194,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 						that.movePanels(imgObj_next, 1);
 					}
 				}
-				return panelCounter.curr;
+				return panelCounter;
 			},
 			goToPrev: function() {
 				var that = this;
@@ -203,7 +203,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 					thisPopup = 0;
 					that.movePanels(imgObj_prev, - 1);
 				}
-				return panelCounter.curr;
+				return panelCounter;
 			},
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);

@@ -21,7 +21,7 @@ define([
 
       var _modeljson = this.model.toJSON();
       this.$el.html(jade.templates['cmxreader'](_modeljson));
-
+      $('#leftbutton .ui-arrow').css('display', 'none');
       //create cmxcanvas class with methods to make life easier
       this.cmxcanvas = new CmxCanvas(_modeljson, 'cmxcanvas');
       //select first (0) panel in TOC
@@ -38,15 +38,18 @@ define([
     leftArrow: function(e){
       var _panel = this.cmxcanvas.goToPrev();
       $('#toc li').removeClass('active');
-      $('#toc' + _panel).addClass('active');
+      $('#toc' + _panel.curr).addClass('active');
+      if (_panel.isFirst) $('#leftbutton .ui-arrow').hide();
+      $('#rightbutton .ui-arrow').show();
     },
     rightArrow: function(e){
       var _panel = this.cmxcanvas.goToNext();
       $('#toc li').removeClass('active');
-      $('#toc' + _panel).addClass('active');
+      $('#toc' + _panel.curr).addClass('active');
+      if (_panel.isLast) $('#rightbutton .ui-arrow').hide();
+      if (!_panel.isFirst) $('#leftbutton .ui-arrow').show();
     },
     tocPanelBtn: function(e){
-      //console.log(e.currentTarget);
       var _panel = parseInt($(e.currentTarget).attr('panelNum'), 10);
       this.cmxcanvas.goToPanel(_panel);
       $('#toc li').removeClass('active');
@@ -62,8 +65,6 @@ define([
           $('.moreinfoBtn > span.caret').addClass('reverse');
       }
     }
-
-
   });
 
   return CmxView;
