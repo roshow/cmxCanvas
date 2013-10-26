@@ -127,20 +127,9 @@ nav {
             &:hover {
                 color: black;
             }
-            &.clicked {
-                //background: black;
-                animation-name:myfirst;
-                animation-duration:0.5s;
-                animation-timing-function:linear;
-                animation-iteration-count:1;
-
-                /* Safari and Chrome: */
-                -webkit-animation-name:myfirst;
-                -webkit-animation-duration:0.5s;
-                -webkit-animation-timing-function:linear;
-                -webkit-animation-iteration-count:1;
+            &:active {
+                color: $cmxcanvasBlue;
             }
-
         }
     }
 
@@ -149,18 +138,6 @@ nav {
         line-height: 450px;
         vertical-align: middle;
     }
-}
-
-@keyframes myfirst {
-    0%   {color:$cmxcanvasBlue;}
-    99%   {color:$cmxcanvasBlue;}
-    100% {color:black;}
-}
-
-@-webkit-keyframes myfirst { /* Safari and Chrome */
-     0%   {color:$cmxcanvasBlue;}
-    99%   {color:$cmxcanvasBlue;}
-    100% {color:black;}
 }
 
 

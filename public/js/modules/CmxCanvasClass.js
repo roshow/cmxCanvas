@@ -1,11 +1,11 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 /*global define*/
 
-define(['modules/jsAnimate'], function(jsAnimate){
+define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelCounter){
 
 	var CmxCanvas = (function() {
 
-		// Begin Helpers
+		// START Helpers
 		function halfDiff(a, b) {
 			return (a - b)/2;
 		}
@@ -25,34 +25,31 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			};
 			return lflag
 		}());
+		//END Helpers
 
-		//End Helpers
-
-		var i, cnv, ctx, cjson, mjson,
+		var i, cnv, ctx, cjson, mjson, panelCounter,
 			animating = false,
-			thisPanel = 0,
 			thisPopup = 0,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
 			imgObj_prev = new Image(),
 			img_Pop = new Image();
 
-	// Deal with cross origin nonsense
+		// Deal with cross origin nonsense
 		imgObj.crossOrigin = "Anonymous";
 		imgObj_next.crossOrigin = "Anonymous";
 		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
 
-	// The Main Event
+		// The Main Event
 		var cmxcanvas = {
 
-		//START: methods for making stuff happen on the canvas
-
+			// START: methods for making stuff happen on the canvas
 			movePanels: function(imgObj_target, direction) {
-				switch (cjson[thisPanel].transition) {
+				switch (cjson[panelCounter.curr].transition) {
 
 					case 'jumpcut':
-						this.goToPanel(thisPanel);
+						this.goToPanel(panelCounter.curr);
 						break;
 
 					//case 'elastic': //case for this transition if it's not default
@@ -66,7 +63,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
-							names: [cjson[thisPanel - (1 * direction)].src, cjson[thisPanel].src],
+							names: [cjson[panelCounter.curr - (1 * direction)].src, cjson[panelCounter.curr].src],
 							from: [
 				                {
 									x: imgObj_x,
@@ -94,7 +91,7 @@ define(['modules/jsAnimate'], function(jsAnimate){
 							friction: 100,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.quad),
 							onComplete: function() {
-								imgObj.src = mjson.img.url + cjson[thisPanel].src;
+								imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 								animating = false;
 							}
 						});
@@ -115,7 +112,6 @@ define(['modules/jsAnimate'], function(jsAnimate){
         		img_Pop.src = mjson.img.url + popup.src;
         		loadingFlag.add("img_Pop");
 			},
-
 			animatePopUp: function(popup){
 				popup.dur = popup.dur || 100;
 				popup.totalFrames = popup.totalFrames || 10;
@@ -175,11 +171,12 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			    }
 			},
 
-			//methods for navigating pages
+			// These are really the only methods that should be publid:
 			goToNext: function() {
 				var that = this;
-				if (thisPanel <= cjson.length - 1 && !animating && !loadingFlag.hasFlag()) {
-					var popups = cjson[thisPanel].popups || null;
+				if (!panelCounter.isLast && !animating && !loadingFlag.hasFlag()) {
+					//check for popups and load those first
+					var popups = cjson[panelCounter.curr].popups || null;
 					if (popups && thisPopup < popups.length) {
 						switch (popups[thisPopup].type) {
 							case 'popup':
@@ -188,27 +185,29 @@ define(['modules/jsAnimate'], function(jsAnimate){
 								break;
 						}
 					}
-					else if (thisPanel !== cjson.length - 1) {
-						thisPanel = thisPanel + 1;
+					//otherwise, load the next panel
+					else  if (!panelCounter.isLast) {
+						panelCounter.getNext();
+						console.log(panelCounter);
 						thisPopup = 0;
 						that.movePanels(imgObj_next, 1);
 					}
 				}
-				return thisPanel;
+				return panelCounter.curr;
 			},
 			goToPrev: function() {
 				var that = this;
-				if (thisPanel > 0 && !animating && !loadingFlag.hasFlag()) {
-					thisPanel = thisPanel - 1;
+				if (!panelCounter.isFirst && !animating && !loadingFlag.hasFlag()) {
+					panelCounter.getPrev();
 					thisPopup = 0;
-					that.movePanels(imgObj_prev, -1);
+					that.movePanels(imgObj_prev, - 1);
 				}
-				return thisPanel;
+				return panelCounter.curr;
 			},
 			goToPanel: function(panel) {
-				thisPanel = panel;
+				panelCounter.goTo(panel);
 				thisPopup = 0;
-				imgObj.src = mjson.img.url + cjson[thisPanel].src;
+				imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 			}
 		};
 		imgObj_next.onload = function() {
@@ -219,17 +218,16 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
 			loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
 		};
-
 		imgObj.onload = function() {
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
-			if (thisPanel < cjson.length-1) {
-				if (imgObj_next.src !== mjson.img.url + cjson[thisPanel + 1].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
-				imgObj_next.src = mjson.img.url + cjson[thisPanel + 1].src;
+			if (!panelCounter.isLast) {
+				if (imgObj_next.src !== mjson.img.url + cjson[panelCounter.curr + 1].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
+				imgObj_next.src = mjson.img.url + cjson[panelCounter.curr + 1].src;
 			}
-			if (thisPanel > 0) {
-				if (imgObj_prev.src !== mjson.img.url + cjson[thisPanel - 1].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
-				imgObj_prev.src = mjson.img.url + cjson[thisPanel - 1].src;
+			if (!panelCounter.isFirst) {
+				if (imgObj_prev.src !== mjson.img.url + cjson[panelCounter.curr - 1].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+				imgObj_prev.src = mjson.img.url + cjson[panelCounter.curr - 1].src;
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
 		};
@@ -239,8 +237,9 @@ define(['modules/jsAnimate'], function(jsAnimate){
 			ctx = cnv.getContext('2d');
 			mjson = data;
 			cjson = data.cmxJSON;
-			thisPanel = 0;
-			imgObj.src = mjson.img.url + cjson[thisPanel].src;
+			panelCounter = new PanelCounter(cjson);
+			this.Popup = 0;
+			imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};

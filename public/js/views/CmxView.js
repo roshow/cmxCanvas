@@ -37,15 +37,11 @@ define([
 
     leftArrow: function(e){
       var _panel = this.cmxcanvas.goToPrev();
-      $("#leftbutton .ui-arrow").removeClass('clicked');
-      $("#leftbutton .ui-arrow").addClass('clicked');
       $('#toc li').removeClass('active');
       $('#toc' + _panel).addClass('active');
     },
     rightArrow: function(e){
       var _panel = this.cmxcanvas.goToNext();
-      $("#rightbutton .ui-arrow").removeClass('clicked');
-      $("#rightbutton .ui-arrow").addClass('clicked');
       $('#toc li').removeClass('active');
       $('#toc' + _panel).addClass('active');
     },
