@@ -1,5 +1,5 @@
 define([], function(){
-    function PanelCounter(data){
+    function CountManager(data){
         var counter = (!data || data.length === 0) ? 
             { 
                 curr: false 
@@ -48,5 +48,5 @@ define([], function(){
             };
         return counter;
     }
-    return PanelCounter;
+    return CountManager;
 })

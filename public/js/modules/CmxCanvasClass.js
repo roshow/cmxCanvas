@@ -1,7 +1,7 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 /*global define*/
 
-define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelCounter){
+define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountManager){
 
 	var CmxCanvas = (function() {
 
@@ -27,9 +27,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 		}());
 		//END Helpers
 
-		var i, cnv, ctx, cjson, mjson, panelCounter,
+		var i, cnv, ctx, cjson, mjson, panelCounter, popupCounter,
 			animating = false,
-			thisPopup = 0,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
 			imgObj_prev = new Image(),
@@ -107,10 +106,10 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 						y: popup.y || 0,
 						animation: popup.animation || 'scaleIn'
 					});
-					loadingFlag.remove("img_Pop " + img_Pop.src);
+					loadingFlag.remove();
         		}
         		img_Pop.src = mjson.img.url + popup.src;
-        		loadingFlag.add("img_Pop");
+        		loadingFlag.add();
 			},
 			animatePopUp: function(popup){
 				popup.dur = popup.dur || 100;
@@ -171,43 +170,47 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 			    }
 			},
 
-			// These are really the only methods that should be publid:
+			// These are really the only methods that should be public:
 			goToNext: function() {
 				var that = this;
 				if (!animating && !loadingFlag.hasFlag()) {
 					//check for popups and load those first
 					var popups = cjson[panelCounter.curr].popups || null;
-					if (popups && thisPopup < popups.length) {
-						switch (popups[thisPopup].type) {
-							case 'popup':
-								this.popUp(popups[thisPopup]);
-								thisPopup += 1;
-								break;
+					if (popupCounter.curr !== false) {
+						if (!popupCounter.isLast) {
+							this.popUp(popups[popupCounter.curr]);
+							popupCounter.getNext();
+							console.log(popupCounter);
+						}
+						else {
+							this.popUp(popups[popupCounter.curr]);
+							popupCounter.curr = false;
+							console.log(popupCounter);
 						}
 					}
 					//otherwise, load the next panel
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
-						//var popupCounter = new PanelCounter(cjson[panelCounter.curr].popups);
+						//var popupCounter = new CountManager(cjson[panelCounter.curr].popups);
 						//console.log(popupCounter);
-						thisPopup = 0;
+						popupCounter = new CountManager(cjson[panelCounter.curr].popups);
 						that.movePanels(imgObj_next, 1);
 					}
 				}
-				return panelCounter;
+				return [panelCounter, popupCounter];
 			},
 			goToPrev: function() {
 				var that = this;
 				if (!panelCounter.isFirst && !animating && !loadingFlag.hasFlag()) {
 					panelCounter.getPrev();
-					thisPopup = 0;
+					popupCounter = new CountManager(cjson[panelCounter.curr].popups);
 					that.movePanels(imgObj_prev, - 1);
 				}
-				return panelCounter;
+				return [panelCounter, popupCounter];
 			},
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);
-				thisPopup = 0;
+				popupCounter = new CountManager(cjson[panelCounter.curr].popups);
 				imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 			}
 		};
@@ -223,12 +226,12 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (!panelCounter.isLast) {
-				if (imgObj_next.src !== mjson.img.url + cjson[panelCounter.curr + 1].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
-				imgObj_next.src = mjson.img.url + cjson[panelCounter.curr + 1].src;
+				if (imgObj_next.src !== mjson.img.url + cjson[panelCounter.next].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
+				imgObj_next.src = mjson.img.url + cjson[panelCounter.next].src;
 			}
 			if (!panelCounter.isFirst) {
-				if (imgObj_prev.src !== mjson.img.url + cjson[panelCounter.curr - 1].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
-				imgObj_prev.src = mjson.img.url + cjson[panelCounter.curr - 1].src;
+				if (imgObj_prev.src !== mjson.img.url + cjson[panelCounter.prev].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+				imgObj_prev.src = mjson.img.url + cjson[panelCounter.prev].src;
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
 		};
@@ -238,8 +241,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, PanelC
 			ctx = cnv.getContext('2d');
 			mjson = data;
 			cjson = data.cmxJSON;
-			panelCounter = new PanelCounter(cjson);
-			this.Popup = 0;
+			panelCounter = new CountManager(cjson);
+			popupCounter = new CountManager(cjson[0].popups);
 			imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;

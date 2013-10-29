@@ -36,18 +36,18 @@ define([
     },
 
     leftArrow: function(e){
-      var _panel = this.cmxcanvas.goToPrev();
+      var _read = this.cmxcanvas.goToPrev();
       $('#toc li').removeClass('active');
-      $('#toc' + _panel.curr).addClass('active');
-      if (_panel.isFirst) $('#leftbutton .ui-arrow').hide();
+      $('#toc' + _read[0].curr).addClass('active');
+      if (_read[0].isFirst) $('#leftbutton .ui-arrow').hide();
       $('#rightbutton .ui-arrow').show();
     },
     rightArrow: function(e){
-      var _panel = this.cmxcanvas.goToNext();
+      var _read = this.cmxcanvas.goToNext();
       $('#toc li').removeClass('active');
-      $('#toc' + _panel.curr).addClass('active');
-      if (_panel.isLast) $('#rightbutton .ui-arrow').hide();
-      if (!_panel.isFirst) $('#leftbutton .ui-arrow').show();
+      $('#toc' + _read.curr).addClass('active');
+      if (_read[0].isLast && _read[1].isLast) $('#rightbutton .ui-arrow').hide();
+      if (!_read.isFirst) $('#leftbutton .ui-arrow').show();
     },
     tocPanelBtn: function(e){
       var _panel = parseInt($(e.currentTarget).attr('panelNum'), 10);
