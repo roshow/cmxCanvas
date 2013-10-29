@@ -85,8 +85,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			                ],
 							canvas: cnv,
 							ctx: ctx,
-							duration: 400,
-							interval: 25,
+							duration: 500,
+							interval: 30,
 							friction: 1,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {

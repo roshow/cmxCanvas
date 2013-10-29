@@ -46,7 +46,7 @@ define([
       var _read = this.cmxcanvas.goToNext();
       $('#toc li').removeClass('active');
       $('#toc' + _read.curr).addClass('active');
-      if (_read[0].curr === _read[0].last - 1) $('#rightbutton .ui-arrow').hide();
+      if (_read[0].isLast && _read[1].isLast) $('#rightbutton .ui-arrow').hide();
       if (!_read.isFirst) $('#leftbutton .ui-arrow').show();
     },
     tocPanelBtn: function(e){
