@@ -85,10 +85,10 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			                ],
 							canvas: cnv,
 							ctx: ctx,
-							duration: 1000,
-							interval: 10,
-							friction: 1000,
-							aFunction: jsAnimate.makeEaseOut(jsAnimate.elastic),
+							duration: 400,
+							interval: 25,
+							friction: 1,
+							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
 								imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
 								animating = false;
