@@ -241,6 +241,17 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			ctx = cnv.getContext('2d');
 			mjson = data;
 			cjson = data.cmxJSON;
+			var L = cjson.length;
+			var cmxSequence = [];
+			var totes = L;
+			for(i = 0; i < L; i++ ){
+				var _L = cjson[i].popups ? cjson[i].popups.length : 0;
+					for (j=0; j <= _L; j++) {
+						cmxSequence.push([i, j-1]);
+					}
+			}
+			console.log(JSON.stringify(cmxSequence));
+			console.log(cmxSequence.length);
 			panelCounter = new CountManager(cjson);
 			popupCounter = new CountManager(cjson[0].popups);
 			imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
