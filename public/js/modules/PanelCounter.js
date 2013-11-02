@@ -1,15 +1,16 @@
 define([], function(){
-    function CountManager(data){
+    function CountManager(data, offset){
+        var _curr = offset || 0;
+        var _next = (data && data.length > _curr + 1) ? _curr + 1 : false;
         var counter = (!data || data.length === 0) ? 
             { 
-                curr: false 
+                curr: false,
+                isLast: true
             } : 
             {
                 last: data.length,
-                curr: 0,
-                next: (function(){
-                     return (data.length > 1) ? 1 : false;
-                }()),
+                curr: _curr,
+                next: _next,
                 prev: false,
                 isLast: false,
                 isFirst: true,
