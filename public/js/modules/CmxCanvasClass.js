@@ -27,7 +27,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		}());
 		//END Helpers
 
-		var i, cnv, ctx, cjson, mjson, panelCounter, popupCounter,
+		var i, cnv, ctx, cmxJSON, panelCounter, popupCounter,
 			_animating = false,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
@@ -47,7 +47,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 
 			// START: methods for making stuff happen on the canvas
 			movePanels: function(imgObj_target, direction) {
-				switch (cjson[panelCounter.curr].transition) {
+				switch (cmxJSON[panelCounter.curr].transition) {
 
 					case 'jumpcut':
 						this.goToPanel(panelCounter.curr);
@@ -64,7 +64,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
-							names: [cjson[panelCounter.curr - direction].src, cjson[panelCounter.curr].src],
+							names: [cmxJSON[panelCounter.curr - direction].src, cmxJSON[panelCounter.curr].src],
 							from: [
 				                {
 									x: imgObj_x,
@@ -92,7 +92,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 							friction: 1,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = cjson[panelCounter.curr].src;
+								imgObj.src = cmxJSON[panelCounter.curr].src;
 								_animating = false;
 							}
 						});
@@ -180,7 +180,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 				var that = this;
 				if (!_animating && !loadingFlag.hasFlag()) {
 
-					var popups = cjson[panelCounter.curr].popups || null;
+					var popups = cmxJSON[panelCounter.curr].popups || null;
 
 					if (!popupCounter.isLast) {
 						popupCounter.getNext();
@@ -189,7 +189,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
-						popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);
+						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
 						that.movePanels(imgObj_next, 1);
 					}
 				}
@@ -200,7 +200,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 				if (!_animating && !loadingFlag.hasFlag()) {
 					if (!panelCounter.isFirst){
 						panelCounter.getPrev();
-						popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);
+						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
 						that.movePanels(imgObj_prev, - 1);
 					}
 					else {
@@ -211,8 +211,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			},
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);
-				popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);
-				imgObj.src = cjson[panelCounter.curr].src;
+				popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
+				imgObj.src = cmxJSON[panelCounter.curr].src;
 			}
 		};
 		imgObj_next.onload = function() {
@@ -227,16 +227,16 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (!panelCounter.isLast) {
-				if (imgObj_next.src !== cjson[panelCounter.next].src) {
+				if (imgObj_next.src !== cmxJSON[panelCounter.next].src) {
 					loadingFlag.add("imgObj_next " + imgObj_prev.src);
 				}
-				imgObj_next.src = cjson[panelCounter.next].src;
+				imgObj_next.src = cmxJSON[panelCounter.next].src;
 			}
 			if (!panelCounter.isFirst) {
-				if (imgObj_prev.src !== cjson[panelCounter.prev].src) {
+				if (imgObj_prev.src !== cmxJSON[panelCounter.prev].src) {
 					loadingFlag.add("imgObj_prev " + imgObj_prev.src);
 				}
-				imgObj_prev.src = cjson[panelCounter.prev].src;
+				imgObj_prev.src = cmxJSON[panelCounter.prev].src;
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
 		};
@@ -244,21 +244,10 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		var init = function(data, canvasId) {
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
-			mjson = data;
-			cjson = data.cmxJSON;
-			var L = cjson.length;
-			var cmxSequence = [];
-			var totes = L;
-			for(i = 0; i < L; i++ ){
-				var _L = cjson[i].popups ? cjson[i].popups.length : 0;
-				var j;
-				for (j=0; j <= _L; j++) {
-					cmxSequence.push([i, j-1]);
-				}
-			}
-			panelCounter = new CountManager(cjson);
-			popupCounter = new CountManager(cjson[0].popups, -1);
-			imgObj.src = cjson[panelCounter.curr].src;
+			cmxJSON = data.cmxJSON;
+			panelCounter = new CountManager(cmxJSON);
+			popupCounter = new CountManager(cmxJSON[0].popups, -1);
+			imgObj.src = cmxJSON[panelCounter.curr].src;
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};
