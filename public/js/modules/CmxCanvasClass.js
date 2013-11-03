@@ -28,7 +28,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		//END Helpers
 
 		var i, cnv, ctx, cjson, mjson, panelCounter, popupCounter,
-			animating = false,
+			_animating = false,
 			imgObj = new Image(),
 			imgObj_next = new Image(),
 			imgObj_prev = new Image(),
@@ -39,6 +39,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		imgObj_next.crossOrigin = "Anonymous";
 		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
+
+		var TESTARRAY = [];
 
 		// The Main Event
 		var cmxcanvas = {
@@ -53,7 +55,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 
 					//case 'elastic': //case for this transition if it's not default
 					default:
-						animating = true;
+						_animating = true;
 						var that = this,
 							imgObj_x = halfDiff(cnv.width, imgObj.width),
 							imgObj_y = halfDiff(cnv.height, imgObj.height),
@@ -91,7 +93,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
 								imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
-								animating = false;
+								_animating = false;
 							}
 						});
 						break;
@@ -174,7 +176,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			// These are really the only methods that should be public:
 			goToNext: function() {
 				var that = this;
-				if (!animating && !loadingFlag.hasFlag()) {
+				if (!_animating && !loadingFlag.hasFlag()) {
 					//check for popups and load those first
 					var popups = cjson[panelCounter.curr].popups || null;
 					/*if (popupCounter.curr !== false) {
@@ -206,7 +208,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			},
 			goToPrev: function() {
 				var that = this;
-				if (!animating && !loadingFlag.hasFlag()) {
+				if (!_animating && !loadingFlag.hasFlag()) {
 					if (!panelCounter.isFirst){
 						panelCounter.getPrev();
 						popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);

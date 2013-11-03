@@ -61,13 +61,14 @@ exports.handler = (function() {
             };
             console.log(_q);
             dbc.metadata.get(_q, function(r){
-                var _ish = r[0];
+                //var _ish = r[0];
                 dbc.cmxjson.get({
                     _id: r[0].cmxJSON
                 }, function(j) {
-                    _ish.cmxJSON = j[0].JSON;
-                    res.send(_ish);
+                    r[0].cmxJSON = j[0].JSON;
+                    res.send(r[0]);
                 });
+                console.log('one var less');
             });
         }
     };
