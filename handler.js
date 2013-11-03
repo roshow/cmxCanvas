@@ -73,6 +73,7 @@ exports.handler = (function() {
                         for(i = 0; i < L; i++) {
                             j.JSON[i].src = r.img.url + j.JSON[i].src;
                         }
+                        r.compiledImgUrls = true;
                     }
                     r.cmxJSON = j.JSON;
                     res.send(r);

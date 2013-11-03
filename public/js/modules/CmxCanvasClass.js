@@ -92,7 +92,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 							friction: 1,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
+								imgObj.src = cjson[panelCounter.curr].src;
 								_animating = false;
 							}
 						});
@@ -109,9 +109,9 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 						animation: popup.animation || 'scaleIn'
 					});
 					loadingFlag.remove();
-        		}
+        		};
         		console.log(popup);
-        		img_Pop.src = mjson.img.url + popup.src;
+        		img_Pop.src = popup.src;
         		loadingFlag.add();
 			},
 			animatePopUp: function(popup){
@@ -223,7 +223,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);
 				popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);
-				imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
+				imgObj.src = cjson[panelCounter.curr].src;
 			}
 		};
 		imgObj_next.onload = function() {
@@ -238,12 +238,12 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (!panelCounter.isLast) {
-				if (imgObj_next.src !== mjson.img.url + cjson[panelCounter.next].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
-				imgObj_next.src = mjson.img.url + cjson[panelCounter.next].src;
+				if (imgObj_next.src !== cjson[panelCounter.next].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
+				imgObj_next.src = cjson[panelCounter.next].src;
 			}
 			if (!panelCounter.isFirst) {
-				if (imgObj_prev.src !== mjson.img.url + cjson[panelCounter.prev].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
-				imgObj_prev.src = mjson.img.url + cjson[panelCounter.prev].src;
+				if (imgObj_prev.src !== cjson[panelCounter.prev].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+				imgObj_prev.src = cjson[panelCounter.prev].src;
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
 		};
@@ -266,7 +266,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			}
 			panelCounter = new CountManager(cjson);
 			popupCounter = new CountManager(cjson[0].popups, -1);
-			imgObj.src = mjson.img.url + cjson[panelCounter.curr].src;
+			imgObj.src = cjson[panelCounter.curr].src;
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};
