@@ -1,8 +1,14 @@
+//// Google Fonts imports ////
+@import url(http://fonts.googleapis.com/css?family=Bangers);
+
 $canvas-h: 450px;
 $canvas-w: 800px;
 $liGray: #777;
 $bgGray: #BBB;
 $cmxcanvasBlue: #428bca;
+$midnightBlue: #151B54;
+$cranberry: #9F000F;
+$sunYellow: #FFE87C;
 
 @mixin anim-maxH($dur){
     -moz-transition: max-height $dur ease;
@@ -47,6 +53,9 @@ nav {
 
 #topnav {
     margin: 0;
+    background-color: $cranberry;
+    font-family: 'Bangers', Arial, sans-serif;
+    letter-spacing: 0.03em;
     
     button {
         min-width: 30px;
@@ -57,6 +66,22 @@ nav {
         border-top-color: black;
         border-bottom-color: black;
     }
+
+    .navbar-brand {
+        color: $sunYellow;
+        font-size: 3em;
+        text-shadow: -3px 0 $midnightBlue, 0 3px $midnightBlue, 3px 0 $midnightBlue, 0 -3px $midnightBlue;
+
+        .subBrand {
+            font-size: 0.75em;
+        }
+    }
+    a {
+        color: $sunYellow;
+        text-shadow: -3px 0 $midnightBlue, 0 3px $midnightBlue, 3px 0 $midnightBlue, 0 -3px $midnightBlue;
+        font-size: 1.4em;
+    }
+
     .comicsmenu {
         //margin-left: 105px;
     }

@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Bangers);
 body {
   background-color: #bbbbbb;
   color: black;
@@ -21,13 +22,26 @@ nav {
   border-radius: 0; }
 
 #topnav {
-  margin: 0; }
+  margin: 0;
+  background-color: #9f000f;
+  font-family: 'Bangers', Arial, sans-serif;
+  letter-spacing: 0.03em; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
   #topnav span.caret {
     border-top-color: black;
     border-bottom-color: black; }
+  #topnav .navbar-brand {
+    color: #ffe87c;
+    font-size: 3em;
+    text-shadow: -3px 0 #151b54, 0 3px #151b54, 3px 0 #151b54, 0 -3px #151b54; }
+    #topnav .navbar-brand .subBrand {
+      font-size: 0.75em; }
+  #topnav a {
+    color: #ffe87c;
+    text-shadow: -3px 0 #151b54, 0 3px #151b54, 3px 0 #151b54, 0 -3px #151b54;
+    font-size: 1.4em; }
   #topnav .instructionsmenu {
     padding: 10px; }
     #topnav .instructionsmenu li {
