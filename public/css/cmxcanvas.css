@@ -4,7 +4,7 @@ body {
   background-color: #eee;
   color: black;
   font-family: 'Oswald', Arial, sans-serif;
-  color: #151b54; }
+  color: navy; }
 
 canvas {
   background-color: #eee;
@@ -14,7 +14,7 @@ h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
-  color: #151b54;
+  color: navy;
   text-shadow: -1px 0 #cccccc, 0 1px #cccccc, 1px 0 #cccccc, -1px 0 #cccccc; }
 
 .btn {
@@ -28,34 +28,35 @@ nav {
   border-radius: 0; }
 
 span.caret {
-  border-top-color: #151b54;
-  border-bottom-color: #151b54; }
+  border-top-color: navy;
+  border-bottom-color: navy; }
 
 #topnav {
   margin: 0;
   background-color: #bbbbbb;
   font-family: 'Oswald', Arial, sans-serif;
-  letter-spacing: 0.03em; }
+  letter-spacing: 0.03em;
+  border-top: 4px solid #9f000f; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
   #topnav span.caret {
-    border-top-color: #151b54;
-    border-bottom-color: #151b54; }
+    border-top-color: navy;
+    border-bottom-color: navy; }
   #topnav ul {
     float: right; }
   #topnav .navbar-brand {
-    color: #151b54;
+    color: navy;
     font-size: 2em; }
     #topnav .navbar-brand .subBrand {
       font-size: 0.6em; }
   #topnav a {
-    color: #151b54;
+    color: navy;
     font-size: 1.1em;
     display: block;
     min-height: 50px; }
   #topnav .libNav.active a {
-    background-color: #151b54; }
+    background-color: navy; }
   #topnav .nav > li .lib-Nav a {
     display: inline;
     vertical-align: text-bottom; }
@@ -113,9 +114,9 @@ span.caret {
 
 #footer {
   background-color: #bbbbbb;
-  color: #151b54; }
+  color: navy; }
   #footer a.navbar-brand {
-    color: #151b54;
+    color: navy;
     padding-top: 5px;
     padding-bottom: 5px; }
   #footer .moreinfoBtn {

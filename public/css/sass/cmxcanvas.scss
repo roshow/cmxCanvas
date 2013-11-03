@@ -7,7 +7,8 @@ $canvas-w: 800px;
 $liGray: #777;
 $bgGray: #BBB;
 $cmxcanvasBlue: #428bca;
-$midnightBlue: #151B54;
+//$midnightBlue: #151B54;
+$midnightBlue: #000080;
 $cranberry: #9F000F;
 $sunYellow: #FFE87C;
 $cornsilk: #FFF8DC;
@@ -74,6 +75,7 @@ span.caret {
     background-color: $bgGray;
     font-family: 'Oswald', Arial, sans-serif;
     letter-spacing: 0.03em;
+    border-top: 4px solid $cranberry;
     
     button {
         min-width: 30px;
