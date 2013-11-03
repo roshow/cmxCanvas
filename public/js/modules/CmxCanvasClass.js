@@ -249,6 +249,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		};
 
 		var init = function(data, canvasId) {
+			console.log('initalize this data:');
+			console.log(data);
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
 			mjson = data;

@@ -1,6 +1,8 @@
 var dbc = require('./db_cmx.js').db_cmx,
     jade = require('jade');
 
+var i, L;
+
 function parse_issueNames(r) {
     var _l = r.length;
     var _issues = [];
@@ -13,7 +15,7 @@ function parse_issueNames(r) {
 }
 
 exports.handler = (function() {
-    
+
     var handler = {
         index: function(req, res) {
             console.log('handling /');
@@ -66,7 +68,12 @@ exports.handler = (function() {
                     _id: r.cmxJSON
                 }, function(j) {
                     j = j[0];
-                    //if ()
+                    if (!r.compiledImgUrls) {
+                        L = j.JSON.length;
+                        for(i = 0; i < L; i++) {
+                            j.JSON[i].src = r.img.url + j.JSON[i].src;
+                        }
+                    }
                     r.cmxJSON = j.JSON;
                     res.send(r);
                 });
