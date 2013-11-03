@@ -23,7 +23,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 					return (flag === 0) ? false: true;
 				}
 			};
-			return lflag
+			return lflag;
 		}());
 		//END Helpers
 
@@ -64,7 +64,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
-							names: [cjson[panelCounter.curr - (1 * direction)].src, cjson[panelCounter.curr].src],
+							names: [cjson[panelCounter.curr - direction].src, cjson[panelCounter.curr].src],
 							from: [
 				                {
 									x: imgObj_x,
@@ -144,8 +144,9 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 							ctx.drawImage(popup.img, popup.x, popup.y);
 
 							_frame++;
-							if (ctx.globalAlpha === 1) killInterval(_fadeIn);
-
+							if (ctx.globalAlpha === 1) {
+								killInterval(_fadeIn);
+							}
 					    }, _int);
 					    break;
 
@@ -166,7 +167,9 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 							ctx.drawImage(popup.img, _dX, _dY, _scaledW, _scaledH);
 
 							_frame++;
-							if (_scale === 100) killInterval(_scaleIn);
+							if (_scale === 100) {
+								killInterval(_scaleIn);
+							}
 					    }, _int);
 					    break;
 			    }
@@ -224,11 +227,15 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (!panelCounter.isLast) {
-				if (imgObj_next.src !== cjson[panelCounter.next].src) loadingFlag.add("imgObj_next " + imgObj_prev.src);
+				if (imgObj_next.src !== cjson[panelCounter.next].src) {
+					loadingFlag.add("imgObj_next " + imgObj_prev.src);
+				}
 				imgObj_next.src = cjson[panelCounter.next].src;
 			}
 			if (!panelCounter.isFirst) {
-				if (imgObj_prev.src !== cjson[panelCounter.prev].src) loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+				if (imgObj_prev.src !== cjson[panelCounter.prev].src) {
+					loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+				}
 				imgObj_prev.src = cjson[panelCounter.prev].src;
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
@@ -244,9 +251,10 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			var totes = L;
 			for(i = 0; i < L; i++ ){
 				var _L = cjson[i].popups ? cjson[i].popups.length : 0;
-					for (j=0; j <= _L; j++) {
-						cmxSequence.push([i, j-1]);
-					}
+				var j;
+				for (j=0; j <= _L; j++) {
+					cmxSequence.push([i, j-1]);
+				}
 			}
 			panelCounter = new CountManager(cjson);
 			popupCounter = new CountManager(cjson[0].popups, -1);

@@ -1,3 +1,6 @@
+/*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
+/*global define*/
+
 define([
   'jquery',
   'underscore',
@@ -7,7 +10,7 @@ define([
   'collections/CmxCollection',
   'models/CmxIssueModel'
 ], function($, _, Backbone, CmxView, LibraryView, CmxCollection, CmxIssueModel) {
-    var currentView;
+    var currentView, i, j;
 
     //// HELPERS, I guess ////
     function resolveImgUrlsFromModel(model) {

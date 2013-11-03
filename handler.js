@@ -19,7 +19,7 @@ exports.handler = (function() {
     var handler = {
         index: function(req, res) {
             console.log('handling /');
-            res.render('layouts/basic.jade')
+            res.render('layouts/basic.jade');
         },
         getcomic: function(req, res) {
             var _q = {
@@ -27,7 +27,7 @@ exports.handler = (function() {
             };
             dbc.issues.get(_q, function(r){
                 res.send(r[0]);
-            })
+            });
         },
         library: function(req, res) {
             console.log('handling '+req.url);

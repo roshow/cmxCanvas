@@ -22,7 +22,7 @@ define([
         },
         goToLibrary: function(e){
             $('li.libNav').addClass('active');
-            window.location.href='/#';
+            window.location.href='/';
         },
         goToComic: function(e){
             $('li.libNav').removeClass('active');
