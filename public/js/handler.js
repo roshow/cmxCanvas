@@ -34,8 +34,12 @@ define([
                     L = m.attributes.cmxJSON.length;
                     for(i = 0; i < L; i++) {
                         m.attributes.cmxJSON[i].src = m.attributes.img.url + m.attributes.cmxJSON[i].src;
-                        //if(m.attributes.popups && m.attributes.popups.length > 0) {
-                        //}
+                        if(m.attributes.cmxJSON[i].popups && m.attributes.cmxJSON[i].popups.length > 0) {
+                            var L2 = m.attributes.cmxJSON[i].popups.length;
+                            for(j = 0; j < L2; j++) {
+                                m.attributes.cmxJSON[i].popups[j].src = m.attributes.img.url + m.attributes.cmxJSON[i].popups[j].src;
+                            }
+                        }
                     }
                     that.loadView(CmxView, {model: m});
                 }
