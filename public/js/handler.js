@@ -16,6 +16,14 @@ define([
         }
     }
 
+     L = m.attributes.cmxJSON.length;
+        for(i = 0; i < L; i++) {
+            m.attributes.cmxJSON[i].src = m.attributes.img.url + m.attributes.cmxJSON[i].src;
+            if(m.attributes.popups && m.attributes.popups.length > 0) {
+
+            }
+        }
+
     var handler = {
 
         loadView: function(V, o) {
@@ -31,6 +39,13 @@ define([
             this.model = new CmxIssueModel({id: id});
             this.model.fetch({
                 success: function(m, r, o){
+                    L = m.attributes.cmxJSON.length;
+                    for(i = 0; i < L; i++) {
+                        m.attributes.cmxJSON[i].src = m.attributes.img.url + m.attributes.cmxJSON[i].src;
+                        if(m.attributes.popups && m.attributes.popups.length > 0) {
+
+                        }
+                    }
                     that.loadView(CmxView, {model: m});
                 }
             });

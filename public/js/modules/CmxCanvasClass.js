@@ -110,7 +110,6 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 					});
 					loadingFlag.remove();
         		};
-        		console.log(popup);
         		img_Pop.src = popup.src;
         		loadingFlag.add();
 			},
@@ -177,29 +176,16 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			goToNext: function() {
 				var that = this;
 				if (!_animating && !loadingFlag.hasFlag()) {
-					//check for popups and load those first
+
 					var popups = cjson[panelCounter.curr].popups || null;
-					/*if (popupCounter.curr !== false) {
-						if (!popupCounter.isLast) {
-							this.popUp(popups[popupCounter.curr]);
-							popupCounter.getNext();
-							console.log(popupCounter);
-						}
-						else {
-							this.popUp(popups[popupCounter.curr]);
-							popupCounter.curr = false;
-							console.log(popupCounter);
-						}
-					}*/
+
 					if (!popupCounter.isLast) {
 						popupCounter.getNext();
 						this.popUp(popups[popupCounter.curr]);
 					}
-					//otherwise, load the next panel
+
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
-						//var popupCounter = new CountManager(cjson[panelCounter.curr].popups);
-						//console.log(popupCounter);
 						popupCounter = new CountManager(cjson[panelCounter.curr].popups, -1);
 						that.movePanels(imgObj_next, 1);
 					}
@@ -249,8 +235,6 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		};
 
 		var init = function(data, canvasId) {
-			console.log('initalize this data:');
-			console.log(data);
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
 			mjson = data;
