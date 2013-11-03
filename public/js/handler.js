@@ -9,6 +9,22 @@ define([
 ], function($, _, Backbone, CmxView, LibraryView, CmxCollection, CmxIssueModel) {
     var currentView;
 
+    //// HELPERS, I guess ////
+    function resolveImgUrlsFromModel(model) {
+        var L1 = model.cmxJSON.length;
+        for(i = 0; i < L1; i++) {
+            model.cmxJSON[i].src = model.img.url + model.cmxJSON[i].src;
+            if(model.cmxJSON[i].popups && model.cmxJSON[i].popups.length > 0) {
+                var L2 = model.cmxJSON[i].popups.length;
+                for(j = 0; j < L2; j++) {
+                    model.cmxJSON[i].popups[j].src = model.img.url + model.cmxJSON[i].popups[j].src;
+                }
+            }
+        }
+        return model;
+    }
+    //// END HELPERS ////
+
     function clearCurrentView(v) {
         if (v) {
             v.$el.empty();
@@ -31,16 +47,7 @@ define([
             this.model = new CmxIssueModel({id: id});
             this.model.fetch({
                 success: function(m, r, o){
-                    L = m.attributes.cmxJSON.length;
-                    for(i = 0; i < L; i++) {
-                        m.attributes.cmxJSON[i].src = m.attributes.img.url + m.attributes.cmxJSON[i].src;
-                        if(m.attributes.cmxJSON[i].popups && m.attributes.cmxJSON[i].popups.length > 0) {
-                            var L2 = m.attributes.cmxJSON[i].popups.length;
-                            for(j = 0; j < L2; j++) {
-                                m.attributes.cmxJSON[i].popups[j].src = m.attributes.img.url + m.attributes.cmxJSON[i].popups[j].src;
-                            }
-                        }
-                    }
+                    m.attributes = resolveImgUrlsFromModel(m.attributes);
                     that.loadView(CmxView, {model: m});
                 }
             });
