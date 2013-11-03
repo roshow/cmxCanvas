@@ -26,6 +26,15 @@ exports.db_cmx = (function() {
                     cb && cb(r);
                     return r;
                 });
+            },
+            set: function(q, u, cb) {
+                db.users.findAndModify({
+                    query: q,
+                    update: u,
+                    new: true
+                }, function(e, r) {
+                    cb && cb(r);
+                });
             }
         }
     };
