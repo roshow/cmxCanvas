@@ -1,15 +1,21 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 body {
-  background-color: #bbbbbb;
+  background-color: #eee;
   color: black;
-  font-family: Futura, Arial, sans-serif;
-  padding: 0px; }
+  font-family: 'Oswald', Arial, sans-serif;
+  color: #151b54; }
+
+canvas {
+  background-color: #eee;
+  border: 1px solid #777777; }
 
 h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
-  text-decoration: none; }
+  color: #151b54;
+  text-shadow: -1px 0 #cccccc, 0 1px #cccccc, 1px 0 #cccccc, -1px 0 #cccccc; }
 
 .btn {
   border-radius: 0; }
@@ -21,27 +27,38 @@ nav {
   cursor: pointer;
   border-radius: 0; }
 
+span.caret {
+  border-top-color: #151b54;
+  border-bottom-color: #151b54; }
+
 #topnav {
   margin: 0;
-  background-color: #9f000f;
-  font-family: 'Bangers', Arial, sans-serif;
+  background-color: #bbbbbb;
+  font-family: 'Oswald', Arial, sans-serif;
   letter-spacing: 0.03em; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
   #topnav span.caret {
-    border-top-color: black;
-    border-bottom-color: black; }
+    border-top-color: #151b54;
+    border-bottom-color: #151b54; }
+  #topnav ul {
+    float: right; }
   #topnav .navbar-brand {
-    color: #ffe87c;
-    font-size: 3em;
-    text-shadow: -3px 0 #151b54, 0 3px #151b54, 3px 0 #151b54, 0 -3px #151b54; }
+    color: #151b54;
+    font-size: 2em; }
     #topnav .navbar-brand .subBrand {
-      font-size: 0.75em; }
+      font-size: 0.6em; }
   #topnav a {
-    color: #ffe87c;
-    text-shadow: -3px 0 #151b54, 0 3px #151b54, 3px 0 #151b54, 0 -3px #151b54;
-    font-size: 1.4em; }
+    color: #151b54;
+    font-size: 1.1em;
+    display: block;
+    min-height: 50px; }
+  #topnav .libNav.active a {
+    background-color: #151b54; }
+  #topnav .nav > li .lib-Nav a {
+    display: inline;
+    vertical-align: text-bottom; }
   #topnav .instructionsmenu {
     padding: 10px; }
     #topnav .instructionsmenu li {
@@ -94,33 +111,33 @@ nav {
   line-height: 450px;
   vertical-align: middle; }
 
-#footer a.navbar-brand {
-  padding-top: 5px;
-  padding-bottom: 5px; }
-#footer .moreinfoBtn {
-  margin: 5px 0; }
-  #footer .moreinfoBtn span.caret {
-    vertical-align: middle; }
-    #footer .moreinfoBtn span.caret.reverse {
-      transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg); }
-  #footer .moreinfoBtn a {
-    color: #777777; }
+#footer {
+  background-color: #bbbbbb;
+  color: #151b54; }
+  #footer a.navbar-brand {
+    color: #151b54;
+    padding-top: 5px;
+    padding-bottom: 5px; }
+  #footer .moreinfoBtn {
+    margin: 5px 0; }
+    #footer .moreinfoBtn span.caret {
+      vertical-align: middle; }
+      #footer .moreinfoBtn span.caret.reverse {
+        transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg); }
     #footer .moreinfoBtn a:hover {
       color: black; }
-#footer #moreinfo {
-  clear: both;
-  max-height: 0px;
-  overflow: hidden;
-  -moz-transition: max-height 0.25s ease;
-  -webkit-transition: max-height 0.25s ease;
-  -o-transition: max-height 0.25s ease;
-  transition: max-height 0.25s ease; }
-  #footer #moreinfo.open {
-    max-height: 250px; }
-  #footer #moreinfo .issueDetails {
-    color: #777777; }
+  #footer #moreinfo {
+    clear: both;
+    max-height: 0px;
+    overflow: hidden;
+    -moz-transition: max-height 0.25s ease;
+    -webkit-transition: max-height 0.25s ease;
+    -o-transition: max-height 0.25s ease;
+    transition: max-height 0.25s ease; }
+    #footer #moreinfo.open {
+      max-height: 250px; }
     #footer #moreinfo .issueDetails li {
       display: block; }
 

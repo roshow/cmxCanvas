@@ -1,5 +1,6 @@
 //// Google Fonts imports ////
 @import url(http://fonts.googleapis.com/css?family=Bangers);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 
 $canvas-h: 450px;
 $canvas-w: 800px;
@@ -9,6 +10,7 @@ $cmxcanvasBlue: #428bca;
 $midnightBlue: #151B54;
 $cranberry: #9F000F;
 $sunYellow: #FFE87C;
+$cornsilk: #FFF8DC;
 
 @mixin anim-maxH($dur){
     -moz-transition: max-height $dur ease;
@@ -17,12 +19,22 @@ $sunYellow: #FFE87C;
     transition: max-height $dur ease;
 }
 
+@mixin fakeStroke($color: black, $width: 1px) {
+    text-shadow: -$width 0 $color, 0 $width $color, $width 0 $color, 0 -$width 0 $color;
+}
+
 body {
-    background-color: $bgGray;
+    background-color: #eee;
     color: black;
-    font-family: Futura, Arial, sans-serif;
+    font-family: 'Oswald', Arial, sans-serif;
     //min-width: 960px;
-    padding: 0px;
+    color: $midnightBlue;
+
+}
+
+canvas {
+    background-color: #eee;
+    border: 1px solid $liGray;
 }
 
 h1, h2, h3 {
@@ -30,7 +42,8 @@ h1, h2, h3 {
 }
 
 a, a:hover {
-    text-decoration: none;
+    color: $midnightBlue;
+    @include fakeStroke($color:#ccc, $width:1px);
 }
 
 //begin bootstrap overwrites
@@ -51,10 +64,15 @@ nav {
     border-radius: 0;
 }
 
+span.caret {
+        border-top-color: $midnightBlue;
+        border-bottom-color: $midnightBlue;
+    }
+
 #topnav {
     margin: 0;
-    background-color: $cranberry;
-    font-family: 'Bangers', Arial, sans-serif;
+    background-color: $bgGray;
+    font-family: 'Oswald', Arial, sans-serif;
     letter-spacing: 0.03em;
     
     button {
@@ -63,23 +81,42 @@ nav {
     }
 
     span.caret {
-        border-top-color: black;
-        border-bottom-color: black;
+        border-top-color: $midnightBlue;
+        border-bottom-color: $midnightBlue;
+    }
+
+    ul {
+        float: right;
     }
 
     .navbar-brand {
-        color: $sunYellow;
-        font-size: 3em;
-        text-shadow: -3px 0 $midnightBlue, 0 3px $midnightBlue, 3px 0 $midnightBlue, 0 -3px $midnightBlue;
+        color: $midnightBlue;
+        font-size: 2em;
 
         .subBrand {
-            font-size: 0.75em;
+            font-size: 0.6em;
         }
     }
     a {
-        color: $sunYellow;
-        text-shadow: -3px 0 $midnightBlue, 0 3px $midnightBlue, 3px 0 $midnightBlue, 0 -3px $midnightBlue;
-        font-size: 1.4em;
+        color: $midnightBlue;
+        font-size: 1.1em;
+        display: block;
+        min-height: 50px;
+    }
+
+    .libNav.active {
+        a {
+            background-color: $midnightBlue;
+        }
+    }
+
+    .nav > li {
+        .lib-Nav {
+            a {
+                display: inline;
+                vertical-align: text-bottom;
+            }
+        }
     }
 
     .comicsmenu {
@@ -169,7 +206,10 @@ nav {
 //consider moving this to its own file so it loads with the js that generates it.
 
 #footer {
+        background-color: $bgGray;
+        color: $midnightBlue;
         a.navbar-brand {
+            color: $midnightBlue;
             padding: {
                 top: 5px;
                 bottom: 5px;
@@ -186,7 +226,7 @@ nav {
                 }
             }
             a {
-                color: $liGray;
+                //color: $liGray;
                 &:hover {
                     color: black;
                 }
@@ -201,7 +241,7 @@ nav {
                 max-height: 250px;
             }
             .issueDetails {
-                color: $liGray;
+                //color: $liGray;
                 li {
                     display: block;
                 }
