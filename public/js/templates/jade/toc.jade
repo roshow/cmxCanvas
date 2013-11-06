@@ -1,36 +1,37 @@
-.navbar-header
-    a.navbar-brand.moreinfoBtn
-        | more info 
-        span.caret
+.nav-wrapper.foot
+    .navbar-header
+        a.navbar-brand.moreinfoBtn
+            | more info 
+            span.caret
 
-#moreinfo.anim
-    .row
-        .col-md-3
-            ul.issueDetails
-                li= "Series: " + series.name
-                if (issue)
-                    li= "Issue: " + issue
-                li= "Title: " + title
-        .col-md-3
-            ul.issueDetails
-                li
-                    | Creators:
-                each creator in creators
+    #moreinfo.anim
+        .row
+            .col-md-3
+                ul.issueDetails
+                    li= "Series: " + series.name
+                    if (issue)
+                        li= "Issue: " + issue
+                    li= "Title: " + title
+            .col-md-3
+                ul.issueDetails
                     li
-                        a(href=creator.url, target="_blank")= creator.name
-                        span=" (" + creator.credit + ")"
-        .col-md-6
-            ul#toc.nav.navbar-nav
-                - var i = 0
-                each p in comic
-                    li(id="toc" + i, panelNum=i)
-                        a= (i + 1)
-                    - i++
+                        | Creators:
+                    each creator in creators
+                        li
+                            a(href=creator.url, target="_blank")= creator.name
+                            span=" (" + creator.credit + ")"
+            .col-md-6
+                ul#toc.nav.navbar-nav
+                    - var i = 0
+                    each p in comic
+                        li(id="toc" + i, panelNum=i)
+                            a= (i + 1)
+                        - i++
 
-//collapse.navbar-collapse.navbar-ex1-collapse
-    ul#toc.nav.navbar-nav
-        - var i = 0
-        each p in comic
-            li(id="toc" + i, panelNum=i)
-                a= (i + 1)
-            - i++
+    //collapse.navbar-collapse.navbar-ex1-collapse
+        ul#toc.nav.navbar-nav
+            - var i = 0
+            each p in comic
+                li(id="toc" + i, panelNum=i)
+                    a= (i + 1)
+                - i++

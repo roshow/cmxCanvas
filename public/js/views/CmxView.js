@@ -45,7 +45,7 @@ define([
     rightArrow: function(e){
       var _read = this.cmxcanvas.goToNext();
       $('#toc li').removeClass('active');
-      $('#toc' + _read.curr).addClass('active');
+      $('#toc' + _read[0].curr).addClass('active');
       if (_read[0].isLast && _read[1].isLast) $('#rightbutton .ui-arrow').hide();
       if (!_read.isFirst) $('#leftbutton .ui-arrow').show();
     },

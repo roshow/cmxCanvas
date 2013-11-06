@@ -189,7 +189,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><canvas id="cmxcanvas" height="450px" width="800px"></canvas><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
+buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><div class="canvaswrapper"><canvas id="cmxcanvas" height="450px" width="800px"></canvas></div><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><div class="nav-wrapper foot"><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');
@@ -268,7 +268,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul></div></div></div></nav>');
+buf.push('</ul></div></div></div></nav></div>');
 }
 return buf.join("");
 }
@@ -277,7 +277,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<nav id="topnav" role="navigation" class="navbar navbar-default"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">CMXCANVAS<span class="subBrand"> Beta</span></a></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul class="nav navbar-nav"><li class="libNav"><a>library</a></li><li><a data-toggle="dropdown" href="#" class="dropdown-toggle">contact  <span class="caret"></span></a><ul class="dropdown-menu contactmenu"><li><a href="http://twitter.com/roshow" target="_blank">twitter @roshow</a></li><li><a href="mailto:rolando@roshow.net">email rolando@roshow.net</a></li></ul></li></ul></div></nav>');
+buf.push('<div class="nav-wrapper"><nav id="topnav" role="navigation" class="navbar navbar-default"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">CMXCANVAS<span class="subBrand"> Beta</span></a></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul class="nav navbar-nav"><li class="libNav"><a>library</a></li><li><a data-toggle="dropdown" href="#" class="dropdown-toggle">contact  <span class="caret"></span></a><ul class="dropdown-menu contactmenu"><li><a href="http://twitter.com/roshow" target="_blank">twitter @roshow</a></li><li><a href="mailto:rolando@roshow.net">email rolando@roshow.net</a></li></ul></li></ul></div></nav></div>');
 }
 return buf.join("");
 }
@@ -333,7 +333,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
+buf.push('<div class="nav-wrapper foot"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');
@@ -443,7 +443,7 @@ buf.push('</a></li>');
   }
 }).call(this);
 
-buf.push('</ul>-->');
+buf.push('</ul>--></div>');
 }
 return buf.join("");
 }

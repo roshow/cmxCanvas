@@ -33,10 +33,6 @@ body {
 
 }
 
-canvas {
-    background-color: #eee;
-    border: 1px solid $liGray;
-}
 
 h1, h2, h3 {
     font-family: Futura, Arial, sans-serif;
@@ -66,17 +62,29 @@ nav {
 }
 
 span.caret {
-        border-top-color: $midnightBlue;
-        border-bottom-color: $midnightBlue;
-    }
+    border-top-color: $midnightBlue;
+    border-bottom-color: $midnightBlue;
+}
 
-#topnav {
+.nav-wrapper {
     margin: 0;
     background-color: $bgGray;
     font-family: 'Oswald', Arial, sans-serif;
     letter-spacing: 0.03em;
     border-top: 4px solid $cranberry;
+    &.foot {
+        border: 0;
+    }
+}
+
+
+#topnav {
     
+    margin: auto;
+    background-color: $bgGray;
+    border-color: $bgGray;
+    max-width: 1170px;
+
     button {
         min-width: 30px;
         min-height: 30px;
@@ -93,7 +101,7 @@ span.caret {
 
     .navbar-brand {
         color: $midnightBlue;
-        font-size: 2em;
+        font-size: 2.2em;
 
         .subBrand {
             font-size: 0.6em;
@@ -101,14 +109,14 @@ span.caret {
     }
     a {
         color: $midnightBlue;
-        font-size: 1.1em;
+        font-size: 1.2em;
         display: block;
         min-height: 50px;
     }
 
     .libNav.active {
         a {
-            background-color: $midnightBlue;
+            //background-color: $midnightBlue;
         }
     }
 
@@ -149,7 +157,9 @@ span.caret {
             display: block;
             padding: 0px;
             margin: auto;
-            //border: 1px solid grey;
+            background-color: #eee;
+            //border: 1px solid #ccc;
+            box-shadow:   -3px -3px 10px #ddd,  3px 3px 10px #ddd;        
         }
 
         #rightbutton {
@@ -208,6 +218,9 @@ span.caret {
 //consider moving this to its own file so it loads with the js that generates it.
 
 #footer {
+        max-width: 1170px;
+        margin: auto;
+        border-color: $bgGray;
         background-color: $bgGray;
         color: $midnightBlue;
         a.navbar-brand {
@@ -235,6 +248,8 @@ span.caret {
             }
         }
         #moreinfo {
+            max-width: 1170px;
+            margin: auto;
             clear: both;
             max-height: 0px;
             overflow: hidden;

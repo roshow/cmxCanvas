@@ -6,10 +6,6 @@ body {
   font-family: 'Oswald', Arial, sans-serif;
   color: navy; }
 
-canvas {
-  background-color: #eee;
-  border: 1px solid #777777; }
-
 h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
@@ -31,12 +27,20 @@ span.caret {
   border-top-color: navy;
   border-bottom-color: navy; }
 
-#topnav {
+.nav-wrapper {
   margin: 0;
   background-color: #bbbbbb;
   font-family: 'Oswald', Arial, sans-serif;
   letter-spacing: 0.03em;
   border-top: 4px solid #9f000f; }
+  .nav-wrapper.foot {
+    border: 0; }
+
+#topnav {
+  margin: auto;
+  background-color: #bbbbbb;
+  border-color: #bbbbbb;
+  max-width: 1170px; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
@@ -47,16 +51,14 @@ span.caret {
     float: right; }
   #topnav .navbar-brand {
     color: navy;
-    font-size: 2em; }
+    font-size: 2.2em; }
     #topnav .navbar-brand .subBrand {
       font-size: 0.6em; }
   #topnav a {
     color: navy;
-    font-size: 1.1em;
+    font-size: 1.2em;
     display: block;
     min-height: 50px; }
-  #topnav .libNav.active a {
-    background-color: navy; }
   #topnav .nav > li .lib-Nav a {
     display: inline;
     vertical-align: text-bottom; }
@@ -73,7 +75,9 @@ span.caret {
   #readcomic.container #canvas_container #cmxcanvas {
     display: block;
     padding: 0px;
-    margin: auto; }
+    margin: auto;
+    background-color: #eee;
+    box-shadow: -3px -3px 10px #ddd,  3px 3px 10px #ddd; }
   #readcomic.container #canvas_container #rightbutton {
     width: 50%;
     height: 100%;
@@ -113,6 +117,9 @@ span.caret {
   vertical-align: middle; }
 
 #footer {
+  max-width: 1170px;
+  margin: auto;
+  border-color: #bbbbbb;
   background-color: #bbbbbb;
   color: navy; }
   #footer a.navbar-brand {
@@ -130,6 +137,8 @@ span.caret {
     #footer .moreinfoBtn a:hover {
       color: black; }
   #footer #moreinfo {
+    max-width: 1170px;
+    margin: auto;
     clear: both;
     max-height: 0px;
     overflow: hidden;
