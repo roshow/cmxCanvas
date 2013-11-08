@@ -10,18 +10,18 @@
     nav#footer.navbar.navbar-default(role="navigation")
         .navbar-header
             a.navbar-brand.moreinfoBtn
-                | more info 
+                | more info
                 span.caret
 
         #moreinfo.anim
             .row
-                .col-md-3
+                .col-xs-3
                     ul.issueDetails
                         li= "Series: " + series.name
                         if (issue)
                             li= "Issue: " + issue
                         li= "Title: " + title
-                .col-md-3
+                .col-xs-3
                     ul.issueDetails
                         li
                             | Creators:
@@ -29,7 +29,7 @@
                             li
                                 a(href=creator.url, target="_blank")= creator.name
                                 span=" (" + creator.credit + ")"
-                .col-md-6
+                .col-xs-6
                     ul#toc.nav.navbar-nav
                         - var i = 0
                         each p in cmxJSON

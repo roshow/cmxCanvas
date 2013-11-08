@@ -189,7 +189,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><div class="canvaswrapper"><canvas id="cmxcanvas" height="450px" width="800px"></canvas></div><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><div class="nav-wrapper foot"><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
+buf.push('<div id="readcomic" class="container"> <div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><div class="canvaswrapper"><canvas id="cmxcanvas" height="450px" width="800px"></canvas></div><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><div class="nav-wrapper foot"><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info<span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-xs-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');
@@ -203,7 +203,7 @@ buf.push('</li>');
 buf.push('<li>');
 var __val__ = "Title: " + title
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li></ul></div><div class="col-md-3"><ul class="issueDetails"><li>Creators:</li>');
+buf.push('</li></ul></div><div class="col-xs-3"><ul class="issueDetails"><li>Creators:</li>');
 // iterate creators
 ;(function(){
   if ('number' == typeof creators.length) {
@@ -237,7 +237,7 @@ buf.push('</span></li>');
   }
 }).call(this);
 
-buf.push('</ul></div><div class="col-md-6"><ul id="toc" class="nav navbar-nav">');
+buf.push('</ul></div><div class="col-xs-6"><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate cmxJSON
 ;(function(){
@@ -333,7 +333,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div class="nav-wrapper foot"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-md-3"><ul class="issueDetails"><li>');
+buf.push('<div class="nav-wrapper foot"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more infoxxzzz <span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-xs-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');
@@ -347,7 +347,7 @@ buf.push('</li>');
 buf.push('<li>');
 var __val__ = "Title: " + title
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</li></ul></div><div class="col-md-3"><ul class="issueDetails"><li>Creators:</li>');
+buf.push('</li></ul></div><div class="col-xs-3"><ul class="issueDetails"><li>Creators:</li>');
 // iterate creators
 ;(function(){
   if ('number' == typeof creators.length) {
@@ -381,7 +381,7 @@ buf.push('</span></li>');
   }
 }).call(this);
 
-buf.push('</ul></div><div class="col-md-6"><ul id="toc" class="nav navbar-nav">');
+buf.push('</ul></div><div class="col-xs-6"><ul id="toc" class="nav navbar-nav">');
  var i = 0
 // iterate comic
 ;(function(){

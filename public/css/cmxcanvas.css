@@ -10,43 +10,40 @@ h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
-  color: navy;
-  text-shadow: -1px 0 #cccccc, 0 1px #cccccc, 1px 0 #cccccc, -1px 0 #cccccc; }
+  color: navy; }
 
 .btn {
   border-radius: 0; }
 
-.navbar {
-  border-radius: 0; }
-
 nav {
-  cursor: pointer;
-  border-radius: 0; }
+  cursor: pointer; }
 
-span.caret {
-  border-top-color: navy;
-  border-bottom-color: navy; }
+.nav {
+  border-radius: 0; }
+  .nav .caret {
+    border-top-color: navy;
+    border-bottom-color: navy; }
 
 .nav-wrapper {
   margin: 0;
-  background-color: #bbbbbb;
+  background-color: cornsilk;
   font-family: 'Oswald', Arial, sans-serif;
   letter-spacing: 0.03em;
   border-top: 4px solid #9f000f; }
   .nav-wrapper.foot {
     border: 0; }
 
+#CmxCanvas .nav-wrapper.foot {
+  border-bottom: 4px solid #9f000f; }
+
 #topnav {
   margin: auto;
-  background-color: #bbbbbb;
-  border-color: #bbbbbb;
+  background-color: cornsilk;
+  border-color: cornsilk;
   max-width: 1170px; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
-  #topnav span.caret {
-    border-top-color: navy;
-    border-bottom-color: navy; }
   #topnav ul {
     float: right; }
   #topnav .navbar-brand {
@@ -119,8 +116,8 @@ span.caret {
 #footer {
   max-width: 1170px;
   margin: auto;
-  border-color: #bbbbbb;
-  background-color: #bbbbbb;
+  border-color: cornsilk;
+  background-color: cornsilk;
   color: navy; }
   #footer a.navbar-brand {
     color: navy;
@@ -138,6 +135,7 @@ span.caret {
       color: black; }
   #footer #moreinfo {
     max-width: 1170px;
+    min-width: 1024px;
     margin: auto;
     clear: both;
     max-height: 0px;
@@ -147,9 +145,14 @@ span.caret {
     -o-transition: max-height 0.25s ease;
     transition: max-height 0.25s ease; }
     #footer #moreinfo.open {
-      max-height: 250px; }
+      max-height: 250px;
+      /*padding-top: 10px;
+      box-shadow: inset 0 3px 6px rgba(0,0,160, 0.2);*/ }
     #footer #moreinfo .issueDetails li {
       display: block; }
+  #footer #toc .active a {
+    color: cornsilk;
+    background-color: navy; }
 
 #library.container {
   padding-top: 1%; }
