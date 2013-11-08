@@ -27,15 +27,27 @@ $cornsilk: #FFF8DC;
 
 //Default Text
 
-body, a, a:hover {
+/*body, a, a:hover {
     color: $midnightBlue !important;
+    @include fakeStroke($color:#ccc, $width:1px);
+}*/
+
+//Default Nav Bg & Text
+
+#footer, #topnav {
+    background-color: $cornsilk;
+    color: black;
+    a, a:hover {
+        color: $midnightBlue;
+    }
     @include fakeStroke($color:#ccc, $width:1px);
 }
 
-//Default Nav Bg
-
-#footer, #topnav {
-    background-color: $cornsilk !important;
+#toc .active, #topnav .libNav.active {
+        a {
+            color: $cornsilk;
+            background-color: $midnightBlue;
+        }
 }
 
 body {
@@ -47,6 +59,9 @@ body {
     }
 }
 
+a:hover {
+    text-decoration: none;
+}
 
 h1, h2, h3 {
     font-family: Futura, Arial, sans-serif;
@@ -124,12 +139,6 @@ nav {
         min-height: 50px;
     }
 
-    .libNav.active {
-        a {
-            //background-color: $midnightBlue;
-        }
-    }
-
     .nav > li {
         .lib-Nav {
             a {
@@ -143,7 +152,7 @@ nav {
         //margin-left: 105px;
     }
     .contactmenu {
-        //margin-left: 202px;
+        margin-left: -134px;
     }
     .instructionsmenu {
         li {
@@ -210,7 +219,7 @@ nav {
                 color: black;
             }
             &:active {
-                color: $cmxcanvasBlue;
+                color: $midnightBlue;
             }
         }
     }
@@ -272,15 +281,6 @@ nav {
                 //color: $liGray;
                 li {
                     display: block;
-                }
-            }
-        }
-
-        #toc {
-            .active {
-                a {
-                    color: $cornsilk;
-                    background-color: $midnightBlue;
                 }
             }
         }

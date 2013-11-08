@@ -1,15 +1,26 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
-body, a, a:hover {
-  color: navy !important; }
-
+/*body, a, a:hover {
+    color: $midnightBlue !important;
+    @include fakeStroke($color:#ccc, $width:1px);
+}*/
 #footer, #topnav {
-  background-color: cornsilk !important; }
+  background-color: cornsilk;
+  color: black; }
+  #footer a, #footer a:hover, #topnav a, #topnav a:hover {
+    color: navy; }
+
+#toc .active a, #topnav .libNav.active a {
+  color: cornsilk;
+  background-color: navy; }
 
 body {
   font-family: 'Oswald', Arial, sans-serif; }
   body > div {
     min-width: 1000px; }
+
+a:hover {
+  text-decoration: none; }
 
 h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
@@ -61,6 +72,8 @@ nav {
   #topnav .nav > li .lib-Nav a {
     display: inline;
     vertical-align: text-bottom; }
+  #topnav .contactmenu {
+    margin-left: -134px; }
   #topnav .instructionsmenu {
     padding: 10px; }
     #topnav .instructionsmenu li {
@@ -107,7 +120,7 @@ nav {
     #readcomic.container #canvas_container .ui-arrow:hover {
       color: black; }
     #readcomic.container #canvas_container .ui-arrow:active {
-      color: #428bca; }
+      color: navy; }
 #readcomic.container .arrow {
   position: relative;
   line-height: 450px;
@@ -145,9 +158,6 @@ nav {
       box-shadow: inset 0 3px 6px rgba(0,0,160, 0.2);*/ }
     #footer #moreinfo .issueDetails li {
       display: block; }
-  #footer #toc .active a {
-    color: cornsilk;
-    background-color: navy; }
 
 #library.container {
   padding-top: 1%; }
