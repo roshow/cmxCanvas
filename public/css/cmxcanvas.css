@@ -1,7 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 body {
-  color: black;
   font-family: 'Oswald', Arial, sans-serif;
   color: navy; }
   body > div {
@@ -11,12 +10,7 @@ h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
-  color: navy; }
-
-.container {
-  min-width: 1024px;
-  margin: auto;
-  padding: 0; }
+  color: navy !important; }
 
 .btn {
   border-radius: 0; }
@@ -30,9 +24,6 @@ nav {
     border-top-color: navy;
     border-bottom-color: navy; }
 
-.nav-wrapper, .navbar-collapse, #footer, #topnav {
-  background-color: cornsilk !important; }
-
 .nav-wrapper {
   margin: 0;
   font-family: 'Oswald', Arial, sans-serif;
@@ -40,6 +31,14 @@ nav {
   border-top: 4px solid #9f000f; }
   .nav-wrapper.foot {
     border: 0; }
+
+#footer, #topnav {
+  background-color: cornsilk !important; }
+
+.container {
+  min-width: 1024px;
+  margin: auto;
+  padding: 0; }
 
 #CmxCanvas .nav-wrapper.foot {
   border-bottom: 4px solid #9f000f; }
@@ -53,12 +52,10 @@ nav {
   #topnav ul {
     float: right; }
   #topnav .navbar-brand {
-    color: navy;
     font-size: 2.2em; }
     #topnav .navbar-brand .subBrand {
       font-size: 0.6em; }
   #topnav a {
-    color: navy;
     font-size: 1.2em;
     display: block;
     min-height: 50px; }
@@ -119,10 +116,8 @@ nav {
 
 #footer {
   margin: auto;
-  border-color: cornsilk;
-  color: navy; }
+  border-color: cornsilk; }
   #footer a.navbar-brand {
-    color: navy;
     padding-top: 5px;
     padding-bottom: 5px; }
   #footer .moreinfoBtn {

@@ -5,8 +5,7 @@
 $canvas-h: 450px;
 $canvas-w: 800px;
 $liGray: #777;
-//$bgGray: #BBB;
-$bgGray: #FFF8DC;
+$cornsilk: #FFF8DC;
 $cmxcanvasBlue: #428bca;
 //$midnightBlue: #151B54;
 $midnightBlue: #000080;
@@ -23,11 +22,11 @@ $cornsilk: #FFF8DC;
 
 @mixin fakeStroke($color: black, $width: 1px) {
     //text-shadow: -$width 0 $color, 0 $width $color, $width 0 $color, 0 -$width 0 $color;
+
 }
 
 body {
     //background-color: #eee;
-    color: black;
     font-family: 'Oswald', Arial, sans-serif;
     color: $midnightBlue;
 
@@ -42,16 +41,10 @@ h1, h2, h3 {
 }
 
 a, a:hover {
-    color: $midnightBlue;
+    color: $midnightBlue !important;
     @include fakeStroke($color:#ccc, $width:1px);
 }
 
-//begin bootstrap overwrites
-.container {
-    min-width: 1024px;
-    margin: auto;
-    padding: 0;
-}
 
 .btn {
     border-radius: 0;
@@ -69,19 +62,24 @@ nav {
     }
 }
 
-.nav-wrapper, .navbar-collapse, #footer, #topnav {
-    background-color: $bgGray !important;
-}
-
 .nav-wrapper {
     margin: 0;
-    //background-color: $bgGray;
     font-family: 'Oswald', Arial, sans-serif;
     letter-spacing: 0.03em;
     border-top: 4px solid $cranberry;
     &.foot {
         border: 0;
     }
+}
+
+#footer, #topnav {
+    background-color: $cornsilk !important;
+}
+
+.container {
+    min-width: 1024px;
+    margin: auto;
+    padding: 0;
 }
 
 #CmxCanvas {
@@ -96,8 +94,8 @@ nav {
 #topnav {
     
     margin: auto;
-    //background-color: $bgGray;
-    border-color: $bgGray;
+    //background-color: $cornsilk;
+    border-color: $cornsilk;
     //max-width: 1170px;
 
     button {
@@ -110,7 +108,7 @@ nav {
     }
 
     .navbar-brand {
-        color: $midnightBlue;
+        //color: $midnightBlue;
         font-size: 2.2em;
 
         .subBrand {
@@ -118,7 +116,7 @@ nav {
         }
     }
     a {
-        color: $midnightBlue;
+        //color: $midnightBlue;
         font-size: 1.2em;
         display: block;
         min-height: 50px;
@@ -228,11 +226,11 @@ nav {
 #footer {
         //max-width: 1170px;
         margin: auto;
-        border-color: $bgGray;
-        //background-color: $bgGray;
-        color: $midnightBlue;
+        border-color: $cornsilk;
+        //background-color: $cornsilk;
+        //color: $midnightBlue;
         a.navbar-brand {
-            color: $midnightBlue;
+            //color: $midnightBlue;
             padding: {
                 top: 5px;
                 bottom: 5px;
@@ -279,7 +277,7 @@ nav {
         #toc {
             .active {
                 a {
-                    color: $bgGray;
+                    color: $cornsilk;
                     background-color: $midnightBlue;
                 }
             }
