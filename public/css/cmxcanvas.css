@@ -1,9 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
-/*body, a, a:hover {
-    color: $midnightBlue !important;
-    @include fakeStroke($color:#ccc, $width:1px);
-}*/
 #footer, #topnav {
   background-color: cornsilk;
   color: black; }
@@ -17,7 +13,7 @@
 body {
   font-family: 'Oswald', Arial, sans-serif; }
   body > div {
-    min-width: 1000px; }
+    min-width: 1024px; }
 
 a:hover {
   text-decoration: none; }
@@ -129,6 +125,8 @@ nav {
 #footer {
   margin: auto;
   border-color: cornsilk; }
+  #footer .navbar-brand {
+    font-size: 1.3em; }
   #footer a.navbar-brand {
     padding-top: 5px;
     padding-bottom: 5px; }
@@ -151,11 +149,11 @@ nav {
     -moz-transition: max-height 0.25s ease;
     -webkit-transition: max-height 0.25s ease;
     -o-transition: max-height 0.25s ease;
-    transition: max-height 0.25s ease; }
+    transition: max-height 0.25s ease;
+    font-size: 1.1em; }
     #footer #moreinfo.open {
       max-height: 250px;
-      /*padding-top: 10px;
-      box-shadow: inset 0 3px 6px rgba(0,0,160, 0.2);*/ }
+      padding-top: 0.75em; }
     #footer #moreinfo .issueDetails li {
       display: block; }
 
