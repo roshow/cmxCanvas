@@ -26,10 +26,14 @@ $cornsilk: #FFF8DC;
 }
 
 body {
-    background-color: #eee;
+    //background-color: #eee;
     color: black;
     font-family: 'Oswald', Arial, sans-serif;
     color: $midnightBlue;
+
+    > div {
+        min-width:1000px;
+    }
 }
 
 
@@ -43,6 +47,11 @@ a, a:hover {
 }
 
 //begin bootstrap overwrites
+.container {
+    min-width: 1024px;
+    margin: auto;
+    padding: 0;
+}
 
 .btn {
     border-radius: 0;
@@ -60,15 +69,13 @@ nav {
     }
 }
 
-
-
-
-//end bootstrap overwriter
-
+.nav-wrapper, .navbar-collapse, #footer, #topnav {
+    background-color: $bgGray !important;
+}
 
 .nav-wrapper {
     margin: 0;
-    background-color: $bgGray;
+    //background-color: $bgGray;
     font-family: 'Oswald', Arial, sans-serif;
     letter-spacing: 0.03em;
     border-top: 4px solid $cranberry;
@@ -89,9 +96,9 @@ nav {
 #topnav {
     
     margin: auto;
-    background-color: $bgGray;
+    //background-color: $bgGray;
     border-color: $bgGray;
-    max-width: 1170px;
+    //max-width: 1170px;
 
     button {
         min-width: 30px;
@@ -152,15 +159,13 @@ nav {
 
     #canvas_container {
         position: relative;
-        margin-top: 2%;
-        margin-bottom: 2%;
+        margin: 2% auto;
         width: 100%;
 
         #cmxcanvas {
             display: block;
             padding: 0px;
             margin: auto;
-            background-color: #eee;
             //border: 1px solid #ccc;
             box-shadow:   -3px -3px 10px #ddd,  3px 3px 10px #ddd;        
         }
@@ -221,10 +226,10 @@ nav {
 //consider moving this to its own file so it loads with the js that generates it.
 
 #footer {
-        max-width: 1170px;
+        //max-width: 1170px;
         margin: auto;
         border-color: $bgGray;
-        background-color: $bgGray;
+        //background-color: $bgGray;
         color: $midnightBlue;
         a.navbar-brand {
             color: $midnightBlue;
@@ -251,7 +256,7 @@ nav {
             }
         }
         #moreinfo {
-            max-width: 1170px;
+            //max-width: 1170px;
             min-width: 1024px;
             margin: auto;
             clear: both;

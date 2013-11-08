@@ -1,16 +1,22 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 body {
-  background-color: #eee;
   color: black;
   font-family: 'Oswald', Arial, sans-serif;
   color: navy; }
+  body > div {
+    min-width: 1000px; }
 
 h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
 
 a, a:hover {
   color: navy; }
+
+.container {
+  min-width: 1024px;
+  margin: auto;
+  padding: 0; }
 
 .btn {
   border-radius: 0; }
@@ -24,9 +30,11 @@ nav {
     border-top-color: navy;
     border-bottom-color: navy; }
 
+.nav-wrapper, .navbar-collapse, #footer, #topnav {
+  background-color: cornsilk !important; }
+
 .nav-wrapper {
   margin: 0;
-  background-color: cornsilk;
   font-family: 'Oswald', Arial, sans-serif;
   letter-spacing: 0.03em;
   border-top: 4px solid #9f000f; }
@@ -38,9 +46,7 @@ nav {
 
 #topnav {
   margin: auto;
-  background-color: cornsilk;
-  border-color: cornsilk;
-  max-width: 1170px; }
+  border-color: cornsilk; }
   #topnav button {
     min-width: 30px;
     min-height: 30px; }
@@ -66,14 +72,12 @@ nav {
 
 #readcomic.container #canvas_container {
   position: relative;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  margin: 2% auto;
   width: 100%; }
   #readcomic.container #canvas_container #cmxcanvas {
     display: block;
     padding: 0px;
     margin: auto;
-    background-color: #eee;
     box-shadow: -3px -3px 10px #ddd,  3px 3px 10px #ddd; }
   #readcomic.container #canvas_container #rightbutton {
     width: 50%;
@@ -114,10 +118,8 @@ nav {
   vertical-align: middle; }
 
 #footer {
-  max-width: 1170px;
   margin: auto;
   border-color: cornsilk;
-  background-color: cornsilk;
   color: navy; }
   #footer a.navbar-brand {
     color: navy;
@@ -134,7 +136,6 @@ nav {
     #footer .moreinfoBtn a:hover {
       color: black; }
   #footer #moreinfo {
-    max-width: 1170px;
     min-width: 1024px;
     margin: auto;
     clear: both;
