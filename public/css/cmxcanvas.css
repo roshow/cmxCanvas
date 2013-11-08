@@ -1,16 +1,18 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+body, a, a:hover {
+  color: navy !important; }
+
+#footer, #topnav {
+  background-color: cornsilk !important; }
+
 body {
-  font-family: 'Oswald', Arial, sans-serif;
-  color: navy; }
+  font-family: 'Oswald', Arial, sans-serif; }
   body > div {
     min-width: 1000px; }
 
 h1, h2, h3 {
   font-family: Futura, Arial, sans-serif; }
-
-a, a:hover {
-  color: navy !important; }
 
 .btn {
   border-radius: 0; }
@@ -31,9 +33,6 @@ nav {
   border-top: 4px solid #9f000f; }
   .nav-wrapper.foot {
     border: 0; }
-
-#footer, #topnav {
-  background-color: cornsilk !important; }
 
 .container {
   min-width: 1024px;

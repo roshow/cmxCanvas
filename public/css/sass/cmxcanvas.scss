@@ -25,10 +25,22 @@ $cornsilk: #FFF8DC;
 
 }
 
+//Default Text
+
+body, a, a:hover {
+    color: $midnightBlue !important;
+    @include fakeStroke($color:#ccc, $width:1px);
+}
+
+//Default Nav Bg
+
+#footer, #topnav {
+    background-color: $cornsilk !important;
+}
+
 body {
     //background-color: #eee;
     font-family: 'Oswald', Arial, sans-serif;
-    color: $midnightBlue;
 
     > div {
         min-width:1000px;
@@ -39,12 +51,6 @@ body {
 h1, h2, h3 {
     font-family: Futura, Arial, sans-serif;
 }
-
-a, a:hover {
-    color: $midnightBlue !important;
-    @include fakeStroke($color:#ccc, $width:1px);
-}
-
 
 .btn {
     border-radius: 0;
@@ -70,10 +76,6 @@ nav {
     &.foot {
         border: 0;
     }
-}
-
-#footer, #topnav {
-    background-color: $cornsilk !important;
 }
 
 .container {
