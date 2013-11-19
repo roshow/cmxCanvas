@@ -23,4 +23,4 @@ app.get('*', handler.index);
 
 console.log('cmxcanvas Listening on port ' + _port);
 //Open Safari when cmxcanvas has begun to listen:
-exec('open -a Safari "http://localhost:5000/#comic/revorigin"');
+//exec('open -a Safari "http://localhost:5000/#comic/revorigin"');

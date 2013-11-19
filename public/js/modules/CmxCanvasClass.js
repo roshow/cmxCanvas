@@ -1,7 +1,7 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 /*global define*/
 
-define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountManager){
+define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], function(jsAnimate, CountManager, ImageAsData){
 
 	var CmxCanvas = (function() {
 
@@ -40,8 +40,6 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
 
-		var TESTARRAY = [];
-
 		// The Main Event
 		var cmxcanvas = {
 
@@ -70,7 +68,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 									x: imgObj_x,
 									y: imgObj_y
 								},
-				                   {
+								{
 									x: imgObj_target_x + (direction * cnv.width),
 									y: imgObj_target_y
 								}
@@ -224,6 +222,12 @@ define(['modules/jsAnimate', 'modules/PanelCounter'], function(jsAnimate, CountM
 			loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
 		};
 		imgObj.onload = function() {
+			var imgD = new ImageAsData(cnv, ctx);
+			imgD.onload = function(imgD){
+				console.log('imgD');
+				console.log(imgD);
+			}
+			imgD.load(this.src);
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
 			if (!panelCounter.isLast) {
