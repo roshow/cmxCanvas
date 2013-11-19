@@ -97,6 +97,12 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 						});
 						break;
 				}
+				if (!panelCounter.isLast) {
+					imgObj_next.load(cmxJSON[panelCounter.next].src);
+				}
+				if (!panelCounter.isFirst) {
+					imgObj_prev.load(cmxJSON[panelCounter.prev].src);
+				}
 			},
 			popUp: function(popup) {
 				var that = this;
@@ -212,32 +218,24 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 				panelCounter.goTo(panel);
 				popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
 				imgObj.load(cmxJSON[panelCounter.curr].src);
+				if (!panelCounter.isLast) {
+					imgObj_next.load(cmxJSON[panelCounter.next].src);
+				}
+				if (!panelCounter.isFirst) {
+					imgObj_prev.load(cmxJSON[panelCounter.prev].src);
+				}
 			}
 		};
 		imgObj_next.onload = function() {
-			//ctx.drawImage(this, halfDiff(cnv.width, this.width) + cnv.width, halfDiff(cnv.height, this.height));
 			//loadingFlag.remove("imgObj_next " + imgObj_next.src);
 		};
 		imgObj_prev.onload = function() {
-			//ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
 			//loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
 		};
+		
 		imgObj.onload = function() {
-			//ctx.clearRect(0, 0, cnv.width, cnv.height);
-			//ctx.putImageData(this.data, halfDiff(cnv.width, this.data.width), halfDiff(cnv.height, this.data.height));
-			if (!panelCounter.isLast) {
-				if (imgObj_next.src !== cmxJSON[panelCounter.next].src) {
-					//loadingFlag.add("imgObj_next " + imgObj_prev.src);
-				}
-				imgObj_next.load(cmxJSON[panelCounter.next].src);
-			}
-			if (!panelCounter.isFirst) {
-				if (imgObj_prev.src !== cmxJSON[panelCounter.prev].src) {
-					//loadingFlag.add("imgObj_prev " + imgObj_prev.src);
-				}
-				imgObj_prev.load(cmxJSON[panelCounter.prev].src);
-			}
-			//loadingFlag.remove("imgObj " + imgObj.src);
+			ctx.clearRect(0, 0, cnv.width, cnv.height);
+			ctx.putImageData(this.data, halfDiff(cnv.width, this.data.width), halfDiff(cnv.height, this.data.height));
 		};
 
 		var init = function(data, canvasId, canvasStagingId) {
@@ -253,6 +251,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 			panelCounter = new CountManager(cmxJSON);
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
 			imgObj.load(cmxJSON[panelCounter.curr].src);
+			imgObj_next.load(cmxJSON[panelCounter.next].src);
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};
