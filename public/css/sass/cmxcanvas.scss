@@ -147,13 +147,15 @@ nav {
 }
 
 #readcomic.container {
-
+    canvas#stagingCanvas {
+        display: none;
+    }
     #canvas_container {
         position: relative;
         margin: 2% auto;
         width: 100%;
 
-        #cmxcanvas {
+        canvas#cmx {
             display: block;
             padding: 0px;
             margin: auto;

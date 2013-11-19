@@ -75,11 +75,13 @@ nav {
     #topnav .instructionsmenu li {
       color: black; }
 
+#readcomic.container canvas#stagingCanvas {
+  display: none; }
 #readcomic.container #canvas_container {
   position: relative;
   margin: 2% auto;
   width: 100%; }
-  #readcomic.container #canvas_container #cmxcanvas {
+  #readcomic.container #canvas_container canvas#cmx {
     display: block;
     padding: 0px;
     margin: auto;

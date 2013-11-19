@@ -20,7 +20,8 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 					flag--;
 				},
 				hasFlag: function(){
-					return (flag === 0) ? false: true;
+					//return (flag === 0) ? false: true;
+					return false;
 				}
 			};
 			return lflag;
@@ -29,9 +30,9 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 
 		var i, cnv, ctx, cmxJSON, panelCounter, popupCounter,
 			_animating = false,
-			imgObj = new Image(),
-			imgObj_next = new Image(),
-			imgObj_prev = new Image(),
+			imgObj = new ImageAsData(),
+			imgObj_next = new ImageAsData(),
+			imgObj_prev = new ImageAsData(),
 			img_Pop = new Image();
 
 		// Deal with cross origin nonsense
@@ -55,13 +56,13 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 					default:
 						_animating = true;
 						var that = this,
-							imgObj_x = halfDiff(cnv.width, imgObj.width),
-							imgObj_y = halfDiff(cnv.height, imgObj.height),
-							imgObj_target_x = halfDiff(cnv.width, imgObj_target.width),
-							imgObj_target_y = halfDiff(cnv.height, imgObj_target.height);
+							imgObj_x = halfDiff(cnv.width, imgObj.data.width),
+							imgObj_y = halfDiff(cnv.height, imgObj.data.height),
+							imgObj_target_x = halfDiff(cnv.width, imgObj_target.data.width),
+							imgObj_target_y = halfDiff(cnv.height, imgObj_target.data.height);
 
 						jsAnimate.animation({
-							target: [imgObj, imgObj_target],
+							target: [imgObj.data, imgObj_target.data],
 							names: [cmxJSON[panelCounter.curr - direction].src, cmxJSON[panelCounter.curr].src],
 							from: [
 				                {
@@ -90,7 +91,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 							friction: 1,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = cmxJSON[panelCounter.curr].src;
+								imgObj.load(cmxJSON[panelCounter.curr].src);
 								_animating = false;
 							}
 						});
@@ -210,48 +211,48 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);
 				popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-				imgObj.src = cmxJSON[panelCounter.curr].src;
+				imgObj.load(cmxJSON[panelCounter.curr].src);
 			}
 		};
 		imgObj_next.onload = function() {
-			ctx.drawImage(this, halfDiff(cnv.width, this.width) + cnv.width, halfDiff(cnv.height, this.height));
-			loadingFlag.remove("imgObj_next " + imgObj_next.src);
+			//ctx.drawImage(this, halfDiff(cnv.width, this.width) + cnv.width, halfDiff(cnv.height, this.height));
+			//loadingFlag.remove("imgObj_next " + imgObj_next.src);
 		};
 		imgObj_prev.onload = function() {
-			ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
-			loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
+			//ctx.drawImage(this, halfDiff(cnv.width, this.width) - cnv.width, halfDiff(cnv.height, this.height));
+			//loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
 		};
 		imgObj.onload = function() {
-			var imgD = new ImageAsData(cnv, ctx);
-			imgD.onload = function(imgD){
-				console.log('imgD');
-				console.log(imgD);
-			}
-			imgD.load(this.src);
-			ctx.clearRect(0, 0, cnv.width, cnv.height);
-			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
+			//ctx.clearRect(0, 0, cnv.width, cnv.height);
+			//ctx.putImageData(this.data, halfDiff(cnv.width, this.data.width), halfDiff(cnv.height, this.data.height));
 			if (!panelCounter.isLast) {
 				if (imgObj_next.src !== cmxJSON[panelCounter.next].src) {
-					loadingFlag.add("imgObj_next " + imgObj_prev.src);
+					//loadingFlag.add("imgObj_next " + imgObj_prev.src);
 				}
-				imgObj_next.src = cmxJSON[panelCounter.next].src;
+				imgObj_next.load(cmxJSON[panelCounter.next].src);
 			}
 			if (!panelCounter.isFirst) {
 				if (imgObj_prev.src !== cmxJSON[panelCounter.prev].src) {
-					loadingFlag.add("imgObj_prev " + imgObj_prev.src);
+					//loadingFlag.add("imgObj_prev " + imgObj_prev.src);
 				}
-				imgObj_prev.src = cmxJSON[panelCounter.prev].src;
+				imgObj_prev.load(cmxJSON[panelCounter.prev].src);
 			}
 			//loadingFlag.remove("imgObj " + imgObj.src);
 		};
 
-		var init = function(data, canvasId) {
+		var init = function(data, canvasId, canvasStagingId) {
+			
+			//// Get Canvases and Contexts
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
+			imgObj.setCanvas(canvasStagingId);
+			imgObj_next.setCanvas(canvasStagingId);
+			imgObj_prev.setCanvas(canvasStagingId);
+			
 			cmxJSON = data.cmxJSON;
 			panelCounter = new CountManager(cmxJSON);
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
-			imgObj.src = cmxJSON[panelCounter.curr].src;
+			imgObj.load(cmxJSON[panelCounter.curr].src);
 			//loadingFlag.add("imgObj init " + imgObj.src);
 			return cmxcanvas;
 		};

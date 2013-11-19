@@ -23,7 +23,7 @@ define([
       this.$el.html(jade.templates['cmxreader'](_modeljson));
       $('#leftbutton .ui-arrow').css('display', 'none');
       //create cmxcanvas class with methods to make life easier
-      this.cmxcanvas = new CmxCanvas(_modeljson, 'cmxcanvas');
+      this.cmxcanvas = new CmxCanvas(_modeljson, 'cmx', 'stagingCanvas');
       //select first (0) panel in TOC
       $('#toc0').addClass('active');
     },
