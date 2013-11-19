@@ -36,9 +36,6 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 			img_Pop = new Image();
 
 		// Deal with cross origin nonsense
-		imgObj.crossOrigin = "Anonymous";
-		imgObj_next.crossOrigin = "Anonymous";
-		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
 
 		// The Main Event
@@ -232,7 +229,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 		imgObj_prev.onload = function() {
 			//loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
 		};
-		
+
 		imgObj.onload = function() {
 			ctx.clearRect(0, 0, cnv.width, cnv.height);
 			ctx.putImageData(this.data, halfDiff(cnv.width, this.data.width), halfDiff(cnv.height, this.data.height));
@@ -243,6 +240,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 			//// Get Canvases and Contexts
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
+
 			imgObj.setCanvas(canvasStagingId);
 			imgObj_next.setCanvas(canvasStagingId);
 			imgObj_prev.setCanvas(canvasStagingId);
