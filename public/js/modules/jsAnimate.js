@@ -57,8 +57,8 @@ define([], function(){
               animObj.ctx.clearRect(0, 0, animObj.canvas.width, animObj.canvas.height);
 
 
-              animObj.ctx.putImageData(animObj.target[0], toX[0], toY[0]);
-              animObj.ctx.putImageData(animObj.target[1], toX[1], toY[1]);
+              animObj.ctx.drawImage(animObj.target[0], toX[0], toY[0]);
+              animObj.ctx.drawImage(animObj.target[1], toX[1], toY[1]);
           };
           
           setTimeout(function(){
