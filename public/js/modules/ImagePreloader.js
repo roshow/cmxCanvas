@@ -1,7 +1,7 @@
 define([], function(){
 
     function ImagePreloader(imgs) {
-        
+            
         var imgpreload = {
             loadedImages: {}
         };
@@ -27,15 +27,21 @@ define([], function(){
         }
 
         imgpreload.load = function(imgs, anon) {
+            var that = this;
             for (key in imgs){
-                this.loadedImages[key] = new Image();
-                if (anon) newImage.crossOrigin = "Anonymous";
-                this.loadedImages[key].onload = function(){
-                    _loading--;
-                    this.onLoadDone && this.onLoadDone();
-                    //_loadDoneCallbacks(imgs[key], this);
-                };
-                this.loadedImages[key].src  = imgs[key].src;
+                img = new Image();
+                if (anon) img.crossOrigin = "Anonymous";
+                img.onload = (function(key){
+                    return function(){ 
+                        _loading--;
+                        //console.log(key);
+                        that.loadedImages[key] = this;
+                        //imgs[key].callback && imgs[key].callback();
+                        that.onLoadDone && that.onLoadDone();
+                        //_loadDoneCallbacks(imgs[key], that.onLoadDone);
+                    };
+                }(key));
+                img.src  = imgs[key].src;
                 _loading++;
             }
         };
