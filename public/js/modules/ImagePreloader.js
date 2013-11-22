@@ -1,7 +1,6 @@
 define([], function(){
 
     var promises = [];
-
     function runPromises() {
         var L = promises.length;
         for (i = 0; i < L; i++) {
@@ -20,7 +19,7 @@ define([], function(){
 
         var _loading = 0;
         function _onImageLoad(img, onLoadDone){
-            if (_loading >= 0) {
+                if (_loading >= 0) {
                 if (img.cbPriority && img.callback) {
                      img.callback();
                 }
