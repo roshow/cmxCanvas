@@ -1,28 +1,36 @@
 define([], function(){
 
+    var promises = [];
+
+    function runPromises() {
+        var L = promises.length;
+        for (i = 0; i < L; i++) {
+            promises[i]();
+        }
+    }
+    function addPromise(func) {
+        promises.push(func);
+    }
+
     function ImagePreloader(imgs) {
-            
+        
         var imgpreload = {
             loadedImages: {}
         };
 
         var _loading = 0;
-        function _loadDoneCallbacks(img, onLoadDone){
-            if (!_loading) {
-                if (!img.callback){
-                    onLoadDone && onLoadDone();
+        function _onImageLoad(img, onLoadDone){
+            if (_loading >= 0) {
+                if (img.cbPriority && img.callback) {
+                     img.callback();
                 }
-                else if (img.cbPriority && img.cbPriority === 2){
-                    onLoadDone && onLoadDone();
-                    img.callback();
-                }
-                else {
-                    img.callback();
-                    onLoadDone && onLoadDone();
+                else if (img.callback){
+                    addPromise(img.callback);
                 }
             }
-            else {
-                img.callback && img.callback();
+            if (_loading === 0) {
+                onLoadDone && onLoadDone();
+                runPromises();
             }
         }
 
@@ -34,15 +42,14 @@ define([], function(){
                 img.onload = (function(key){
                     return function(){ 
                         _loading--;
-                        //console.log(key);
                         that.loadedImages[key] = this;
                         //imgs[key].callback && imgs[key].callback();
-                        that.onLoadDone && that.onLoadDone();
-                        //_loadDoneCallbacks(imgs[key], that.onLoadDone);
+                        //that.onLoadDone && that.onLoadDone();
+                        _onImageLoad(imgs[key], that.onLoadDone);
                     };
                 }(key));
-                img.src  = imgs[key].src;
                 _loading++;
+                img.src  = imgs[key].src;
             }
         };
 
