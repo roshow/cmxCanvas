@@ -10,43 +10,54 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 			return (a - b)/2;
 		}
 
-		var loadingFlag = (function(){
-			var flag = 0;
-			var lflag = {
-				add: function(x){
-					flag++;
-				},
-				remove: function(x){
-					flag--;
-				},
-				hasFlag: function(){
-					//return (flag === 0) ? false: true;
-					return false;
-				}
-			};
-			return lflag;
-		}());
 		//END Helpers
 
 		var i, cnv, ctx, cmxJSON, panelCounter, popupCounter,
 			_animating = false,
-			imgLoader = new ImagePreloader();
-			imgObj = new Image(),
-			imgObj_next = new Image(),
-			imgObj_prev = new Image(),
 			img_Pop = new Image();
 
+		var loadingFlag = false;
+		var imgLoader = new ImagePreloader();
+		imgLoader.onLoadStart = function() {
+			//loadingFlag = true;
+			console.log('starting to load images');
+		};
+		imgLoader.onLoadDone = function() {
+            //loadingFlag = false;
+            console.log('done loading images');
+        };
+        function writeImgLoaderData() {
+        	var imgd = {};
+			if (!panelCounter.isLast) {
+				imgd.imgObj_next = {
+					src: cmxJSON[panelCounter.next].src
+				};
+			}
+			if (!panelCounter.isFirst) {
+				imgd.imgObj_prev = {
+					src: cmxJSON[panelCounter.prev].src
+				}
+			}
+        	imgd.imgObj = {
+    			src: cmxJSON[panelCounter.curr].src,
+    			callback: function(imgObj) {
+    				console.log(imgObj);
+    				ctx.clearRect(0, 0, cnv.width, cnv.height);
+					ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
+    			},
+    			cbPriority: true
+    		}
+    		return imgd;
+        };
+
 		// Deal with cross origin nonsense
-		imgObj.crossOrigin = "Anonymous";
-		imgObj_next.crossOrigin = "Anonymous";
-		imgObj_prev.crossOrigin = "Anonymous";
 		img_Pop.crossOrigin = "Anonymous";
 
 		// The Main Event
 		var cmxcanvas = {
 
 			// START: methods for making stuff happen on the canvas
-			movePanels: function(imgObj_target, direction) {
+			movePanels: function(imgObj, imgObj_target, direction) {
 				switch (cmxJSON[panelCounter.curr].transition) {
 
 					case 'jumpcut':
@@ -65,26 +76,22 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 						jsAnimate.animation({
 							target: [imgObj, imgObj_target],
 							names: [cmxJSON[panelCounter.curr - direction].src, cmxJSON[panelCounter.curr].src],
-							from: [
-				                {
-									x: imgObj_x,
-									y: imgObj_y
-								},
-								{
-									x: imgObj_target_x + (direction * cnv.width),
-									y: imgObj_target_y
-								}
-			                ],
-							to: [
-				                {
-									x: imgObj_x - (direction * cnv.width),
-									y: imgObj_y
-								},
-				                   {
-									x: imgObj_target_x,
-									y: imgObj_target_y
-								}
-			                ],
+							from: [{
+								x: imgObj_x,
+								y: imgObj_y
+							},
+							{
+								x: imgObj_target_x + (direction * cnv.width),
+								y: imgObj_target_y
+							}],
+							to: [{
+								x: imgObj_x - (direction * cnv.width),
+								y: imgObj_y
+							},
+		                   	{
+								x: imgObj_target_x,
+								y: imgObj_target_y
+							}],
 							canvas: cnv,
 							ctx: ctx,
 							duration: 400,
@@ -92,13 +99,14 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 							friction: 1,
 							aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
 							onComplete: function() {
-								imgObj.src = cmxJSON[panelCounter.curr].src;
+								imgLoader.load(writeImgLoaderData(), true);
+								/*imgObj.src = cmxJSON[panelCounter.curr].src;
 								if (!panelCounter.isLast) {
 									imgObj_next.src = cmxJSON[panelCounter.next].src;
 								}
 								if (!panelCounter.isFirst) {
 									imgObj_prev.src = cmxJSON[panelCounter.prev].src;
-								}
+								}*/
 								_animating = false;
 							}
 						});
@@ -184,7 +192,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 			// These are really the only methods that should be public:
 			goToNext: function() {
 				var that = this;
-				if (!_animating && !loadingFlag.hasFlag()) {
+				if (!_animating && !loadingFlag) {
 
 					var popups = cmxJSON[panelCounter.curr].popups || null;
 
@@ -196,18 +204,18 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						that.movePanels(imgObj_next, 1);
+						that.movePanels(imgLoader.loadedImages.imgObj, imgLoader.loadedImages.imgObj_next, 1);
 					}
 				}
 				return [panelCounter, popupCounter];
 			},
 			goToPrev: function() {
 				var that = this;
-				if (!_animating && !loadingFlag.hasFlag()) {
+				if (!_animating && !loadingFlag) {
 					if (!panelCounter.isFirst){
 						panelCounter.getPrev();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						that.movePanels(imgObj_prev, - 1);
+						that.movePanels(imgLoader.loadedImages.imgObj, imgLoader.loadedImages.imgObj_prev, - 1);
 					}
 					else {
 						this.goToPanel(0);
@@ -227,34 +235,27 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'Ima
 				}
 			}
 		};
-		imgObj_next.onload = function() {
-			//loadingFlag.remove("imgObj_next " + imgObj_next.src);
-		};
-		imgObj_prev.onload = function() {
-			//loadingFlag.remove("imgObj_prev " + imgObj_prev.src);
-		};
 
-		imgObj.onload = function() {
-			ctx.clearRect(0, 0, cnv.width, cnv.height);
-			ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
-		};
+		/*imgObj.onload = function() {
+			//ctx.clearRect(0, 0, cnv.width, cnv.height);
+			//ctx.drawImage(this, halfDiff(cnv.width, this.width), halfDiff(cnv.height, this.height));
+		};*/
 
-		var init = function(data, canvasId, canvasStagingId) {
+		var init = function(data, canvasId) {
 			
 			//// Get Canvases and Contexts
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
-
-			//imgObj.setCanvas(canvasStagingId);
-			//imgObj_next.setCanvas(canvasStagingId);
-			//imgObj_prev.setCanvas(canvasStagingId);
 			
 			cmxJSON = data.cmxJSON;
 			panelCounter = new CountManager(cmxJSON);
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
-			imgObj.src = cmxJSON[panelCounter.curr].src;
-			imgObj_next.src = cmxJSON[panelCounter.next].src;
+
+			imgLoader.load(writeImgLoaderData(), true);
+			//imgObj.src = cmxJSON[panelCounter.curr].src;
+			//imgObj_next.src = cmxJSON[panelCounter.next].src;
 			//loadingFlag.add("imgObj init " + imgObj.src);
+			
 			return cmxcanvas;
 		};
 

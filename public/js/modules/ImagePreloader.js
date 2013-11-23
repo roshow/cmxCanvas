@@ -25,6 +25,7 @@ var ImagePreloader = (function(){
         
         var imgpreload = {
             loadedImages: {},
+            onLoadStart: function() { return false; },
             onLoadDone: function(){ return false; }
         };
 
@@ -37,7 +38,7 @@ var ImagePreloader = (function(){
             _img.onload = function(){ 
                 imgpreload.loadedImages[key] = this;
                 if (img.callback) {
-                    img.cbPriority ? img.callback() : defer.add(img.callback);
+                    img.cbPriority ? img.callback(this) : defer.add(img.callback);
                 }
                 if (--loadingQ === 0) {
                     imgpreload.onLoadDone();
@@ -49,6 +50,7 @@ var ImagePreloader = (function(){
         }
 
         imgpreload.load = function(imgs, anon) {
+            this.onLoadStart();
             var that = this;
             var keys = Object.keys(imgs);
             var L = keys.length;
@@ -59,7 +61,7 @@ var ImagePreloader = (function(){
             }
 
         };
-        
+        console.log('image preloader')
         return imgpreload;
     }
 
