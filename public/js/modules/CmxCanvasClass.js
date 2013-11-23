@@ -195,7 +195,6 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 					else if (!panelCounter.isLast) {
 						panelCounter.getNext();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						console.log(popupCounter);
 						that.movePanels(imgObj_next, 1);
 					}
 				}
