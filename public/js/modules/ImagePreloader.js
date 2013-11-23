@@ -4,7 +4,7 @@ var Deferred = (function(){
         resolve: function() {
             var L = cbq.length;
             for (i = 0; i < L; i++) {
-                cbq[i]();
+                cbq.splice(0,1)[0]();
             }
         },
         add: function(fn) {
@@ -50,13 +50,16 @@ var ImagePreloader = (function(){
 
         imgpreload.load = function(imgs, anon) {
             var that = this;
+            var keys = Object.keys(imgs);
+            var L = keys.length;
             start = new Date();
-            for (var key in imgs){
+            for (var i = 0; i < L; i++){
+                var key = keys[i];
                 loadImage(key, imgs[key], anon);
             }
 
         };
-
+        
         return imgpreload;
     }
 

@@ -7,7 +7,7 @@ require.config({
         backbone: 'libs/backbone-min',
         bootstrap: 'libs/bootstrap.min',
         jade: 'templates/cmxtemplates',
-        ImagePreloader: 'modules/imagePreloader.js'
+        ImagePreloader: 'modules/imagePreloader'
     },
     shim: {
         jade: {

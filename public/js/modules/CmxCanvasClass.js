@@ -1,7 +1,7 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 /*global define*/
 
-define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], function(jsAnimate, CountManager, ImageAsData){
+define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'ImagePreloader'], function(jsAnimate, CountManager, ImageAsData, ImagePreloader){
 
 	var CmxCanvas = (function() {
 
@@ -30,6 +30,7 @@ define(['modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], fun
 
 		var i, cnv, ctx, cmxJSON, panelCounter, popupCounter,
 			_animating = false,
+			imgLoader = new ImagePreloader();
 			imgObj = new Image(),
 			imgObj_next = new Image(),
 			imgObj_prev = new Image(),
