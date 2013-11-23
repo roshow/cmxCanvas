@@ -1,55 +1,60 @@
-define([], function(){
-
-    var promises = [];
-    function runPromises() {
-        var L = promises.length;
-        for (i = 0; i < L; i++) {
-            promises[i]();
+var Deferred = (function(){
+    var cbq = [];
+    var def = {
+        resolve: function() {
+            var L = cbq.length;
+            for (i = 0; i < L; i++) {
+                cbq[i]();
+            }
+        },
+        add: function(fn) {
+            cbq.push(fn);
         }
+    };
+    function init(){
+        return def;
     }
-    function addPromise(func) {
-        promises.push(func);
-    }
+    return init;
+}());
+
+var ImagePreloader = (function(){
+
+// the main event.
 
     function ImagePreloader(imgs) {
         
         var imgpreload = {
-            loadedImages: {}
+            loadedImages: {},
+            onLoadDone: function(){ return false; }
         };
 
-        var _loading = 0;
-        function _onImageLoad(img, onLoadDone){
-                if (_loading >= 0) {
-                if (img.cbPriority && img.callback) {
-                     img.callback();
+        var loadingQ = 0;
+
+        var defer = new Deferred();
+        function loadImage(key, img, anon){
+            var _img = new Image();
+            if (anon) _img.crossOrigin = "Anonymous";
+            _img.onload = function(){ 
+                imgpreload.loadedImages[key] = this;
+                if (img.callback) {
+                    img.cbPriority ? img.callback() : defer.add(img.callback);
                 }
-                else if (img.callback){
-                    addPromise(img.callback);
+                if (--loadingQ === 0) {
+                    imgpreload.onLoadDone();
+                    defer.resolve();
                 }
-            }
-            if (_loading === 0) {
-                onLoadDone && onLoadDone();
-                runPromises();
-            }
+            };
+            loadingQ++;
+            _img.src  = img.src;
         }
 
         imgpreload.load = function(imgs, anon) {
             var that = this;
-            for (key in imgs){
-                img = new Image();
-                if (anon) img.crossOrigin = "Anonymous";
-                img.onload = (function(key){
-                    return function(){ 
-                        _loading--;
-                        that.loadedImages[key] = this;
-                        //imgs[key].callback && imgs[key].callback();
-                        //that.onLoadDone && that.onLoadDone();
-                        _onImageLoad(imgs[key], that.onLoadDone);
-                    };
-                }(key));
-                _loading++;
-                img.src  = imgs[key].src;
+            start = new Date();
+            for (var key in imgs){
+                loadImage(key, imgs[key], anon);
             }
+
         };
 
         return imgpreload;
@@ -57,4 +62,4 @@ define([], function(){
 
     return ImagePreloader;
 
-});
+}());
