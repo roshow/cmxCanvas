@@ -131,8 +131,18 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			ctx = cnv.getContext('2d');
 			
 			cmxJSON = data.cmxJSON;
+			var testLoad = new ImagePreloader();
+			testLoad.onLoadStart = function(){
+				console.log('loading every image');
+				this.start = new Date().getTime();
+			};
+			testLoad.onLoadDone = function(){
+				this.end = new Date().getTime();
+				console.log('duration for whole image load: ' + (this.end - this.start));
+				delete testLoad.loadedImages;
+			};
+			testLoad.load(cmxJSON, true);
 			panelCounter = new CountManager(cmxJSON);
-			
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
 			if (popupCounter.curr) popupLoader.load(cmxJSON[panelCounter.curr].popups, true);
 			imgLoader.load(writeImgLoaderData(), true);
