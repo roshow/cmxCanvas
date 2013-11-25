@@ -19,18 +19,18 @@ var Deferred = (function(){
 
 var ImagePreloader = (function(){
 
-// the main event.
-
     function ImagePreloader(imgs) {
         
         var imgpreload = {
             loadedImages: {},
             onLoadStart: function() { return false; },
-            onLoadDone: function(){ return false; }
+            onLoadDone: function(){ return false; },
+            onload: function(fn){
+                fn && fn();
+            }
         };
 
         var loadingQ = 0;
-
         var defer = new Deferred();
         function loadImage(key, img, anon){
             var _img = new Image();
@@ -51,7 +51,6 @@ var ImagePreloader = (function(){
 
         imgpreload.load = function(imgs, anon) {
             this.onLoadStart();
-            var that = this;
             var keys = Object.keys(imgs);
             var L = keys.length;
             start = new Date();
@@ -59,12 +58,9 @@ var ImagePreloader = (function(){
                 var key = keys[i];
                 loadImage(key, imgs[key], anon);
             }
-
         };
-        console.log('image preloader')
         return imgpreload;
     }
-
     return ImagePreloader;
 
 }());

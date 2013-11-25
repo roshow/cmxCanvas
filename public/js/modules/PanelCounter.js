@@ -1,20 +1,23 @@
 define([], function(){
     function CountManager(data, offset){
-        var _curr = offset || 0;
-        var _next = (data && data.length > _curr + 1) ? _curr + 1 : false;
-        var counter = (!data || data.length === 0) ? 
+        var _curr = offset || 0,
+            _length = (data && data.length) ? data.length : 0,
+            _next = (_length > _curr + 1) ? _curr + 1 : false;
+
+        var counter = (!_length) ? 
             { 
                 curr: false,
                 isLast: true
             } : 
             {
-                last: data.length,
+                data: data,
+                last: _length,
                 curr: _curr,
                 next: _next,
                 prev: false,
                 isLast: false,
                 isFirst: true,
-                getNext: function() {
+                loadNext: function() {
                     if (this.isLast) return false;
                     else {
                         this.prev = this.curr;
@@ -25,7 +28,7 @@ define([], function(){
                         return this.curr;
                     }             
                 },
-                getPrev: function() {
+                loadPrev: function() {
                     if (this.isFirst) return false;
                     else {
                         this.next = this.curr;
@@ -44,6 +47,17 @@ define([], function(){
                         this.prev = (this.curr - 1 >= 0) ? this.curr - 1 : false;
                         this.isFirst = this.prev ? false : true;
                         return this.curr;
+                    }
+                },
+                getData: function(x){
+                    switch(x) {
+                        case -1:
+                           return this.data[this.prev] || null;
+                        case 1:
+                            return this.data[this.next] || null;
+                        case 0:
+                        default:
+                            return this.data[this.curr] || null;
                     }
                 }
             };

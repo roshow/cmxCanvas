@@ -90,7 +90,90 @@ define([], function(){
 
           },animObj.delay);   
       }
-    }
+  }
+  //return jsAnimate;
+  function halfDiff(a, b) {
+    return (a - b)/2;
+  }
+  function animatePanels(imgObj, imgObj_target, cnv, ctx, direction, cb) {
+      var imgObj_x = halfDiff(cnv.width, imgObj.width),
+          imgObj_y = halfDiff(cnv.height, imgObj.height),
+          imgObj_target_x = halfDiff(cnv.width, imgObj_target.width),
+          imgObj_target_y = halfDiff(cnv.height, imgObj_target.height);
 
-    return jsAnimate
+          jsAnimate.animation({
+              target: [imgObj, imgObj_target],
+              from: [
+                { x: imgObj_x, y: imgObj_y },
+                { x: imgObj_target_x + (direction * cnv.width), y: imgObj_target_y} 
+              ],
+              to: [
+                { x: imgObj_x - (direction * cnv.width), y: imgObj_y },
+                          { x: imgObj_target_x, y: imgObj_target_y }
+              ],
+              canvas: cnv,
+              ctx: ctx,
+              duration: 400,
+              interval: 25,
+              aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
+              onComplete: function() {
+                cb && cb();
+              }
+          });
+  }
+  function animatePopUp(popup, cnv, ctx){
+        popup.dur = popup.dur || 100;
+        popup.totalFrames = popup.totalFrames || 10;
+        var _int = popup.dur/popup.totalFrames,
+          _bkgPartial = ctx.getImageData(popup.x, popup.y, popup.img.width, popup.img.height),
+          _frame = 0;
+
+        switch (popup.animation) {
+          case 'fadeIn':
+            ctx.globalAlpha = 0;
+                var _fadeIn = setInterval(function(){
+
+              //increase globalAlpha by 1 / total frames and make it into a normal fraction
+              var ga = ctx.globalAlpha + 1/popup.totalFrames;
+              ctx.globalAlpha = parseFloat(ga.toFixed(1), 10);
+
+              ctx.clearRect(popup.x, popup.y, popup.img.width, popup.img.height);
+              ctx.putImageData(_bkgPartial, popup.x, popup.y);
+              ctx.drawImage(popup.img, popup.x, popup.y);
+
+              _frame++;
+              if (ctx.globalAlpha === 1) {
+                clearInterval(_fadeIn);
+              }
+              }, _int);
+              break;
+
+          case 'scaleIn':
+          default:
+            var _scale = 0,
+                  _scaleIn = setInterval(function(){
+              
+              _scale += 10;
+              
+              var _scaledW = popup.img.width*(_scale/100),
+                _scaledH = popup.img.height*(_scale/100),
+                _dX = popup.x + ((popup.img.width - _scaledW)/2),
+                _dY = popup.y + ((popup.img.height - _scaledH)/2);
+
+              ctx.clearRect(popup.x, popup.y, popup.img.width, popup.img.height);
+              ctx.putImageData(_bkgPartial, popup.x, popup.y);
+              ctx.drawImage(popup.img, _dX, _dY, _scaledW, _scaledH);
+
+              _frame++;
+              if (_scale === 100) clearInterval(_scaleIn);
+              }, _int);
+              break;
+          }
+  }
+
+  var Animate = {
+    panels: animatePanels,
+    popup: animatePopUp
+  }
+  return  Animate;
 });

@@ -1,14 +1,8 @@
 //public/js/views/CmxView.js
 /*global define*/
 
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'jade',
-  'bootstrap',
-  'modules/CmxCanvasClass'
-], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
+define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass'
+  ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
 
   var CmxView = Backbone.View.extend({
     el: $("#CmxCanvas"),
@@ -16,18 +10,15 @@ define([
     initialize: function() {
       this.model = this.options.model;
     },
-
     render: function() {
-
       var _modeljson = this.model.toJSON();
       this.$el.html(jade.templates['cmxreader'](_modeljson));
       $('#leftbutton .ui-arrow').css('display', 'none');
       //create cmxcanvas class with methods to make life easier
-      this.cmxcanvas = new CmxCanvas(_modeljson, 'cmx', 'stagingCanvas');
+      this.cmxcanvas = new CmxCanvas(_modeljson, 'cmx');
       //select first (0) panel in TOC
       $('#toc0').addClass('active');
     },
-
     events: {
       'click .moreinfoBtn': 'toggleMoreInfo',
       'click #leftbutton': 'leftArrow',
