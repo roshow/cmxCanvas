@@ -23,8 +23,11 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		};
 		panelImgLoader.onLoadDone = function() {
 			this.end = new Date().getTime();
-			console.log('panels loaded in: ' + (this.end - this.start));
-            _imagesPanelsLoaded = panelImgLoader.loadedImages;
+            var res = panelImgLoader.loadedImages;
+            for (key in res) {
+            	_imagesPanelsLoaded[key] = res[key];
+            }
+            panelImgLoader.loadedImages = {};
             --_loading;
         };
         popupImgLoader.onLoadStart = function() {
@@ -33,34 +36,31 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		};
 		popupImgLoader.onLoadDone = function() {
 			this.end = new Date().getTime();
-			console.log('popups loaded in: ' + (this.end - this.start));
+			//console.log('popups loaded in: ' + (this.end - this.start));
 			--_loading;
 		};
         function writePanelImageLoaderData(x) {
         	var imgd = {};
-        	var imgdT = {};
-        	//if (x && _imagesPanelsLoaded[0]) {
+        	if (x && _imagesPanelsLoaded[0]) {
         		for(i = -2*x; Math.abs(i) < 3; i+=x) {
-        			//var j =	i + -2*x;
         			_imagesPanelsLoaded[i] = (i === 2*x) ? null : _imagesPanelsLoaded[i + x] ? _imagesPanelsLoaded[i + x] : null;
-        			if(!_imagesPanelsLoaded[i] && panelCounter.curr + i >= 0 && panelCounter.curr + i <= panelCounter.last) {
-        				imgdT[i] = {
+        			if(!_imagesPanelsLoaded[i] && panelCounter.curr + i >= 0 && panelCounter.curr + i < panelCounter.last) {
+        				imgd[i] = {
         					src: cmxJSON[panelCounter.curr + i].src
         				}
         			}
         		}
-        		console.log(imgdT);
-        	//} 
-        	//else {
+        	} 
+        	else {
 				if (!panelCounter.isLast) {
 					imgd[1] = { src: cmxJSON[panelCounter.next].src };
-					if (panelCounter.next + 1 <= panelCounter.last) imgd[2] = { src: cmxJSON[panelCounter.next + 1].src };
+					if (panelCounter.next + 1 < panelCounter.last) imgd[2] = { src: cmxJSON[panelCounter.next + 1].src };
 				}
 				if (!panelCounter.isFirst) {
 					imgd[-1] = { src: cmxJSON[panelCounter.prev].src };
 					if (panelCounter.prev - 1 >= 0) imgd[-2] = { src: cmxJSON[panelCounter.prev - 1].src };
 				}
-			//}
+			}
         	imgd[0] = {
     			src: cmxJSON[panelCounter.curr].src,
     			callback: function(imgObj) {
@@ -69,9 +69,9 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
     			},
     			cbPriority: true
     		}
-    		////console.log(imgd);
+    				
     		return imgd;
-        };
+        }
 
         function loadPanelAndPopupImages(x) {
         	if (popupCounter.curr) {
@@ -156,21 +156,20 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			Json = Json.cmxJSON;
 			var bigLoad = new ImagePreloader();
 			bigLoad.onLoadStart = function(){
-				if (logtime) console.log('loading every image');
+				//if (logtime) console.log('loading every image');
 				this.start = new Date().getTime();
 			};
 			bigLoad.onLoadDone = function(){
-				if (logtime) this.end = new Date().getTime();
+				//if (logtime) this.end = new Date().getTime();
 				if (logtime) console.log('duration for every damn image load: ' + (this.end - this.start));
 				delete bigLoad.loadedImages;
 			};
 			var L = Json.length;
 			var _popupArr = [];
 			for (var i = 0; i < L; i++) {
-				//console.log(Json[i]);
 				_popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
 			}
-			console.log("Total no. of images: " + (Json.length + _popupArr.length));
+			//console.log("Total no. of images: " + (Json.length + _popupArr.length));
 			bigLoad.load(Json.concat(_popupArr), true);
 		}
 
