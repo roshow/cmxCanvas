@@ -1,8 +1,31 @@
 //public/js/views/CmxView.js
 /*global define*/
 
-define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass'
+define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass', 'modules/ImagePreloader'
   ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
+
+    function bulkPreload(Json, logtime) {
+      logtime = true;
+      Json = Json.cmxJSON;
+      var bigLoad = new ImagePreloader();
+      bigLoad.onLoadStart = function(){
+        if (logtime) console.log('loading every image');
+        this.start = new Date().getTime();
+      };
+      bigLoad.onLoadDone = function(){
+        if (logtime) this.end = new Date().getTime();
+        if (logtime) console.log('duration for every damn image load: ' + (this.end - this.start));
+        delete bigLoad.loadedImages;
+      };
+      var L = Json.length;
+      var _popupArr = [];
+      for (var i = 0; i < L; i++) {
+        //console.log(Json[i]);
+        _popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
+      }
+      console.log("Total no. of images: " + (Json.length + _popupArr.length));
+      bigLoad.load(Json.concat(_popupArr), true);
+    }
 
   var CmxView = Backbone.View.extend({
     el: $("#CmxCanvas"),
@@ -12,6 +35,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
     },
     render: function() {
       var _modeljson = this.model.toJSON();
+      //bulkPreload(_modeljson);
       this.$el.html(jade.templates['cmxreader'](_modeljson));
       $('#leftbutton .ui-arrow').css('display', 'none');
       //create cmxcanvas class with methods to make life easier

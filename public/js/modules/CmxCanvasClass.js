@@ -13,39 +13,55 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			_animating = false;
 
 		var _loading = 0,
-			loadedImages = {},
-			imgLoader = new ImagePreloader(),
-			popupLoader = new ImagePreloader();
+			_imagesPanelsLoaded = {},
+			panelImgLoader = new ImagePreloader(),
+			popupImgLoader = new ImagePreloader();
 
-		imgLoader.onLoadStart = function() {
-			console.log('============== LOADING PANELS=============');
+		panelImgLoader.onLoadStart = function() {
 			this.start = new Date().getTime();
 			++_loading;
 		};
-		imgLoader.onLoadDone = function() {
+		panelImgLoader.onLoadDone = function() {
 			this.end = new Date().getTime();
 			console.log('panels loaded in: ' + (this.end - this.start));
-            loadedImages = imgLoader.loadedImages;
+            _imagesPanelsLoaded = panelImgLoader.loadedImages;
             --_loading;
-            if(!_loading) console.log('============== DONE LOADING PANELS COMPLETELY=============');
         };
-        popupLoader.onLoadStart = function() {
-			console.log('============== LOADING POPUPS=============');
+        popupImgLoader.onLoadStart = function() {
 			this.start = new Date().getTime();
 			++_loading;
 		};
-		popupLoader.onLoadDone = function() {
+		popupImgLoader.onLoadDone = function() {
 			this.end = new Date().getTime();
 			console.log('popups loaded in: ' + (this.end - this.start));
 			--_loading;
-            if(!_loading) console.log('============== DONE LOADING POPUPS COMPLETELY=============');
-
 		};
-        function writeImgLoaderData() {
+        function writePanelImageLoaderData(x) {
         	var imgd = {};
-			if (!panelCounter.isLast) imgd.imgObj_next = { src: cmxJSON[panelCounter.next].src };
-			if (!panelCounter.isFirst) imgd.imgObj_prev = { src: cmxJSON[panelCounter.prev].src };
-        	imgd.imgObj = {
+        	var imgdT = {};
+        	//if (x && _imagesPanelsLoaded[0]) {
+        		for(i = -2*x; Math.abs(i) < 3; i+=x) {
+        			//var j =	i + -2*x;
+        			_imagesPanelsLoaded[i] = (i === 2*x) ? null : _imagesPanelsLoaded[i + x] ? _imagesPanelsLoaded[i + x] : null;
+        			if(!_imagesPanelsLoaded[i] && panelCounter.curr + i >= 0 && panelCounter.curr + i <= panelCounter.last) {
+        				imgdT[i] = {
+        					src: cmxJSON[panelCounter.curr + i].src
+        				}
+        			}
+        		}
+        		console.log(imgdT);
+        	//} 
+        	//else {
+				if (!panelCounter.isLast) {
+					imgd[1] = { src: cmxJSON[panelCounter.next].src };
+					if (panelCounter.next + 1 <= panelCounter.last) imgd[2] = { src: cmxJSON[panelCounter.next + 1].src };
+				}
+				if (!panelCounter.isFirst) {
+					imgd[-1] = { src: cmxJSON[panelCounter.prev].src };
+					if (panelCounter.prev - 1 >= 0) imgd[-2] = { src: cmxJSON[panelCounter.prev - 1].src };
+				}
+			//}
+        	imgd[0] = {
     			src: cmxJSON[panelCounter.curr].src,
     			callback: function(imgObj) {
     				ctx.clearRect(0, 0, cnv.width, cnv.height);
@@ -53,8 +69,22 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
     			},
     			cbPriority: true
     		}
+    		////console.log(imgd);
     		return imgd;
         };
+
+        function loadPanelAndPopupImages(x) {
+        	if (popupCounter.curr) {
+        		var _popups = panelCounter.getData().popups;
+        		var _next = panelCounter.getData(1);
+        		var _prev = panelCounter.getData(-1);
+        		_popups = _next && _next.popups ? _popups.concat(_next && _next.popups) : _popups;
+        		_popups = _prev && _prev.popups ? _popups.concat(_prev && _prev.popups) : _popups;
+        		//console.log(_popups);
+        		popupImgLoader.load(panelCounter.getData().popups, true);
+        	}
+        	panelImgLoader.load(writePanelImageLoaderData(x), true);
+        }
 
 		// The Main Event
 		var cmxcanvas = {
@@ -69,7 +99,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					default:
 						_animating = true;
 						Animate.panels(imgObj, imgObj_target, cnv, ctx, direction, function(){
-							imgLoader.load(writeImgLoaderData(), true);
+							loadPanelAndPopupImages(direction);
                 			_animating = false;
 						});
 						break;
@@ -78,7 +108,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			popUp: function(popup) {
 				_animating = true;
 				Animate.popup({
-					img: popupLoader.loadedImages[popupCounter.curr],
+					img: popupImgLoader.loadedImages[popupCounter.curr],
 					x: popup.x || 0,
 					y: popup.y || 0,
 					animation: popup.animation || 'scaleIn'
@@ -96,9 +126,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					else if (!panelCounter.isLast) {
 						panelCounter.loadNext();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						
-						if (popupCounter.curr) popupLoader.load(cmxJSON[panelCounter.curr].popups, true);
-						this.movePanels(loadedImages.imgObj, loadedImages.imgObj_next, 1);
+						this.movePanels(_imagesPanelsLoaded[0], _imagesPanelsLoaded[1], 1);
 					}
 				}
 				return [panelCounter, popupCounter];
@@ -107,9 +135,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 				if (!_animating && !_loading) {				
 					if (!panelCounter.isFirst){
 						panelCounter.loadPrev();
-						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						if (popupCounter.curr) popupLoader.load(cmxJSON[panelCounter.curr].popups, true);
-						this.movePanels(loadedImages.imgObj, loadedImages.imgObj_prev, - 1);
+						popupCounter = new CountManager(panelCounter.getData().popups, -1);
+						this.movePanels(_imagesPanelsLoaded[0], _imagesPanelsLoaded[-1], - 1);
 					}
 					else {
 						this.goToPanel(0);
@@ -120,38 +147,51 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			goToPanel: function(panel) {
 				panelCounter.goTo(panel);
 				popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-				if (popupCounter.curr) popupLoader.load(cmxJSON[panelCounter.curr].popups, true);
-				imgLoader.load(writeImgLoaderData(), true);
+				loadPanelAndPopupImages();
 			}
 		};
 
-		var init = function(data, canvasId) {
+		function bulkPreload(Json, logtime) {
+			logtime = true;
+			Json = Json.cmxJSON;
+			var bigLoad = new ImagePreloader();
+			bigLoad.onLoadStart = function(){
+				if (logtime) console.log('loading every image');
+				this.start = new Date().getTime();
+			};
+			bigLoad.onLoadDone = function(){
+				if (logtime) this.end = new Date().getTime();
+				if (logtime) console.log('duration for every damn image load: ' + (this.end - this.start));
+				delete bigLoad.loadedImages;
+			};
+			var L = Json.length;
+			var _popupArr = [];
+			for (var i = 0; i < L; i++) {
+				//console.log(Json[i]);
+				_popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
+			}
+			console.log("Total no. of images: " + (Json.length + _popupArr.length));
+			bigLoad.load(Json.concat(_popupArr), true);
+		}
+
+		return function(data, canvasId) {
 			//// Get Canvases and Contexts
 			cnv = document.getElementById(canvasId);
 			ctx = cnv.getContext('2d');
-			
 			cmxJSON = data.cmxJSON;
-			var testLoad = new ImagePreloader();
-			testLoad.onLoadStart = function(){
-				console.log('loading every image');
-				this.start = new Date().getTime();
-			};
-			testLoad.onLoadDone = function(){
-				this.end = new Date().getTime();
-				console.log('duration for whole image load: ' + (this.end - this.start));
-				delete testLoad.loadedImages;
-			};
-			testLoad.load(cmxJSON, true);
+
 			panelCounter = new CountManager(cmxJSON);
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
-			if (popupCounter.curr) popupLoader.load(cmxJSON[panelCounter.curr].popups, true);
-			imgLoader.load(writeImgLoaderData(), true);
+			loadPanelAndPopupImages()
 			
-			return cmxcanvas;
-		};
+			bulkPreload(data);
 
-		return init;
+			return cmxcanvas;
+		}
+
 	}());
+
+
 
 	return CmxCanvas;
 });
