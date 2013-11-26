@@ -23,6 +23,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		};
 		panelImgLoader.onLoadDone = function() {
 			this.end = new Date().getTime();
+			//console.log('panels loaded in: ' + (this.end - this.start));
             var res = panelImgLoader.loadedImages;
             for (key in res) {
             	_imagesPanelsLoaded[key] = res[key];
@@ -43,11 +44,9 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
         	var imgd = {};
         	if (x && _imagesPanelsLoaded[0]) {
         		for(i = -2*x; Math.abs(i) < 3; i+=x) {
-        			_imagesPanelsLoaded[i] = (i === 2*x) ? null : _imagesPanelsLoaded[i + x] ? _imagesPanelsLoaded[i + x] : null;
+        			_imagesPanelsLoaded[i] = (i === 2*x || !_imagesPanelsLoaded[i + x]) ? null : _imagesPanelsLoaded[i + x];
         			if(!_imagesPanelsLoaded[i] && panelCounter.curr + i >= 0 && panelCounter.curr + i < panelCounter.last) {
-        				imgd[i] = {
-        					src: cmxJSON[panelCounter.curr + i].src
-        				}
+        				imgd[i] = { src: cmxJSON[panelCounter.curr + i].src }
         			}
         		}
         	} 
@@ -69,7 +68,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
     			},
     			cbPriority: true
     		}
-    				
+
     		return imgd;
         }
 
@@ -152,15 +151,15 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		};
 
 		function bulkPreload(Json, logtime) {
-			logtime = true;
+			logtime = false;
 			Json = Json.cmxJSON;
 			var bigLoad = new ImagePreloader();
 			bigLoad.onLoadStart = function(){
-				//if (logtime) console.log('loading every image');
+				if (logtime) console.log('loading every image');
 				this.start = new Date().getTime();
 			};
 			bigLoad.onLoadDone = function(){
-				//if (logtime) this.end = new Date().getTime();
+				if (logtime) this.end = new Date().getTime();
 				if (logtime) console.log('duration for every damn image load: ' + (this.end - this.start));
 				delete bigLoad.loadedImages;
 			};
@@ -169,7 +168,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			for (var i = 0; i < L; i++) {
 				_popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
 			}
-			//console.log("Total no. of images: " + (Json.length + _popupArr.length));
+			if (logtime) console.log("Total no. of images: " + (Json.length + _popupArr.length));
 			bigLoad.load(Json.concat(_popupArr), true);
 		}
 
@@ -183,14 +182,11 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
 			loadPanelAndPopupImages()
 			
-			bulkPreload(data);
+			//bulkPreload(data);
 
 			return cmxcanvas;
 		}
-
 	}());
-
-
 
 	return CmxCanvas;
 });
