@@ -25,6 +25,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			this.end = new Date().getTime();
 			//console.log('panels loaded in: ' + (this.end - this.start));
             var res = panelImgLoader.loadedImages;
+            var key;
             for (key in res) {
             	_imagesPanelsLoaded[key] = res[key];
             }
@@ -44,12 +45,17 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
         	var imgd = {};
         	if (x && _imagesPanelsLoaded[0]) {
         		for(i = -2*x; Math.abs(i) < 3; i+=x) {
-        			_imagesPanelsLoaded[i] = (i === 2*x || !_imagesPanelsLoaded[i + x]) ? null : _imagesPanelsLoaded[i + x];
-        			if(!_imagesPanelsLoaded[i] && panelCounter.curr + i >= 0 && panelCounter.curr + i < panelCounter.last) {
-        				imgd[i] = { src: cmxJSON[panelCounter.curr + i].src }
-        			}
-        		}
-        	} 
+                    if (i === 2*x || !_imagesPanelsLoaded[i + x]) {
+                         _imagesPanelsLoaded[i] = null;
+                         if(panelCounter.curr + i >= 0 && panelCounter.curr + i < panelCounter.last) {
+                             imgd[i] = { src: cmxJSON[panelCounter.curr + i].src };
+                         }
+                    }
+                    else {
+                     _imagesPanelsLoaded[i] =  _imagesPanelsLoaded[i + x];
+                    }
+                }
+            } 
         	else {
 				if (!panelCounter.isLast) {
 					imgd[1] = { src: cmxJSON[panelCounter.next].src };
@@ -67,7 +73,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
     			},
     			cbPriority: true
-    		}
+    		};
 
     		return imgd;
         }
@@ -187,7 +193,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			};
 			var L = Json.length;
 			var _popupArr = [];
-			for (var i = 0; i < L; i++) {
+            var i;
+			for (i = 0; i < L; i++) {
 				_popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
 			}
 			if (logtime) console.log("Total no. of images: " + (Json.length + _popupArr.length));
