@@ -29,6 +29,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
             for (key in res) {
             	_imagesPanelsLoaded[key] = res[key];
             }
+            delete panelImgLoader.loadedImages;
             panelImgLoader.loadedImages = {};
             --_loading;
         };
@@ -68,6 +69,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					if (panelCounter.prev - 1 >= 0) { imgd[-2] = { src: cmxJSON[panelCounter.prev - 1].src }; }
 				}
 			}
+            //@ Image 0 always gets reset for that callback. Have to change this, someday.
         	imgd[0] = {
     			src: cmxJSON[panelCounter.curr].src,
     			callback: function(imgObj) {
@@ -98,9 +100,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			movePanels: function(data) {
 				switch (data.transition) {
 					case 'jumpcut':
-                       /* panelCounter.loadNext();
-						this.goToPanel(panelCounter.curr);*/
-                        this.goToPanel(data.curr);
+                        panelCounter.goTo(data.curr);
 						break;
 					//case 'elastic': //@ case for this transition if it's not default
 					default:
@@ -125,20 +125,17 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			//@ These are really the only methods that should be public:
 			goToNext: function() {
 				if (!_animating && !_loading) {
-					if (!popupCounter.isLast) {
+				//if(!_animating) {
+                	if (!popupCounter.isLast) {
 						popupCounter.loadNext();
-						this.popUp(popupCounter.data[popupCounter.curr]);
+						this.popUp(popupCounter.getData());
 					}
 					else if (!panelCounter.isLast) {
-						
-                        panelCounter.loadNext();
-	
-                        
-                        var D = 1;
-						this.movePanels({
+                        panelCounter.loadNext();  
+                        this.movePanels({
                             imgObj: _imagesPanelsLoaded[-1], 
                             imgObj_target: _imagesPanelsLoaded[0],
-                            direction: D,
+                            direction: 1,
                             transition: cmxJSON[panelCounter.curr].transition,
                             curr: panelCounter.curr
                         });
@@ -148,18 +145,15 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			},
 			goToPrev: function() {
 				if (!_animating && !_loading) {				
-					if (!panelCounter.isFirst){
-						
+				//if(!_animating) {
+                	if (!panelCounter.isFirst){			
                         panelCounter.loadPrev();
-	
-                        
-                        var D = -1;
                         this.movePanels({
                             imgObj: _imagesPanelsLoaded[1], 
                             imgObj_target: _imagesPanelsLoaded[0],
-                            direction: D,
+                            direction: -1,
                             transition: cmxJSON[panelCounter.curr].transition,
-                            curr: cmxJSON[panelCounter.curr].transition
+                            curr: panelCounter.curr
                         });
                     }
 					else {
@@ -168,14 +162,13 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 				}
 				return [panelCounter, popupCounter];
 			},
-			goToPanel: function(panel) {
-				
+			goToPanel: function(panel) {	
                 panelCounter.goTo(panel);
 			}
 		};
 
 		function bulkPreload(Json, logtime) {
-			logtime = false;
+			logtime = true;
 			Json = Json.cmxJSON;
 			var bigLoad = new ImagePreloader();
 			bigLoad.onLoadStart = function(){
@@ -203,17 +196,17 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			ctx = cnv.getContext('2d');
 			cmxJSON = data.cmxJSON;
 
+            //@ Set up PanelCounter and set an onchange method, to keep things streamlined.
 			panelCounter = new CountManager(cmxJSON);
             panelCounter.onchange = function(i){
-                popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
+                popupCounter = new CountManager(panelCounter.getData().popups, -1);
                 loadPanelAndPopupImages(i || false);
             };
             panelCounter.onchange();
 			
-			//bulkPreload(data);
+			bulkPreload(data);
 			return cmxcanvas;
 		};
 	}());
-
 	return CmxCanvas;
 });
