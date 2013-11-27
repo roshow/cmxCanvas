@@ -92,13 +92,14 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			movePanels: function(data) {
 				switch (data.transition) {
 					case 'jumpcut':
-						this.goToPanel(data.curr);
+                       /* panelCounter.loadNext();
+						this.goToPanel(panelCounter.curr);*/
+                        this.goToPanel(data.curr);
 						break;
 					//case 'elastic': //case for this transition if it's not default
 					default:
 						_animating = true;
 						Animate.panels(data.imgObj, data.imgObj_target, cnv, ctx, data.direction, function(){
-							loadPanelAndPopupImages(data.direction);
                 			_animating = false;
 						});
 						break;
@@ -123,13 +124,16 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 						this.popUp(popupCounter.data[popupCounter.curr]);
 					}
 					else if (!panelCounter.isLast) {
-						panelCounter.loadNext();
+						
+                        panelCounter.loadNext();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-                        //loadPanelAndPopupImages(1);
+                        loadPanelAndPopupImages(1);
+                        
+                        var D = 1;
 						this.movePanels({
-                            imgObj: _imagesPanelsLoaded[0], 
-                            imgObj_target: _imagesPanelsLoaded[1],
-                            direction: 1,
+                            imgObj: _imagesPanelsLoaded[-1], 
+                            imgObj_target: _imagesPanelsLoaded[0],
+                            direction: D,
                             transition: cmxJSON[panelCounter.curr].transition,
                             curr: panelCounter.curr
                         });
@@ -140,13 +144,16 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			goToPrev: function() {
 				if (!_animating && !_loading) {				
 					if (!panelCounter.isFirst){
-						panelCounter.loadPrev();
+						
+                        panelCounter.loadPrev();
 						popupCounter = new CountManager(panelCounter.getData().popups, -1);
-                        //loadPanelAndPopupImages(-1);
+                        loadPanelAndPopupImages(-1);
+                        
+                        var D = -1;
                         this.movePanels({
-                            imgObj: _imagesPanelsLoaded[0], 
-                            imgObj_target: _imagesPanelsLoaded[-1],
-                            direction: -1,
+                            imgObj: _imagesPanelsLoaded[1], 
+                            imgObj_target: _imagesPanelsLoaded[0],
+                            direction: D,
                             transition: cmxJSON[panelCounter.curr].transition,
                             curr: cmxJSON[panelCounter.curr].transition
                         });
@@ -158,7 +165,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 				return [panelCounter, popupCounter];
 			},
 			goToPanel: function(panel) {
-				panelCounter.goTo(panel);
+				
+                panelCounter.goTo(panel);
 				popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
 				loadPanelAndPopupImages();
 			}
@@ -194,10 +202,9 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 
 			panelCounter = new CountManager(cmxJSON);
 			popupCounter = new CountManager(cmxJSON[0].popups, -1);
-			loadPanelAndPopupImages()
+			loadPanelAndPopupImages();
 			
 			//bulkPreload(data);
-
 			return cmxcanvas;
 		}
 	}());
