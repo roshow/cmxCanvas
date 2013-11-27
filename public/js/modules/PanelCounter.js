@@ -17,6 +17,9 @@ define([], function(){
                 prev: false,
                 isLast: false,
                 isFirst: true,
+                onchange: function(func){
+                    func && func();
+                },
                 loadNext: function() {
                     if (this.isLast) return false;
                     else {
@@ -25,6 +28,7 @@ define([], function(){
                         this.next = (this.curr + 1 < this.last) ? this.curr + 1 : false;
                         this.isLast = this.next ? false : true;
                         this.isFirst = false;
+                        this.onchange();
                         return this.curr;
                     }             
                 },
@@ -36,6 +40,7 @@ define([], function(){
                         this.prev = (this.curr - 1 >= 0) ? this.curr - 1 : false;
                         this.isFirst = (this.curr === 0) ? true : false;
                         this.isLast = false;
+                        this.onchange();
                         return this.curr;
                     }   
                 },
@@ -46,6 +51,7 @@ define([], function(){
                         this.isLast = this.next ? false : true;
                         this.prev = (this.curr - 1 >= 0) ? this.curr - 1 : false;
                         this.isFirst = this.prev ? false : true;
+                        this.onchange();
                         return this.curr;
                     }
                 },

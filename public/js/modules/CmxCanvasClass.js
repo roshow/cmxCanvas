@@ -89,16 +89,16 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		var cmxcanvas = {
 
 			// START: methods for making stuff happen on the canvas
-			movePanels: function(imgObj, imgObj_target, direction) {
-				switch (cmxJSON[panelCounter.curr].transition) {
+			movePanels: function(data) {
+				switch (data.transition) {
 					case 'jumpcut':
-						this.goToPanel(panelCounter.curr);
+						this.goToPanel(data.curr);
 						break;
 					//case 'elastic': //case for this transition if it's not default
 					default:
 						_animating = true;
-						Animate.panels(imgObj, imgObj_target, cnv, ctx, direction, function(){
-							loadPanelAndPopupImages(direction);
+						Animate.panels(data.imgObj, data.imgObj_target, cnv, ctx, data.direction, function(){
+							loadPanelAndPopupImages(data.direction);
                 			_animating = false;
 						});
 						break;
@@ -125,7 +125,14 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					else if (!panelCounter.isLast) {
 						panelCounter.loadNext();
 						popupCounter = new CountManager(cmxJSON[panelCounter.curr].popups, -1);
-						this.movePanels(_imagesPanelsLoaded[0], _imagesPanelsLoaded[1], 1);
+                        //loadPanelAndPopupImages(1);
+						this.movePanels({
+                            imgObj: _imagesPanelsLoaded[0], 
+                            imgObj_target: _imagesPanelsLoaded[1],
+                            direction: 1,
+                            transition: cmxJSON[panelCounter.curr].transition,
+                            curr: panelCounter.curr
+                        });
 					}
 				}
 				return [panelCounter, popupCounter];
@@ -135,8 +142,15 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					if (!panelCounter.isFirst){
 						panelCounter.loadPrev();
 						popupCounter = new CountManager(panelCounter.getData().popups, -1);
-						this.movePanels(_imagesPanelsLoaded[0], _imagesPanelsLoaded[-1], - 1);
-					}
+                        //loadPanelAndPopupImages(-1);
+                        this.movePanels({
+                            imgObj: _imagesPanelsLoaded[0], 
+                            imgObj_target: _imagesPanelsLoaded[-1],
+                            direction: -1,
+                            transition: cmxJSON[panelCounter.curr].transition,
+                            curr: cmxJSON[panelCounter.curr].transition
+                        });
+                    }
 					else {
 						this.goToPanel(0);
 					}
