@@ -32,7 +32,7 @@ var ImagePreloader = (function(){
 
         var loadingQ = 0;
         var defer = new Deferred();
-        function loadImage(key, img, anon){
+        function loadImage(key, img, anon, cb){
             var _img = new Image();
             if (anon) _img.crossOrigin = "Anonymous";
             _img.onload = function(){ 
@@ -41,7 +41,7 @@ var ImagePreloader = (function(){
                     img.cbPriority ? img.callback(this) : defer.add(img.callback);
                 }
                 if (--loadingQ === 0) {
-                    imgpreload.onLoadDone();
+                    cb ? cb() : imgpreload.onLoadDone();
                     defer.resolve();
                 }
             };
@@ -49,14 +49,22 @@ var ImagePreloader = (function(){
             _img.src  = img.src;
         }
 
-        imgpreload.load = function(imgs, anon) {
-            this.onLoadStart();
-            var keys = Object.keys(imgs);
-            var L = keys.length;
-            start = new Date();
-            for (var i = 0; i < L; i++){
-                var key = keys[i];
-                loadImage(key, imgs[key], anon);
+        imgpreload.load = function(imgs, anon, cb) {
+            if (!loadingQ) {
+                imgpreload.loadedImages = {};
+                this.onLoadStart();
+                var keys = Object.keys(imgs);
+                var L = keys.length;
+                start = new Date();
+                for (var i = 0; i < L; i++){
+                    var key = keys[i];
+                    loadImage(key, imgs[key], anon, cb);
+                }
+            }
+            else {
+                defer.add(function(){
+                    imgpreload.load(imgs, anon, cb);
+                });
             }
         };
         return imgpreload;

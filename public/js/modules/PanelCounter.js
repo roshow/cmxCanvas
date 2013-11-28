@@ -63,6 +63,23 @@ define([], function(){
                         default:
                             return this.data[this.curr] || null;
                     }
+                },
+                getCurr: function(min, max){
+                    var _curr = this.curr;
+                    var _last = this.last;
+                    if (!min && !max) {
+                        return _curr;
+                    }
+                    else {
+                        var arr = [];
+                        var L = (max - min) + 1;
+                        var D = min;
+                        for (var i = 0; i < L; i++) {
+                            var k = _curr + D + i;
+                            if (k >= 0 && k < _last) arr.push(k);
+                        }
+                        return arr;
+                    }
                 }
             };
         return counter;
