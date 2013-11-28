@@ -52,7 +52,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 		};
         function _helper_ConstructLoadData(panel) {
             return {
-                src: cmxJSON[panel].src,
+                src: panelCounter.data[panel].src,
                 callback: function(imgObj) {
                     if (panel === panelCounter.curr){
                         ctx.clearRect(0, 0, cnv.width, cnv.height);
@@ -62,7 +62,17 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 cbPriority: true
             };
         }
-        function loadPanelImgPreloader() {
+        function _helper_popupCBOverride(panel) {
+            return function(){
+                LOADEDPOPUPS[panel] = popupImgLoader.loadedImages;
+                delete panelImgPreloader.loadedImages;
+                panelImgPreloader.loadedImages = {};
+                --_loading;
+                this.end = new Date().getTime();
+                //console.log('popups loaded in: ' + (this.end - this.start));*/
+            }
+        }
+        function loadPanelAndPopupImages() {
             var imgd = {},
                 keys = panelCounter.getCurr(-2, 2),
                 L = keys.length;
@@ -71,38 +81,14 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 var panel = keys[i];
                 if (!LOADEDPANELS[panel]) {
                     imgd[panel] = _helper_ConstructLoadData(panel);
-                    var popups = panelCounter.data[panel].popups || null;
+                    var popups = panelCounter.data[panel].popups || false;
                     if (popups && popups.length > 0) {
-                        console.log(popups);
-                        popupImgLoader.load(popups, true, (function(panel){
-                            return function(){
-                                LOADEDPOPUPS[panel] = popupImgLoader.loadedImages;
-                                delete panelImgPreloader.loadedImages;
-                                panelImgPreloader.loadedImages = {};
-                                --_loading;
-                                this.end = new Date().getTime();
-                                //console.log('popups loaded in: ' + (this.end - this.start));*/
-                            }
-                        }(panel)));
-                    }
-                    else {
-                        console.log(0);
+                        popupImgLoader.load(popups, true, _helper_popupCBOverride(panel));
                     }
                 }
             };
 
             panelImgPreloader.load(imgd, true);
-        }
-        function loadPanelAndPopupImages() {
-        	/*if (popupCounter.curr) {
-        		var _popups = panelCounter.getData().popups;
-        		var _next = panelCounter.getData(1);
-        		var _prev = panelCounter.getData(-1);
-        		_popups = _next && _next.popups ? _popups.concat(_next && _next.popups) : _popups;
-        		_popups = _prev && _prev.popups ? _popups.concat(_prev && _prev.popups) : _popups;
-        		popupImgLoader.load(panelCounter.getData().popups, true);
-        	}*/
-            loadPanelImgPreloader();
         }
 
 		//@ The Main Event
@@ -122,7 +108,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 						break;
 				}
 			},
-			popUp: function(popup) {
+			popPopup: function(popup) {
 				_animating = true;
 				Animate.popup({
 					img: LOADEDPOPUPS[panelCounter.curr][popupCounter.curr],
@@ -139,15 +125,15 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 				if(!_animating) {
                 	if (!popupCounter.isLast) {
 						popupCounter.loadNext();
-						this.popUp(popupCounter.getData());
+						this.popPopup(popupCounter.getData());
 					}
 					else if (!panelCounter.isLast) {
                         panelCounter.loadNext();  
                         this.movePanels({
                             imgObj: LOADEDPANELS[panelCounter.prev], 
-                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading,
+                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading(),
                             direction: 1,
-                            transition: cmxJSON[panelCounter.curr].transition,
+                            transition: panelCounter.getData().transition,
                             curr: panelCounter.curr
                         });
 					}
@@ -161,9 +147,9 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                         panelCounter.loadPrev();
                         this.movePanels({
                             imgObj: LOADEDPANELS[panelCounter.next], 
-                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading,
+                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading(),
                             direction: -1,
-                            transition: cmxJSON[panelCounter.curr].transition,
+                            transition: panelCounter.getData().transition,
                             curr: panelCounter.curr
                         });
                     }
