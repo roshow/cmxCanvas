@@ -110,7 +110,6 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					case 'jumpcut':
                         panelCounter.goTo(data.curr);
 						break;
-					//case 'elastic': //@ case for this transition if it's not default
 					default:
 						_animating = true;
 						Animate.panels(data.imgObj, data.imgObj_target, cnv, ctx, data.direction, function(){
@@ -171,7 +170,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 				return [panelCounter, popupCounter];
 			},
 			goToPanel: function(panel) {	
-                panelCounter.goTo(panel);
+                if (!_animating) panelCounter.goTo(panel);
 			}
 		};
 
