@@ -11,9 +11,8 @@
   background-color: navy; }
 
 body {
-  font-family: 'Oswald', Arial, sans-serif; }
-  body > div {
-    min-width: 1024px; }
+  font-family: 'Oswald', Arial, sans-serif;
+  overflow-x: hidden; }
 
 a:hover {
   text-decoration: none; }
@@ -42,7 +41,6 @@ nav {
     border: 0; }
 
 .container {
-  min-width: 1024px;
   margin: auto;
   padding: 0; }
 
@@ -143,7 +141,6 @@ nav {
     #footer .moreinfoBtn a:hover {
       color: black; }
   #footer #moreinfo {
-    min-width: 1024px;
     margin: auto;
     clear: both;
     max-height: 0px;

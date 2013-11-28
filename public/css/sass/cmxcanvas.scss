@@ -44,9 +44,10 @@ $cornsilk: #FFF8DC;
 
 body {
     font-family: 'Oswald', Arial, sans-serif;
+    overflow-x: hidden;
 
     > div {
-        min-width:1024px;
+        // min-width: 900px;
     }
 }
 
@@ -85,7 +86,7 @@ nav {
 }
 
 .container {
-    min-width: 1024px;
+    // min-width: 900px;
     margin: auto;
     padding: 0;
 }
@@ -248,7 +249,7 @@ nav {
             }
         }
         #moreinfo {
-            min-width: 1024px;
+            // min-width: 900px;
             margin: auto;
             clear: both;
             max-height: 0px;

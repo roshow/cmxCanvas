@@ -51,13 +51,36 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
       'click #rightbutton': 'rightArrow',
       'click #toc li': 'tocPanelBtn',
       // 'touchmove #canvas_container': 'touchTest',  
-      // 'touchstart #canvas_container': 'touchTest',      
-      // 'touchend #canvas_container': 'touchTest'
+      'touchstart #canvas_container': 'touchTest',      
+      'touchend #canvas_container': 'touchTest'
     },
-
     touchTest: function(e) {
-      //console.log(e);
-      console.log(e.originalEvent);
+      e.preventDefault();
+      var td = e.originalEvent;
+      switch (td.type) {
+        case "touchstart":
+          this.touchstartX = td.changedTouches[0].pageX;
+          console.log("touchstart: " + this.touchstartX);
+          break;
+        case "touchend":
+          var touchendX = td.changedTouches[0].pageX;
+          console.log("touchend: " + touchendX);
+          var touchdiff = touchendX - this.touchstartX;
+          if (Math.abs(touchdiff) > 75) {
+            if (touchdiff < 0) {
+              console.log('swiped left');
+              this.rightArrow();
+            }
+            else {
+              console.log('swiped right');
+              this.leftArrow();
+            }
+          }
+          break;
+        case "touchmove":
+          console.log("touchmove");
+          break;
+      }
     },
 
     leftArrow: function(e){
