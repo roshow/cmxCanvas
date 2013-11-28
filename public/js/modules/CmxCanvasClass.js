@@ -13,7 +13,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			_animating = false;
 
 		var _loading = 0,
-			_imagesPanelsLoaded = {
+			LOADEDPANELS = {
                 loading: (function(){
                     var img = new Image();
                     img.crossOrigin = "Anonymous";
@@ -32,9 +32,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
             var res = panelImgLoader.loadedImages;
             var key;
             for (key in res) {
-            	_imagesPanelsLoaded[key] = res[key];
+            	LOADEDPANELS[key] = res[key];
             }
-            console.log(_imagesPanelsLoaded);
             delete panelImgLoader.loadedImages;
             panelImgLoader.loadedImages = {};
             --_loading;
@@ -50,19 +49,46 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
             this.end = new Date().getTime();
             //console.log('popups loaded in: ' + (this.end - this.start));
 		};
+        function _helper_ConstructLoadData(panel) {
+            return {
+                src: cmxJSON[panel].src,
+                callback: function(imgObj) {
+                    if (panel === panelCounter.curr){
+                        ctx.clearRect(0, 0, cnv.width, cnv.height);
+                        ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
+                    }
+                },
+                cbPriority: true
+            };
+        }
+        function determineWhatPanelsToLoad(x) {
+            var imgd = {};
+            if (!LOADEDPANELS[panelCounter.curr]) imgd[panelCounter.curr] = _helper_ConstructLoadData(panelCounter.curr);
+            if (!panelCounter.isFirst && !LOADEDPANELS[panelCounter.prev]) imgd[panelCounter.prev] = _helper_ConstructLoadData(panelCounter.prev);
+            if (panelCounter.prev - 1 >=0 && !LOADEDPANELS[panelCounter.prev - 1]) imgd[panelCounter.prev - 1] = _helper_ConstructLoadData(panelCounter.prev - 1);
+            if (panelCounter.next < panelCounter.last && !LOADEDPANELS[panelCounter.next + 1]) imgd[panelCounter.next + 1] = _helper_ConstructLoadData(panelCounter.next + 1);
+            if (panelCounter.next + 1 < panelCounter.last &&!LOADEDPANELS[panelCounter.next]) imgd[panelCounter.next] = _helper_ConstructLoadData(panelCounter.next);
+            console.log(imgd);
+            panelImgLoader.load(imgd, true);
+            /*for(key in imgd) {
+                OTHERPANELS[key] = imgd[key]
+            };
+            console.log(OTHERPANELS);*/
+        }
         function loadpanelImgLoader(x) {
-        	var imgd = {};
+            determineWhatPanelsToLoad(x);
+        	/*var imgd = {};
             //@ x = direction and that's important for the math.
-        	if (x && _imagesPanelsLoaded[0]) {
+        	if (x && LOADEDPANELS[0]) {
         		for(i = -2*x; Math.abs(i) < 3; i+=x) {
-                    if (i === 2*x || !_imagesPanelsLoaded[i + x]) {
-                         _imagesPanelsLoaded[i] = null;
+                    if (i === 2*x || !LOADEDPANELS[i + x]) {
+                         LOADEDPANELS[i] = "loading";
                          if(panelCounter.curr + i >= 0 && panelCounter.curr + i < panelCounter.last) {
                              imgd[i] = { src: cmxJSON[panelCounter.curr + i].src };
                          }
                     }
                     else {
-                     _imagesPanelsLoaded[i] =  _imagesPanelsLoaded[i + x];
+                     LOADEDPANELS[i] =  LOADEDPANELS[i + x];
                     }
                 }
             } 
@@ -87,7 +113,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
     			cbPriority: true
     		};
 
-            panelImgLoader.load(imgd, true);
+            panelImgLoader.load(imgd, true);*/
         }
         function loadPanelAndPopupImages(x) {
         	if (popupCounter.curr) {
@@ -140,8 +166,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 					else if (!panelCounter.isLast) {
                         panelCounter.loadNext();  
                         this.movePanels({
-                            imgObj: _imagesPanelsLoaded[-1], 
-                            imgObj_target: _imagesPanelsLoaded[0] || _imagesPanelsLoaded.loading,
+                            imgObj: LOADEDPANELS[panelCounter.prev], 
+                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading,
                             direction: 1,
                             transition: cmxJSON[panelCounter.curr].transition,
                             curr: panelCounter.curr
@@ -156,8 +182,8 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 	if (!panelCounter.isFirst){			
                         panelCounter.loadPrev();
                         this.movePanels({
-                            imgObj: _imagesPanelsLoaded[1], 
-                            imgObj_target: _imagesPanelsLoaded[0] || _imagesPanelsLoaded.loading,
+                            imgObj: LOADEDPANELS[panelCounter.next], 
+                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading,
                             direction: -1,
                             transition: cmxJSON[panelCounter.curr].transition,
                             curr: panelCounter.curr

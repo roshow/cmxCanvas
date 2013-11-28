@@ -26,9 +26,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
     console.log("Total no. of images: " + (Json.length + _popupArr.length));
     bigLoad.load(Json.concat(_popupArr), true);
   }
-
-
-
+  
   var CmxView = Backbone.View.extend({
     el: $("#CmxCanvas"),
 
