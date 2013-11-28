@@ -91,6 +91,8 @@ nav {
     right: 0;
     position: absolute;
     background-color: rgba(255, 0, 0, 0); }
+    html.touchIs #readcomic.container #canvas_container #rightbutton {
+      display: none; }
   #readcomic.container #canvas_container #centertap {
     width: 20%;
     height: 100%;
@@ -105,6 +107,8 @@ nav {
     left: 0;
     position: absolute;
     background-color: rgba(0, 0, 255, 0); }
+    html.touchIs #readcomic.container #canvas_container #leftbutton {
+      display: none; }
   #readcomic.container #canvas_container .ui-arrow {
     top: 43%;
     font-size: 4.5em;

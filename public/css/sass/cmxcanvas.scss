@@ -170,6 +170,9 @@ nav {
             right: 0;
             position: absolute;
             background-color: rgba(255, 0, 0, 0);
+            html.touchIs &{
+                display: none;
+            }
         }
 
         #centertap {
@@ -188,6 +191,9 @@ nav {
             left: 0;
             position: absolute;
             background-color: rgba(0, 0, 255, 0);
+            html.touchIs &{
+                display: none;
+            }
         }
 
         .ui-arrow {

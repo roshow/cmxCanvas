@@ -36,6 +36,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
       this.model = this.options.model;
     },
     render: function() {
+      ('ontouchstart' in document.documentElement) ? $('html').addClass('touchIs') : $('html').addClass('touchIsNot');
       var _modeljson = this.model.toJSON();
       //bulkPreload(_modeljson);
       this.$el.html(jade.templates['cmxreader'](_modeljson));
