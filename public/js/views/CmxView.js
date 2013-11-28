@@ -36,6 +36,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
       this.model = this.options.model;
     },
     render: function() {
+      //@ Checks to see if it's a touch device and adds the appropriate class to the html dom element.
       ('ontouchstart' in document.documentElement) ? $('html').addClass('touchIs') : $('html').addClass('touchIsNot');
       var _modeljson = this.model.toJSON();
       //bulkPreload(_modeljson);
@@ -51,31 +52,22 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
       'click #leftbutton': 'leftArrow',
       'click #rightbutton': 'rightArrow',
       'click #toc li': 'tocPanelBtn',
-      // 'touchmove #canvas_container': 'touchTest',  
-      'touchstart #canvas_container': 'touchTest',      
-      'touchend #canvas_container': 'touchTest'
+      // 'touchmove #canvas_container': 'detectSwipe',  
+      'touchstart #canvas_container': 'detectSwipe',      
+      'touchend #canvas_container': 'detectSwipe'
     },
-    touchTest: function(e) {
+    detectSwipe: function(e) {
       e.preventDefault();
       var td = e.originalEvent;
       switch (td.type) {
         case "touchstart":
           this.touchstartX = td.changedTouches[0].pageX;
-          console.log("touchstart: " + this.touchstartX);
           break;
         case "touchend":
           var touchendX = td.changedTouches[0].pageX;
-          console.log("touchend: " + touchendX);
           var touchdiff = touchendX - this.touchstartX;
           if (Math.abs(touchdiff) > 75) {
-            if (touchdiff < 0) {
-              console.log('swiped left');
-              this.rightArrow();
-            }
-            else {
-              console.log('swiped right');
-              this.leftArrow();
-            }
+            (touchdiff < 0) ? this.rightArrow() : this.leftArrow();
           }
           break;
         case "touchmove":
