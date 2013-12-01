@@ -9,200 +9,193 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 
 	var CmxCanvas = (function() {
 		
-		var i, cnv, ctx, cmxJSON, panelCounter, popupCounter,
-			_animating = false;
+		var _cnv, _ctx, _panelCounter, _popupCounter;
+		var _animating = false;
+        var _loading = 0;
+        var _loadingHold = false;
 
-		var _loading = 0,
-			LOADEDPANELS = {
-                loading: (function(){
-                    var img = new Image();
-                    img.crossOrigin = "Anonymous";
-                    img.src = "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg"
-                    return img;
-                }())
-            },
-            LOADEDPOPUPS = {},
-			panelImgPreloader = new ImagePreloader(),
-			popupImgLoader = new ImagePreloader();
-
-		panelImgPreloader.onLoadStart = function() {
-			this.start = new Date().getTime();
-			++_loading;
-		};
-		panelImgPreloader.onLoadDone = function() {
-            var res = panelImgPreloader.loadedImages;
-            var key;
-            for (key in res) {
-            	LOADEDPANELS[key] = res[key];
-            }
-            delete panelImgPreloader.loadedImages;
-            panelImgPreloader.loadedImages = {};
-            --_loading;
-            this.end = new Date().getTime();
-            //console.log('panels loaded in: ' + (this.end - this.start));
+        var _loadedPopups = {}
+        var _loadedPanels = {
+            loading: (function(){
+                var img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.src = "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg"
+                return img;
+            }())
         };
-        popupImgLoader.onLoadStart = function() {
-			this.start = new Date().getTime();
-			++_loading;
-		};
-		popupImgLoader.onLoadDone = function() {
-			--_loading;
-            this.end = new Date().getTime();
-            //console.log('popups loaded in: ' + (this.end - this.start));
-		};
+		var _panelImgPreloader = new ImagePreloader({
+            onLoadStart: function() {
+                this.start = new Date().getTime();
+                ++_loading;
+            },
+            onLoadDone: function() {
+                var key;
+                for (key in _panelImgPreloader.loadedImages) {
+                    _loadedPanels[key] = _panelImgPreloader.loadedImages[key];
+                }
+                delete _panelImgPreloader.loadedImages;
+                _panelImgPreloader.loadedImages = {};
+                --_loading;
+                
+                this.end = new Date().getTime();
+                //console.log('panels loaded in: ' + (this.end - this.start));
+            }
+        });
+		var _popupImgLoader = new ImagePreloader({
+            onLoadStart: function() {
+                this.start = new Date().getTime();
+                ++_loading;
+            },
+            onLoadDone: function() {
+                --_loading;
+                this.end = new Date().getTime();
+                //console.log('popups loaded in: ' + (this.end - this.start));
+            }
+        });
+
         function _helper_ConstructLoadData(panel) {
             return {
-                src: panelCounter.data[panel].src,
+                src: _panelCounter.data[panel].src,
                 callback: function(imgObj) {
-                    if (panel === panelCounter.curr){
-                        ctx.clearRect(0, 0, cnv.width, cnv.height);
-                        ctx.drawImage(imgObj, halfDiff(cnv.width, imgObj.width), halfDiff(cnv.height, imgObj.height));
+                    if (panel === _panelCounter.curr){
+                        _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
+                        _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
+                        _loadingHold = false;
                     }
                 },
                 cbPriority: true
             };
         }
         function _helper_popupCBOverride(panel) {
+            //@ Similar to the _panelImgPreloader.onLoadDone method but needs the panel variable from loadPanelAndPopups
             return function(){
-                LOADEDPOPUPS[panel] = popupImgLoader.loadedImages;
-                delete panelImgPreloader.loadedImages;
-                panelImgPreloader.loadedImages = {};
+                _loadedPopups[panel] = _popupImgLoader.loadedImages;
+                delete _panelImgPreloader.loadedImages;
+                _panelImgPreloader.loadedImages = {};
                 --_loading;
                 this.end = new Date().getTime();
                 //console.log('popups loaded in: ' + (this.end - this.start));*/
             }
         }
-        function loadPanelAndPopupImages() {
+        function loadPanelAndPopups() {
             var imgd = {},
-                keys = panelCounter.getCurr(-2, 2),
-                L = keys.length;
-
-            for (var i = 0; i < L; i++) {
+                keys = _panelCounter.getCurr(-2, 2),
+                L = keys.length,
+                i;
+            for (i = 0; i < L; i++) {
                 var panel = keys[i];
-                if (!LOADEDPANELS[panel]) {
+                if (!_loadedPanels[panel]) {
                     imgd[panel] = _helper_ConstructLoadData(panel);
-                    var popups = panelCounter.data[panel].popups || false;
+                    var popups = _panelCounter.data[panel].popups || false;
                     if (popups && popups.length > 0) {
-                        popupImgLoader.load(popups, true, _helper_popupCBOverride(panel));
+                        console.log('#' + panel + ' popups: load-start.');
+                        _popupImgLoader.load(popups, true, _helper_popupCBOverride(panel));
+                    }
+                    //@ this runs if the panel has no popups. Could be useful.
+                    else {
+                        console.log('#' + panel + ' popups: doesn\'t have any.');
                     }
                 }
             };
-
-            panelImgPreloader.load(imgd, true);
+            _panelImgPreloader.load(imgd, true);
+        }
+        function movePanels(data) {
+            if (data.imgObj_target.src === "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg") {
+                _loadingHold = true;
+            }
+            switch (data.transition) {
+                case 'jumpcut':
+                    _panelCounter.goTo(data.curr);
+                    break;
+                default:
+                    _animating = true;
+                    Animate.panels(data.imgObj, data.imgObj_target, _cnv, _ctx, data.direction, function(){
+                        _animating = false;
+                    });
+                    break;
+            }
+        }
+        function popPopup(popup) {
+            _animating = true;
+            Animate.popup({
+                img: _loadedPopups[_panelCounter.curr][_popupCounter.curr],
+                x: popup.x || 0,
+                y: popup.y || 0,
+                animation: popup.animation || 'scaleIn'
+            }, _cnv, _ctx);
+            _animating = false;
         }
 
 		//@ The Main Event
 		var cmxcanvas = {
 
-			//@ START: methods for making stuff happen on the canvas
-			movePanels: function(data) {
-				switch (data.transition) {
-					case 'jumpcut':
-                        panelCounter.goTo(data.curr);
-						break;
-					default:
-						_animating = true;
-						Animate.panels(data.imgObj, data.imgObj_target, cnv, ctx, data.direction, function(){
-                			_animating = false;
-						});
-						break;
-				}
-			},
-			popPopup: function(popup) {
-				_animating = true;
-				Animate.popup({
-					img: LOADEDPOPUPS[panelCounter.curr][popupCounter.curr],
-					x: popup.x || 0,
-					y: popup.y || 0,
-					animation: popup.animation || 'scaleIn'
-				}, cnv, ctx);
-				_animating = false;
-			},
-
-			//@ These are really the only methods that should be public:
 			goToNext: function() {
 				// if (!_animating && !_loading) {
 				if(!_animating) {
-                	if (!popupCounter.isLast) {
-						popupCounter.loadNext();
-						this.popPopup(popupCounter.getData());
+                	if (!_popupCounter.isLast) {
+						_popupCounter.loadNext();
+						popPopup(_popupCounter.getData());
 					}
-					else if (!panelCounter.isLast) {
-                        panelCounter.loadNext();  
-                        this.movePanels({
-                            imgObj: LOADEDPANELS[panelCounter.prev], 
-                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading(),
+					else if (!_panelCounter.isLast) {
+                        _panelCounter.loadNext();  
+                        movePanels({
+                            imgObj: _loadedPanels[_panelCounter.prev], 
+                            imgObj_target: _loadedPanels[_panelCounter.curr] || _loadedPanels.loading,
                             direction: 1,
-                            transition: panelCounter.getData().transition,
-                            curr: panelCounter.curr
+                            transition: _panelCounter.getData().transition,
+                            curr: _panelCounter.curr
                         });
 					}
 				}
-				return [panelCounter, popupCounter];
+                else {
+                    console.log('animating, cannot move');
+                }
+				return [_panelCounter, _popupCounter];
 			},
 			goToPrev: function() {
 				// if (!_animating && !_loading) {				
 				if(!_animating) {
-                	if (!panelCounter.isFirst){			
-                        panelCounter.loadPrev();
-                        this.movePanels({
-                            imgObj: LOADEDPANELS[panelCounter.next], 
-                            imgObj_target: LOADEDPANELS[panelCounter.curr] || LOADEDPANELS.loading(),
+                	if (!_panelCounter.isFirst) {			
+                        _panelCounter.loadPrev();
+                        movePanels({
+                            imgObj: _loadedPanels[_panelCounter.next], 
+                            imgObj_target: _loadedPanels[_panelCounter.curr] || _loadedPanels.loading,
                             direction: -1,
-                            transition: panelCounter.getData().transition,
-                            curr: panelCounter.curr
+                            transition: _panelCounter.getData().transition,
+                            curr: _panelCounter.curr
                         });
                     }
 					else {
 						this.goToPanel(0);
 					}
 				}
-				return [panelCounter, popupCounter];
+                else {
+                    console.log('animating, cannot move');
+                }
+				return [_panelCounter, _popupCounter];
 			},
 			goToPanel: function(panel) {	
-                if (!_animating) panelCounter.goTo(panel);
+                if (!_animating) _panelCounter.goTo(panel);
 			}
 		};
 
-		function bulkPreload(Json) {
-			var logtime = true;
-			Json = Json.cmxJSON;
-			var bigLoad = new ImagePreloader();
-			bigLoad.onLoadStart = function(){
-				if (logtime) { console.log('loading every image'); }
-				this.start = new Date().getTime();
-			};
-			bigLoad.onLoadDone = function(){
-				if (logtime) { this.end = new Date().getTime(); }
-				if (logtime) { console.log('duration for every damn image load: ' + (this.end - this.start)); }
-				delete bigLoad.loadedImages;
-			};
-			var L = Json.length;
-			var popupArr = [];
-			for (var i = 0; i < L; i++) {
-				popupArr = Json[i].popups ? popupArr.concat(Json[i].popups) : popupArr;
-			}
-			if (logtime) { console.log("Total no. of images: " + (Json.length + popupArr.length)); }
-			bigLoad.load(Json.concat(popupArr), true);
-		}
-
-		return function(data, canvasId) {
+		function init(data, cnvId) {
     		//@ Get Canvases and Contexts
-			cnv = document.getElementById(canvasId);
-			ctx = cnv.getContext('2d');
-			cmxJSON = data.cmxJSON;
+			_cnv = document.getElementById(cnvId);
+			_ctx = _cnv.getContext('2d');
 
             //@ Set up PanelCounter and set an onchange method, to keep things streamlined.
-			panelCounter = new CountManager(cmxJSON);
-            panelCounter.onchange = function(i){
-                popupCounter = new CountManager(panelCounter.getData().popups, -1);
-                loadPanelAndPopupImages();
+			_panelCounter = new CountManager(data.cmxJSON);
+            _panelCounter.onchange = function(){
+                _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
+                loadPanelAndPopups();
             };
-            panelCounter.onchange();
-			
-			// bulkPreload(data);
+            _panelCounter.onchange();
+
 			return cmxcanvas;
 		};
+        return init;
 	}());
+
 	return CmxCanvas;
 });

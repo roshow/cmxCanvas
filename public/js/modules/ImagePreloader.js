@@ -19,12 +19,12 @@ var Deferred = (function(){
 
 var ImagePreloader = (function(){
 
-    function ImagePreloader(imgs) {
-        
+    function ImagePreloader(req) {
+        req = req || {};
         var imgpreload = {
             loadedImages: {},
-            onLoadStart: function() { return false; },
-            onLoadDone: function(){ return false; },
+            onLoadStart: req.onLoadStart || function() { return false; },
+            onLoadDone: req.onLoadDone || function(){ return false; },
             onload: function(fn){
                 fn && fn();
             }
@@ -48,7 +48,6 @@ var ImagePreloader = (function(){
             loadingQ++;
             _img.src  = img.src;
         }
-
         imgpreload.load = function(imgs, anon, cb) {
             if (!loadingQ) {
                 imgpreload.loadedImages = {};
@@ -67,6 +66,11 @@ var ImagePreloader = (function(){
                 });
             }
         };
+        imgpreload.onload = function(fn){
+            this.onLoadDone = fn;
+            return this;
+        };
+
         return imgpreload;
     }
     return ImagePreloader;
