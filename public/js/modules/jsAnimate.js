@@ -113,7 +113,7 @@ define([], function(){
               ],
               canvas: cnv,
               ctx: ctx,
-              duration: 500,
+              duration: 400,
               interval: 25,
               aFunction: jsAnimate.makeEaseOut(jsAnimate.back),
               onComplete: function() {

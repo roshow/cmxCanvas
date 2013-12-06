@@ -36,6 +36,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 delete _panelImgPreloader.loadedImages;
                 _panelImgPreloader.loadedImages = {};
                 --_loading;
+                if (_loading === 0) _loadingHold = false;
                 
                 this.end = new Date().getTime();
                 //console.log('panels loaded in: ' + (this.end - this.start));
@@ -48,6 +49,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
             },
             onLoadDone: function() {
                 --_loading;
+                if (_loading === 0) _loadingHold = false;
                 this.end = new Date().getTime();
                 //console.log('popups loaded in: ' + (this.end - this.start));
             }
@@ -60,7 +62,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                     if (panel === _panelCounter.curr){
                         _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
                         _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
-                        _loadingHold = false;
+                        //_loadingHold = false;
                     }
                 },
                 cbPriority: true
@@ -73,6 +75,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 delete _panelImgPreloader.loadedImages;
                 _panelImgPreloader.loadedImages = {};
                 --_loading;
+                if (_loading === 0) _loadingHold = false;
                 this.end = new Date().getTime();
                 //console.log('popups loaded in: ' + (this.end - this.start));*/
             }
@@ -100,9 +103,6 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
             _panelImgPreloader.load(imgd, true);
         }
         function movePanels(data) {
-            if (data.imgObj_target.src === "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg") {
-                _loadingHold = true;
-            }
             switch (data.transition) {
                 case 'jumpcut':
                     _panelCounter.goTo(data.curr);
@@ -110,6 +110,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 default:
                     _animating = true;
                     Animate.panels(data.imgObj, data.imgObj_target, _cnv, _ctx, data.direction, function(){
+                        console.log('elastic move done');
                         _animating = false;
                     });
                     break;
@@ -132,6 +133,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			goToNext: function() {
 				// if (!_animating && !_loading) {
 				if(!_animating) {
+                    if (!_loadedPanels[_panelCounter.curr]) _loadingHold = true;
                 	if (!_popupCounter.isLast) {
 						_popupCounter.loadNext();
 						popPopup(_popupCounter.getData());
@@ -146,11 +148,14 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                             curr: _panelCounter.curr
                         });
 					}
+                    return [_panelCounter, _popupCounter];
 				}
                 else {
-                    console.log('animating, cannot move');
+                    console.log('cannot move');
+                    console.log('_loadingHold: '+ _loadingHold);
+                    console.log('_animating: ' + _animating);
+                    return false;
                 }
-				return [_panelCounter, _popupCounter];
 			},
 			goToPrev: function() {
 				// if (!_animating && !_loading) {				
@@ -159,7 +164,7 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                         _panelCounter.loadPrev();
                         movePanels({
                             imgObj: _loadedPanels[_panelCounter.next], 
-                            imgObj_target: _loadedPanels[_panelCounter.curr] || _loadedPanels.loading,
+                            imgObj_target: _loadedPanels[_panelCounter.curr],
                             direction: -1,
                             transition: _panelCounter.getData().transition,
                             curr: _panelCounter.curr
@@ -185,6 +190,9 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
 			_ctx = _cnv.getContext('2d');
 
             //@ Set up PanelCounter and set an onchange method, to keep things streamlined.
+            //@ This is where _panelCounter because REALLY important. It's managing the entire 
+            //@ cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
+            //@ and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
 			_panelCounter = new CountManager(data.cmxJSON);
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
