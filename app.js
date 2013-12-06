@@ -1,10 +1,14 @@
-try { CONFIG = require('./config.js'); }
-catch(e){ CONFIG = {
+CONFIG = {
     mongo: {
-        uri: 'cmx'
+        uri: 'mongodb://you:comein@ds043348.mongolab.com:43348/cmxcanvas',
+        db: 'rodb',
+        host: 'ds043348.mongolab.com',
+        port: 43348,
+        username: 'you',
+        password: 'comein'
     },
-    port: 2000
-}; }
+    port: process.env.PORT || 5000
+}
 
 var express = require('express'),
     app = express(),

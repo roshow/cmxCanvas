@@ -1,7 +1,7 @@
 /*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
 /*global define*/
 
-define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'ImagePreloader'], function($, Animate, CountManager, ImageAsData, ImagePreloader){
+define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'ImagePreloader'], function($, _, Animate, CountManager, ImageAsData, ImagePreloader){
 
 	function halfDiff(a, b) {
 		return (a - b)/2;
@@ -110,7 +110,6 @@ define(['jquery', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsD
                 default:
                     _animating = true;
                     Animate.panels(data.imgObj, data.imgObj_target, _cnv, _ctx, data.direction, function(){
-                        console.log('elastic move done');
                         _animating = false;
                     });
                     break;

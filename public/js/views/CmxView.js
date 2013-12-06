@@ -76,6 +76,11 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
 
     leftArrow: function(e){
       var _read = this.cmxcanvas.goToPrev();
+      /**
+          The if/then here and this.rightArrow should really be dealt with in 
+          the CmxCanvas module by returning something more useful than the 
+          panel/popup counter or false.
+      **/
       if(_read) {
         $('#toc li').removeClass('active');
         $('#toc' + _read[0].curr).addClass('active');
@@ -85,6 +90,9 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
     },
     rightArrow: function(e){
       var _read = this.cmxcanvas.goToNext();
+      /**
+          See comment in this.leftArrow
+      **/
       if(_read) {
         $('#toc li').removeClass('active');
         $('#toc' + _read[0].curr).addClass('active');
