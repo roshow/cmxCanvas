@@ -73,31 +73,36 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
           break;
       }
     },
-
-    leftArrow: function(e){
-      var _read = this.cmxcanvas.goToPrev();
-      /**
-          The if/then here and this.rightArrow should really be dealt with in 
-          the CmxCanvas module by returning something more useful than the 
-          panel/popup counter or false.
-      **/
-      if(_read) {
-        $('#toc li').removeClass('active');
-        $('#toc' + _read[0].curr).addClass('active');
-        if (_read[0].isFirst) $('#leftbutton .ui-arrow').hide();
-        $('#rightbutton .ui-arrow').show();
-      }
-    },
     rightArrow: function(e){
       var _read = this.cmxcanvas.goToNext();
+
       /**
           See comment in this.leftArrow
       **/
+
       if(_read) {
         $('#toc li').removeClass('active');
         $('#toc' + _read[0].curr).addClass('active');
         if (_read[0].isLast && _read[1].isLast) $('#rightbutton .ui-arrow').hide();
         if (!_read.isFirst) $('#leftbutton .ui-arrow').show();
+      }
+    },
+
+    leftArrow: function(e){
+      var _read = this.cmxcanvas.goToPrev();
+      console.log('left arrow');
+
+      /**
+          The if/then here and this.rightArrow should really be dealt with in 
+          the CmxCanvas module by returning something more useful than the 
+          panel/popup counter or false.
+      **/
+
+      if(_read) {
+        $('#toc li').removeClass('active');
+        $('#toc' + _read[0].curr).addClass('active');
+        if (_read[0].isFirst) $('#leftbutton .ui-arrow').hide();
+        $('#rightbutton .ui-arrow').show();
       }
     },
     tocPanelBtn: function(e){

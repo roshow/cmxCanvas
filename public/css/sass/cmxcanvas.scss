@@ -6,9 +6,8 @@ $canvas-h: 450px;
 $canvas-w: 800px;
 $liGray: #777;
 $cornsilk: #FFF8DC;
-$cmxcanvasBlue: #428bca;
-//$midnightBlue: #151B54;
-$midnightBlue: #000080;
+$cmxcanvasBlue: #000080;
+$cmxDarkBlue: #000080;
 $cranberry: #9F000F;
 $sunYellow: #FFE87C;
 $cornsilk: #FFF8DC;
@@ -26,25 +25,31 @@ $cornsilk: #FFF8DC;
 
 
 //Default Nav Bg & Text
+
 #footer, #topnav {
     background-color: $cornsilk;
     color: black;
     a, a:hover {
-        color: $midnightBlue;
+        color: $cmxDarkBlue;
     }
     @include fakeStroke($color:#ccc, $width:1px);
 }
 
+// #topnav { background-color: $cornsilk; };
+// #footer { background-color: transparent; };
+
 #toc .active, #topnav .libNav.active {
         a {
             color: $cornsilk;
-            background-color: $midnightBlue;
+            background-color: $cmxDarkBlue;
         }
 }
 
 body {
     font-family: 'Oswald', Arial, sans-serif;
     overflow-x: hidden;
+    // background-color: $cmxDarkBlue;
+    background-color: transparent;
 
     > div {
         // min-width: 900px;
@@ -70,8 +75,8 @@ nav {
 .nav {
     border-radius: 0;
     .caret {
-        border-top-color: $midnightBlue;
-        border-bottom-color: $midnightBlue;
+        border-top-color: $cmxDarkBlue;
+        border-bottom-color: $cmxDarkBlue;
     }
 }
 
@@ -147,20 +152,26 @@ nav {
     }
 }
 
+.readcomic.bggrad {
+    // background: -webkit-linear-gradient(bottom, #ccc, #000);
+    background: -webkit-radial-gradient(circle, #232323, #ccc);
+}
+
 #readcomic.container {
     canvas#stagingCanvas {
         display: none;
     }
     #canvas_container {
         position: relative;
-        margin: 2% auto;
+        margin: 30px auto;
         width: 100%;
 
         canvas#cmx {
             display: block;
             padding: 0px;
             margin: auto;
-            box-shadow:   -3px -3px 10px #ddd,  3px 3px 10px #ddd;        
+            // box-shadow:  -3px -3px 10px #ddd,  3px 3px 10px #ddd;
+            background-color: white;        
         }
 
         #rightbutton {
@@ -205,11 +216,11 @@ nav {
                 -ms-transform:scale(-1, 1);;  
                 -webkit-transform:scale(-1, 1);;
             }
-            &:hover {
-                color: black;
-            }
+            // &:hover {
+            //     color: black;
+            // }
             &:active {
-                color: $midnightBlue;
+                color: black;
             }
         }
     }
@@ -242,10 +253,13 @@ nav {
             margin: 5px 0;
             span.caret {
                 vertical-align: middle;
+                transform:rotate(180deg);
+                -ms-transform:rotate(180deg);  
+                -webkit-transform:rotate(180deg);
                 &.reverse {
-                    transform:rotate(180deg);
-                    -ms-transform:rotate(180deg);  
-                    -webkit-transform:rotate(180deg);
+                    transform:rotate(0);
+                    -ms-transform:rotate(0);  
+                    -webkit-transform:rotate(0);
                 }
             }
             a {
@@ -262,9 +276,11 @@ nav {
             overflow: hidden;
             @include anim-maxH(0.25s);
             font-size: 1.1em;
+            max-height: 250px;
+            padding-top: 0.75em;
             &.open {
-                max-height: 250px;
-                padding-top: 0.75em;
+                max-height: 0px;
+                // padding-top: 0.75em;
                 //box-shadow: inset 0 3px 6px rgba(0,0,160, 0.2);*/
             }
             .issueDetails {
@@ -275,7 +291,7 @@ nav {
         }
     }
 
-//move into its own partial someday
+/* move into its own partial someday */
 
 #library.container {
     padding-top: 1%;
@@ -289,6 +305,9 @@ nav {
             color: black;
             &:hover {
                 color: $cmxcanvasBlue;
+                font-size: 1.25em;
+                letter-spacing: 0.4px;
+                font-weight: 400;
             }
 
             img {

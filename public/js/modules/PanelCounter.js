@@ -27,7 +27,7 @@ define([], function(){
                         this.isLast = this.next ? false : true;
                         this.isFirst = false;
                         this.onchange(1);
-                        return this.curr;
+                        return this;
                     }             
                 },
                 loadPrev: function() {
@@ -39,7 +39,7 @@ define([], function(){
                         this.isFirst = (this.curr === 0) ? true : false;
                         this.isLast = false;
                         this.onchange(-1);
-                        return this.curr;
+                        return this;
                     }   
                 },
                 goTo: function(x) {

@@ -12,7 +12,8 @@
 
 body {
   font-family: 'Oswald', Arial, sans-serif;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  background-color: transparent; }
 
 a:hover {
   text-decoration: none; }
@@ -73,17 +74,20 @@ nav {
     #topnav .instructionsmenu li {
       color: black; }
 
+.readcomic.bggrad {
+  background: -webkit-radial-gradient(circle, #232323, #cccccc); }
+
 #readcomic.container canvas#stagingCanvas {
   display: none; }
 #readcomic.container #canvas_container {
   position: relative;
-  margin: 2% auto;
+  margin: 30px auto;
   width: 100%; }
   #readcomic.container #canvas_container canvas#cmx {
     display: block;
     padding: 0px;
     margin: auto;
-    box-shadow: -3px -3px 10px #ddd,  3px 3px 10px #ddd; }
+    background-color: white; }
   #readcomic.container #canvas_container #rightbutton {
     width: 50%;
     height: 100%;
@@ -117,10 +121,8 @@ nav {
       transform: scale(-1, 1);
       -ms-transform: scale(-1, 1);
       -webkit-transform: scale(-1, 1); }
-    #readcomic.container #canvas_container .ui-arrow:hover {
-      color: black; }
     #readcomic.container #canvas_container .ui-arrow:active {
-      color: navy; }
+      color: black; }
 #readcomic.container .arrow {
   position: relative;
   line-height: 450px;
@@ -137,11 +139,14 @@ nav {
   #footer .moreinfoBtn {
     margin: 5px 0; }
     #footer .moreinfoBtn span.caret {
-      vertical-align: middle; }
+      vertical-align: middle;
+      transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg); }
       #footer .moreinfoBtn span.caret.reverse {
-        transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-        -webkit-transform: rotate(180deg); }
+        transform: rotate(0);
+        -ms-transform: rotate(0);
+        -webkit-transform: rotate(0); }
     #footer .moreinfoBtn a:hover {
       color: black; }
   #footer #moreinfo {
@@ -153,13 +158,15 @@ nav {
     -webkit-transition: max-height 0.25s ease;
     -o-transition: max-height 0.25s ease;
     transition: max-height 0.25s ease;
-    font-size: 1.1em; }
+    font-size: 1.1em;
+    max-height: 250px;
+    padding-top: 0.75em; }
     #footer #moreinfo.open {
-      max-height: 250px;
-      padding-top: 0.75em; }
+      max-height: 0px; }
     #footer #moreinfo .issueDetails li {
       display: block; }
 
+/* move into its own partial someday */
 #library.container {
   padding-top: 1%; }
   #library.container .issueEntry {
@@ -171,7 +178,10 @@ nav {
     #library.container .issueEntry a {
       color: black; }
       #library.container .issueEntry a:hover {
-        color: #428bca; }
+        color: navy;
+        font-size: 1.25em;
+        letter-spacing: 0.4px;
+        font-weight: 400; }
       #library.container .issueEntry a img {
         display: block;
         margin: auto;
@@ -181,7 +191,7 @@ nav {
         width: 70%;
         background-color: white; }
         #library.container .issueEntry a img:hover {
-          border-color: #428bca; }
+          border-color: navy; }
       #library.container .issueEntry a p {
         padding-bottom: 4%;
         font-size: 1.25em;

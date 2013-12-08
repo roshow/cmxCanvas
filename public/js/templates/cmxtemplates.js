@@ -189,7 +189,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<div id="readcomic" class="container"><canvas id="stagingCanvas" width="800px" height="450px"> </canvas><div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><div class="canvaswrapper"><canvas id="cmx" height="450px" width="800px"></canvas></div><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div><div class="nav-wrapper foot"><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info<span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-xs-3"><ul class="issueDetails"><li>');
+buf.push('<div class="readcomic bggrad"><div id="readcomic" class="container"><canvas id="stagingCanvas" width="800px" height="450px"> </canvas><div id="canvas_container"><div id="leftbutton"><span class="ui-arrow glyphicon glyphicon-play pull-left"></span></div><div class="canvaswrapper"><canvas id="cmx" height="450px" width="800px"></canvas></div><div id="rightbutton"><span class="ui-arrow glyphicon glyphicon-play pull-right"></span></div></div></div></div><div class="nav-wrapper foot"><nav id="footer" role="navigation" class="navbar navbar-default"><div class="navbar-header"><a class="navbar-brand moreinfoBtn">more info<span class="caret"></span></a></div><div id="moreinfo" class="anim"><div class="row"><div class="col-xs-3"><ul class="issueDetails"><li>');
 var __val__ = "Series: " + series.name
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</li>');

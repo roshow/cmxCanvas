@@ -55,7 +55,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             }
         });
 
-        function _helper_ConstructLoadData(panel) {
+        function __ConstructLoadData(panel) {
             return {
                 src: _panelCounter.data[panel].src,
                 callback: function(imgObj) {
@@ -68,8 +68,8 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 cbPriority: true
             };
         }
-        function _helper_popupCBOverride(panel) {
-            //@ Similar to the _panelImgPreloader.onLoadDone method but needs the panel variable from loadPanelAndPopups
+        function __popupCBOverride(panel) {
+            /* Similar to the _panelImgPreloader.onLoadDone method but needs the panel variable from loadPanelAndPopups */
             return function(){
                 _loadedPopups[panel] = _popupImgLoader.loadedImages;
                 delete _panelImgPreloader.loadedImages;
@@ -88,13 +88,15 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             for (i = 0; i < L; i++) {
                 var panel = keys[i];
                 if (!_loadedPanels[panel]) {
-                    imgd[panel] = _helper_ConstructLoadData(panel);
+                    imgd[panel] = __ConstructLoadData(panel);
                     var popups = _panelCounter.data[panel].popups || false;
                     if (popups && popups.length > 0) {
                         console.log('#' + panel + ' popups: load-start.');
-                        _popupImgLoader.load(popups, true, _helper_popupCBOverride(panel));
+                        _popupImgLoader.load(popups, true, __popupCBOverride(panel));
                     }
-                    //@ this runs if the panel has no popups. Could be useful.
+                    
+                    /* this runs if the panel has no popups. Could be useful. */
+                    
                     else {
                         console.log('#' + panel + ' popups: doesn\'t have any.');
                     }
@@ -126,11 +128,10 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             _animating = false;
         }
 
-		//@ The Main Event
+		/* The Main Event */
 		var cmxcanvas = {
 
 			goToNext: function() {
-				// if (!_animating && !_loading) {
 				if(!_animating) {
                     if (!_loadedPanels[_panelCounter.curr]) _loadingHold = true;
                 	if (!_popupCounter.isLast) {
@@ -156,13 +157,12 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                     return false;
                 }
 			},
-			goToPrev: function() {
-				// if (!_animating && !_loading) {				
+			goToPrev: function() {				
 				if(!_animating) {
                 	if (!_panelCounter.isFirst) {			
                         _panelCounter.loadPrev();
                         movePanels({
-                            imgObj: _loadedPanels[_panelCounter.next], 
+                            imgObj: _loadedPanels[_panelCounter.next],
                             imgObj_target: _loadedPanels[_panelCounter.curr],
                             direction: -1,
                             transition: _panelCounter.getData().transition,
@@ -183,16 +183,19 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 			}
 		};
 
-		function init(data, cnvId) {
-    		//@ Get Canvases and Contexts
+		function __init(data, cnvId) {
+    		/* Get Canvases and Contexts */
 			_cnv = document.getElementById(cnvId);
 			_ctx = _cnv.getContext('2d');
 
-            //@ Set up PanelCounter and set an onchange method, to keep things streamlined.
-            //@ This is where _panelCounter because REALLY important. It's managing the entire 
-            //@ cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
-            //@ and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
-			_panelCounter = new CountManager(data.cmxJSON);
+        /**
+        *   Set up PanelCounter and set an onchange method, to keep things streamlined.
+        *   This is where _panelCounter because REALLY important. It's managing the entire 
+        *   cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
+        *   and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
+        **/			
+
+            _panelCounter = new CountManager(data.cmxJSON);
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
                 loadPanelAndPopups();
@@ -201,7 +204,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 
 			return cmxcanvas;
 		};
-        return init;
+        return __init;
 	}());
 
 	return CmxCanvas;
