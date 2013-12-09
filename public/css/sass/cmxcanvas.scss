@@ -1,4 +1,4 @@
-//// Google Fonts imports ////
+/* Google Fonts imports  */
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 
@@ -24,7 +24,7 @@ $cornsilk: #FFF8DC;
 }
 
 
-//Default Nav Bg & Text
+/* Default Nav Bg & Text  */
 
 #footer, #topnav {
     background-color: $cornsilk;
@@ -34,9 +34,6 @@ $cornsilk: #FFF8DC;
     }
     @include fakeStroke($color:#ccc, $width:1px);
 }
-
-// #topnav { background-color: $cornsilk; };
-// #footer { background-color: transparent; };
 
 #toc .active, #topnav .libNav.active {
         a {

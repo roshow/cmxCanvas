@@ -61,22 +61,22 @@ exports.handler = (function() {
             var _q = {
                 _id: req.params.id
             };
-            console.log(_q);
+            // console.log(_q);
             dbc.metadata.get(_q, function(r){
                 r = r[0];
                 dbc.cmxjson.get({
                     _id: r.cmxJSON
                 }, function(j) {
                     j = j[0];
-                    /*if (!r.compiledImgUrls) {
-                        L = j.JSON.length;
-                        for(i = 0; i < L; i++) {
-                            j.JSON[i].src = r.img.url + j.JSON[i].src;
-                        }
-                        r.compiledImgUrls = true;
-                    }*/
+                    // if (!r.compiledImgUrls) {
+                    //     L = j.JSON.length;
+                    //     for(i = 0; i < L; i++) {
+                    //         j.JSON[i].src = r.img.url + j.JSON[i].src;
+                    //     }
+                    //     r.compiledImgUrls = true;
+                    // }
                     r.cmxJSON = j.JSON;
-                    console.log(r);
+                    // console.log(r);
                     res.send(r);
                 });
             });

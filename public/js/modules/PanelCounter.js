@@ -64,7 +64,9 @@ define([], function(){
                             return this.data[this.curr] || null;
                     }
                 },
+
                 getCurr: function(min, max){
+                    var that = this;
                     var _curr = this.curr;
                     var _last = this.last;
                     if (!min && !max) {
@@ -72,13 +74,38 @@ define([], function(){
                     }
                     else {
                         var arr = [];
+                        var obj = [];
                         var L = (max - min) + 1;
                         var D = min;
                         for (var i = 0; i < L; i++) {
                             var k = _curr + D + i;
-                            if (k >= 0 && k < _last) arr.push(k);
+                            if (k >= 0 && k < _last) {
+                                arr.push(k);
+                            }
                         }
                         return arr;
+                    }
+                },
+                getDataSet: function(min, max){
+                    var that = this;
+                    var _curr = this.curr;
+                    var _last = this.last;
+                    if (!min && !max) {
+                        return _curr;
+                    }
+                    else {
+                        var arr = [];
+                        var obj = [];
+                        var L = (max - min) + 1;
+                        var D = min;
+                        for (var i = 0; i < L; i++) {
+                            var k = _curr + D + i;
+                            if (k >= 0 && k < _last) {
+                                obj[k] = that.data[k];
+                            }
+                        }
+                        return obj;
+                        // return obj;
                     }
                 }
             };

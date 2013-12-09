@@ -1,25 +1,91 @@
-/*global document, makeEaseOut, back, linear, jsAnimate, Image, $*/
-/*global define*/
-
 define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'ImagePreloader'], function($, _, Animate, CountManager, ImageAsData, ImagePreloader){
 
 	function halfDiff(a, b) {
 		return (a - b)/2;
 	}
 
+    var loadpanelimgs = (function(){
+        var loadReadyAction = function() {
+            console.log('loadReadyAction');
+        };
+        function loadpanelimgs(arg, id, fn){
+            var popupimgs;
+            var popupL = (arg.popups && arg.popups.length > 0) ? arg.popups.length : 0;
+            var loading = 1 + popupL;
+            
+            var panelimg = new Image();
+            panelimg.crossOrigin = "Anonymous";
+            panelimg.onload = function(){
+                /* Remove a loading token and, if none left, run callback */
+                if (!--loading) {
+                    fn({
+                        img: panelimg,
+                        id: id || false,
+                        popups: popupimgs || false
+                    });
+                }
+            } 
+            panelimg.src = arg.src
+            
+            /* If any popups, load the Images */
+            if (popupL) {
+                popupimgs = [];
+                for (var i = 0; i < popupL; i++) {
+                    popupimgs[i] = new Image();
+                    popupimgs[i].crossOrigin = "Anonymous";
+                    popupimgs[i].onload = function(){
+                        /* Remove a loading token and, if none left, run callback */
+                        if (!--loading) {
+                            fn({
+                                img: panelimg,
+                                id: id || false,
+                                popups: popupimgs || false
+                            });
+                        }
+                    }
+                    popupimgs[i].src = arg.popups[i].src;
+                }
+            }
+        }
+        return loadpanelimgs;
+    }());
+
+    function _loadAll(imgs2load, fn) {
+        var keys = Object.keys(imgs2load);
+        var L = keys.length;
+        var loadingAll = L;
+        var loadedImgs = [];
+        for (var i = 0; i < L; i++) {
+            loadpanelimgs(imgs2load[keys[i]], keys[i], function(imgs){
+                loadedImgs[imgs.id] = imgs;
+                if (!--loadingAll) {
+                    fn && fn(loadedImgs);
+                }
+            });
+        }
+    }
+
 	var CmxCanvas = (function() {
 		
 		var _cnv, _ctx, _panelCounter, _popupCounter;
 		var _animating = false;
-        var _loading = 0;
+        var _loading = {
+            num: 0,
+            start: function(){
+                return ++this.num;
+            },
+            end: function(){
+                return --this.num;
+            }
+        }
         var _loadingHold = false;
 
-        var _loadedPopups = {}
+        var _loadedPopups = {};
         var _loadedPanels = {
             loading: (function(){
                 var img = new Image();
                 img.crossOrigin = "Anonymous";
-                img.src = "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg"
+                img.src = "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg";
                 return img;
             }())
         };
@@ -51,7 +117,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 --_loading;
                 if (_loading === 0) _loadingHold = false;
                 this.end = new Date().getTime();
-                //console.log('popups loaded in: ' + (this.end - this.start));
+                // console.log('popups loaded in: ' + (this.end - this.start));
             }
         });
 
@@ -77,8 +143,8 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 --_loading;
                 if (_loading === 0) _loadingHold = false;
                 this.end = new Date().getTime();
-                //console.log('popups loaded in: ' + (this.end - this.start));*/
-            }
+                // console.log('popups loaded in: ' + (this.end - this.start));
+            };
         }
         function loadPanelAndPopups() {
             var imgd = {},
@@ -101,9 +167,10 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                         console.log('#' + panel + ' popups: doesn\'t have any.');
                     }
                 }
-            };
+            }
             _panelImgPreloader.load(imgd, true);
         }
+
         function movePanels(data) {
             switch (data.transition) {
                 case 'jumpcut':
@@ -120,7 +187,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
         function popPopup(popup) {
             _animating = true;
             Animate.popup({
-                img: _loadedPopups[_panelCounter.curr][_popupCounter.curr],
+                img: _loadedPanels[_panelCounter.curr].popups[_popupCounter.curr],
                 x: popup.x || 0,
                 y: popup.y || 0,
                 animation: popup.animation || 'scaleIn'
@@ -133,7 +200,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 
 			goToNext: function() {
 				if(!_animating) {
-                    if (!_loadedPanels[_panelCounter.curr]) _loadingHold = true;
+                    if (!_loadedPanels[_panelCounter.curr].img) { _loadingHold = true; }
                 	if (!_popupCounter.isLast) {
 						_popupCounter.loadNext();
 						popPopup(_popupCounter.getData());
@@ -141,8 +208,8 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 					else if (!_panelCounter.isLast) {
                         _panelCounter.loadNext();  
                         movePanels({
-                            imgObj: _loadedPanels[_panelCounter.prev], 
-                            imgObj_target: _loadedPanels[_panelCounter.curr] || _loadedPanels.loading,
+                            imgObj: _loadedPanels[_panelCounter.prev].img, 
+                            imgObj_target: _loadedPanels[_panelCounter.curr].img || _loadedPanels.loading,
                             direction: 1,
                             transition: _panelCounter.getData().transition,
                             curr: _panelCounter.curr
@@ -162,8 +229,8 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 	if (!_panelCounter.isFirst) {			
                         _panelCounter.loadPrev();
                         movePanels({
-                            imgObj: _loadedPanels[_panelCounter.next],
-                            imgObj_target: _loadedPanels[_panelCounter.curr],
+                            imgObj: _loadedPanels[_panelCounter.next].img,
+                            imgObj_target: _loadedPanels[_panelCounter.curr].img,
                             direction: -1,
                             transition: _panelCounter.getData().transition,
                             curr: _panelCounter.curr
@@ -179,7 +246,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 				return [_panelCounter, _popupCounter];
 			},
 			goToPanel: function(panel) {	
-                if (!_animating) _panelCounter.goTo(panel);
+                if (!_animating) { _panelCounter.goTo(panel); }
 			}
 		};
 
@@ -198,12 +265,24 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             _panelCounter = new CountManager(data.cmxJSON);
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
-                loadPanelAndPopups();
+                //loadPanelAndPopups();
+                var start = new Date();
+                _loadAll(_panelCounter.getDataSet(-2, 2), function(imgs){
+                    var htmlStr = 'done loading: ' + (new Date() - start);
+                    imgs.loading = _loadedPanels.loading;
+                    _loadedPanels = imgs;
+                    console.log(htmlStr);
+                    console.log(imgs);
+                    var imgObj = _loadedPanels[_panelCounter.curr].img;
+                    _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
+                    _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
+                        
+                });
             };
             _panelCounter.onchange();
 
 			return cmxcanvas;
-		};
+		}
         return __init;
 	}());
 

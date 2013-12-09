@@ -1,5 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Bangers);
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+/* Google Fonts imports  */
+/* Default Nav Bg & Text  */
 #footer, #topnav {
   background-color: cornsilk;
   color: black; }

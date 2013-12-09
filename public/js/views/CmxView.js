@@ -1,5 +1,4 @@
-//public/js/views/CmxView.js
-/*global define*/
+/* public/js/views/CmxView.js */
 
 define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass', 'modules/ImagePreloader'
   ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {

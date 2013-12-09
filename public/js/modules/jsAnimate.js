@@ -1,8 +1,6 @@
-//Original code: http://javascript.info/tutorial/animation
-//Adapted by Rolando Garcia for comicCanvas project, http://roshow.net
-
 define([], function(){
   var jsAnimate = {
+      /* Adapted from: http://javascript.info/tutorial/animation */
       elastic: function(progress, x) {
         x = x || 1.5;
         return Math.pow(2, 10 * (progress-1)) * Math.cos(20*Math.PI*x/3*progress)
@@ -92,6 +90,7 @@ define([], function(){
       }
   }
   //return jsAnimate;
+  
   function halfDiff(a, b) {
     return (a - b)/2;
   }
