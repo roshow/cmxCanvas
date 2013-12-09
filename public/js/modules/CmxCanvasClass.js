@@ -69,18 +69,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 		
 		var _cnv, _ctx, _panelCounter, _popupCounter;
 		var _animating = false;
-        var _loading = {
-            num: 0,
-            start: function(){
-                return ++this.num;
-            },
-            end: function(){
-                return --this.num;
-            }
-        }
         var _loadingHold = false;
-
-        var _loadedPopups = {};
         var _loadedPanels = {
             loading: (function(){
                 var img = new Image();
@@ -89,87 +78,6 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 return img;
             }())
         };
-		var _panelImgPreloader = new ImagePreloader({
-            onLoadStart: function() {
-                this.start = new Date().getTime();
-                ++_loading;
-            },
-            onLoadDone: function() {
-                var key;
-                for (key in _panelImgPreloader.loadedImages) {
-                    _loadedPanels[key] = _panelImgPreloader.loadedImages[key];
-                }
-                delete _panelImgPreloader.loadedImages;
-                _panelImgPreloader.loadedImages = {};
-                --_loading;
-                if (_loading === 0) _loadingHold = false;
-                
-                this.end = new Date().getTime();
-                //console.log('panels loaded in: ' + (this.end - this.start));
-            }
-        });
-		var _popupImgLoader = new ImagePreloader({
-            onLoadStart: function() {
-                this.start = new Date().getTime();
-                ++_loading;
-            },
-            onLoadDone: function() {
-                --_loading;
-                if (_loading === 0) _loadingHold = false;
-                this.end = new Date().getTime();
-                // console.log('popups loaded in: ' + (this.end - this.start));
-            }
-        });
-
-        function __ConstructLoadData(panel) {
-            return {
-                src: _panelCounter.data[panel].src,
-                callback: function(imgObj) {
-                    if (panel === _panelCounter.curr){
-                        _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
-                        _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
-                        //_loadingHold = false;
-                    }
-                },
-                cbPriority: true
-            };
-        }
-        function __popupCBOverride(panel) {
-            /* Similar to the _panelImgPreloader.onLoadDone method but needs the panel variable from loadPanelAndPopups */
-            return function(){
-                _loadedPopups[panel] = _popupImgLoader.loadedImages;
-                delete _panelImgPreloader.loadedImages;
-                _panelImgPreloader.loadedImages = {};
-                --_loading;
-                if (_loading === 0) _loadingHold = false;
-                this.end = new Date().getTime();
-                // console.log('popups loaded in: ' + (this.end - this.start));
-            };
-        }
-        function loadPanelAndPopups() {
-            var imgd = {},
-                keys = _panelCounter.getCurr(-2, 2),
-                L = keys.length,
-                i;
-            for (i = 0; i < L; i++) {
-                var panel = keys[i];
-                if (!_loadedPanels[panel]) {
-                    imgd[panel] = __ConstructLoadData(panel);
-                    var popups = _panelCounter.data[panel].popups || false;
-                    if (popups && popups.length > 0) {
-                        console.log('#' + panel + ' popups: load-start.');
-                        _popupImgLoader.load(popups, true, __popupCBOverride(panel));
-                    }
-                    
-                    /* this runs if the panel has no popups. Could be useful. */
-                    
-                    else {
-                        console.log('#' + panel + ' popups: doesn\'t have any.');
-                    }
-                }
-            }
-            _panelImgPreloader.load(imgd, true);
-        }
 
         function movePanels(data) {
             switch (data.transition) {
@@ -199,17 +107,18 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 		var cmxcanvas = {
 
 			goToNext: function() {
-				if(!_animating) {
-                    if (!_loadedPanels[_panelCounter.curr].img) { _loadingHold = true; }
+                if (!_loadedPanels[_panelCounter.curr]) { _loadingHold = true; }
+				if(!_animating && !_loadingHold) {
                 	if (!_popupCounter.isLast) {
 						_popupCounter.loadNext();
 						popPopup(_popupCounter.getData());
 					}
 					else if (!_panelCounter.isLast) {
-                        _panelCounter.loadNext();  
+                        _panelCounter.loadNext();
+                        var _target = (_loadedPanels[_panelCounter.curr] && _loadedPanels[_panelCounter.curr].img) ? _loadedPanels[_panelCounter.curr].img : _loadedPanels.loading;
                         movePanels({
                             imgObj: _loadedPanels[_panelCounter.prev].img, 
-                            imgObj_target: _loadedPanels[_panelCounter.curr].img || _loadedPanels.loading,
+                            imgObj_target: _target,
                             direction: 1,
                             transition: _panelCounter.getData().transition,
                             curr: _panelCounter.curr
@@ -218,9 +127,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                     return [_panelCounter, _popupCounter];
 				}
                 else {
-                    console.log('cannot move');
-                    console.log('_loadingHold: '+ _loadingHold);
-                    console.log('_animating: ' + _animating);
+                    console.log('CANNOT MOVE');
                     return false;
                 }
 			},
@@ -239,14 +146,17 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 					else {
 						this.goToPanel(0);
 					}
+                    return [_panelCounter, _popupCounter];
 				}
                 else {
-                    console.log('animating, cannot move');
+                    console.log('CANNOT MOVE');
+                    return false;
                 }
-				return [_panelCounter, _popupCounter];
 			},
 			goToPanel: function(panel) {	
-                if (!_animating) { _panelCounter.goTo(panel); }
+                if (!_animating) { 
+                    _panelCounter.goTo(panel); 
+                }
 			}
 		};
 
@@ -255,34 +165,37 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 			_cnv = document.getElementById(cnvId);
 			_ctx = _cnv.getContext('2d');
 
-        /**
-        *   Set up PanelCounter and set an onchange method, to keep things streamlined.
-        *   This is where _panelCounter because REALLY important. It's managing the entire 
-        *   cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
-        *   and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
-        **/			
+            /**
+            *   Set up PanelCounter and set an onchange method, to keep things streamlined.
+            *   This is where _panelCounter because REALLY important. It's managing the entire 
+            *   cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
+            *   and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
+            **/			
 
             _panelCounter = new CountManager(data.cmxJSON);
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
-                //loadPanelAndPopups();
-                var start = new Date();
-                _loadAll(_panelCounter.getDataSet(-2, 2), function(imgs){
-                    var htmlStr = 'done loading: ' + (new Date() - start);
-                    imgs.loading = _loadedPanels.loading;
-                    _loadedPanels = imgs;
-                    console.log(htmlStr);
-                    console.log(imgs);
+                var _dataset = _panelCounter.getDataSet(-2, 2);
+                for (var key in _dataset) {
+                    if (_loadedPanels[key]) delete _dataset[key];
+                }
+                // var start = new Date();
+                _loadAll(_dataset, function(imgs){
+                    // console.log('done loading: ' + (new Date() - start));
+                    for (key in imgs) {
+                        _loadedPanels[key] = imgs[key];
+                    }
+                    _loadingHold = false;
                     var imgObj = _loadedPanels[_panelCounter.curr].img;
                     _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
                     _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
-                        
                 });
             };
             _panelCounter.onchange();
 
 			return cmxcanvas;
 		}
+
         return __init;
 	}());
 
