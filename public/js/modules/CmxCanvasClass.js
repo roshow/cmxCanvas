@@ -75,7 +75,9 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 var img = new Image();
                 img.crossOrigin = "Anonymous";
                 img.src = "http://roshow.net/public/images/cmxcanvas/sov01/loading.jpg";
-                return img;
+                return {
+                    img: img
+                };
             }())
         };
 
@@ -115,7 +117,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 					}
 					else if (!_panelCounter.isLast) {
                         _panelCounter.loadNext();
-                        var _target = (_loadedPanels[_panelCounter.curr] && _loadedPanels[_panelCounter.curr].img) ? _loadedPanels[_panelCounter.curr].img : _loadedPanels.loading;
+                        var _target = (_loadedPanels[_panelCounter.curr] && _loadedPanels[_panelCounter.curr].img) ? _loadedPanels[_panelCounter.curr].img : _loadedPanels.loading.img;
                         movePanels({
                             imgObj: _loadedPanels[_panelCounter.prev].img, 
                             imgObj_target: _target,
@@ -155,7 +157,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 			},
 			goToPanel: function(panel) {	
                 if (!_animating) { 
-                    _panelCounter.goTo(panel); 
+                    _panelCounter.goTo(panel);
                 }
 			}
 		};
@@ -164,31 +166,30 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
     		/* Get Canvases and Contexts */
 			_cnv = document.getElementById(cnvId);
 			_ctx = _cnv.getContext('2d');
-
             /**
-            *   Set up PanelCounter and set an onchange method, to keep things streamlined.
-            *   This is where _panelCounter because REALLY important. It's managing the entire 
-            *   cmxJSON file for all of CmxCanvas. It can only be accessed through _panelCounter.data
-            *   and a few other methods. Overriding _panelCounter after this point will BREAK EVERYTHING.
-            **/			
-
+            *   Overriding _panelCounter after this point will BREAK EVERYTHING.
+            **/
             _panelCounter = new CountManager(data.cmxJSON);
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
-                var _dataset = _panelCounter.getDataSet(-2, 2);
-                for (var key in _dataset) {
-                    if (_loadedPanels[key]) delete _dataset[key];
+                var dataset = _panelCounter.getDataSet(-2, 2);
+                /* Delete images we already have or are currently loading from.
+                    dataset. If neither, set to 'loading'. */
+                for (var key in dataset) {
+                    _loadedPanels[key] ? delete dataset[key] : _loadedPanels[key] = 'loading';
                 }
-                // var start = new Date();
-                _loadAll(_dataset, function(imgs){
-                    // console.log('done loading: ' + (new Date() - start));
+                // var start = new Date(); console.log('start loading'); console.log(dataset);
+                _loadAll(dataset, function(imgs){
                     for (key in imgs) {
                         _loadedPanels[key] = imgs[key];
+                        if (parseInt(key, 10) === _panelCounter.curr) {
+                            imgObj = _loadedPanels[key].img;
+                            _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
+                            _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
+                        }
                     }
                     _loadingHold = false;
-                    var imgObj = _loadedPanels[_panelCounter.curr].img;
-                    _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
-                    _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
+                    // console.log('done loading: ' + (new Date() - start)); console.log(imgs); console.log(loadedPanels);
                 });
             };
             _panelCounter.onchange();
