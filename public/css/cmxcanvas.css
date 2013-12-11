@@ -2,6 +2,9 @@
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 /* Google Fonts imports  */
 /* Default Nav Bg & Text  */
+html {
+  background-color: #2A2522; }
+
 #footer, #topnav {
   background-color: cornsilk;
   color: black; }
@@ -75,9 +78,6 @@ nav {
     padding: 10px; }
     #topnav .instructionsmenu li {
       color: black; }
-
-.readcomic.bggrad {
-  background: -webkit-radial-gradient(circle, #232323, #cccccc); }
 
 #readcomic.container canvas#stagingCanvas {
   display: none; }
@@ -175,9 +175,9 @@ nav {
     text-align: center;
     cursor: pointer; }
     #library.container .issueEntry a {
-      color: black; }
+      color: cornsilk; }
       #library.container .issueEntry a:hover {
-        color: navy;
+        color: #9F000F;
         font-size: 1.25em;
         letter-spacing: 0.4px;
         font-weight: 400; }
@@ -190,7 +190,7 @@ nav {
         width: 70%;
         background-color: white; }
         #library.container .issueEntry a img:hover {
-          border-color: navy; }
+          border-color: #9F000F; }
       #library.container .issueEntry a p {
         padding-bottom: 4%;
         font-size: 1.25em;

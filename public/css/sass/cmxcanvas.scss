@@ -26,6 +26,10 @@ $cornsilk: #FFF8DC;
 
 /* Default Nav Bg & Text  */
 
+html {
+    background-color: #2A2522;
+}
+
 #footer, #topnav {
     background-color: $cornsilk;
     color: black;
@@ -149,10 +153,10 @@ nav {
     }
 }
 
-.readcomic.bggrad {
-    // background: -webkit-linear-gradient(bottom, #ccc, #000);
-    background: -webkit-radial-gradient(circle, #232323, #ccc);
-}
+// .readcomic.bggrad {
+//     // background: -webkit-linear-gradient(bottom, #ccc, #000);
+//     background: -webkit-radial-gradient(circle, #232323, #ccc);
+// }
 
 #readcomic.container {
     canvas#stagingCanvas {
@@ -296,9 +300,9 @@ nav {
         text-align: center;
         cursor: pointer;
         a {
-            color: black;
+            color: $cornsilk;
             &:hover {
-                color: $cmxcanvasBlue;
+                color: #9F000F;
                 font-size: 1.25em;
                 letter-spacing: 0.4px;
                 font-weight: 400;
@@ -313,7 +317,7 @@ nav {
                 width: 70%;
                 background-color: white;
                 &:hover {
-                    border-color: $cmxcanvasBlue;
+                    border-color: #9F000F;
                 }
             }
             p {
