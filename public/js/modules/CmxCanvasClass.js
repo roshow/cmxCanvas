@@ -50,7 +50,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
         return loadpanelimgs;
     }());
 
-    function _loadAll(imgs2load, fn) {
+    function loadBatch(imgs2load, fn) {
         var keys = Object.keys(imgs2load);
         var L = keys.length;
         var loadingAll = L;
@@ -163,6 +163,18 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 		};
 
 		function __init(data, cnvId) {
+            /* crazy recursive function to load images staggered-like in the background */
+            function throttledLoadArray(imgs2load){
+                loadBatch(imgs2load.splice(0,10), function(imgs) {
+                    imgs = null;
+                    if (imgs2load.length > 0) {
+                        throttledLoadArray(imgs2load);
+                    }
+                    else {
+                        return false;
+                    }
+                });
+            }
     		/* Get Canvases and Contexts */
 			_cnv = document.getElementById(cnvId);
 			_ctx = _cnv.getContext('2d');
@@ -178,8 +190,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                 for (var key in dataset) {
                     _loadedPanels[key] ? delete dataset[key] : _loadedPanels[key] = 'loading';
                 }
-                // var start = new Date(); console.log('start loading'); console.log(dataset);
-                _loadAll(dataset, function(imgs){
+                loadBatch(dataset, function(imgs){
                     for (key in imgs) {
                         _loadedPanels[key] = imgs[key];
                         if (parseInt(key, 10) === _panelCounter.curr) {
@@ -192,7 +203,10 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                     // console.log('done loading: ' + (new Date() - start)); console.log(imgs); console.log(loadedPanels);
                 });
             };
-            _panelCounter.onchange();
+            _panelCounter.onchange(0,4);
+
+            var start = new Date();
+            throttledLoadArray(_panelCounter.data.slice(2), start);
 
 			return cmxcanvas;
 		}

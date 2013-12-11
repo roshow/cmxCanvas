@@ -250,13 +250,10 @@ nav {
             margin: 5px 0;
             span.caret {
                 vertical-align: middle;
-                transform:rotate(180deg);
-                -ms-transform:rotate(180deg);  
-                -webkit-transform:rotate(180deg);
                 &.reverse {
-                    transform:rotate(0);
-                    -ms-transform:rotate(0);  
-                    -webkit-transform:rotate(0);
+                    transform:rotate(180deg);
+                    -ms-transform:rotate(180deg);  
+                    -webkit-transform:rotate(180deg);
                 }
             }
             a {
@@ -273,10 +270,10 @@ nav {
             overflow: hidden;
             @include anim-maxH(0.25s);
             font-size: 1.1em;
-            max-height: 250px;
+            max-height: 0px;
             padding-top: 0.75em;
             &.open {
-                max-height: 0px;
+                max-height: 250px;
                 // padding-top: 0.75em;
                 //box-shadow: inset 0 3px 6px rgba(0,0,160, 0.2);*/
             }
