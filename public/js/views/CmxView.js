@@ -1,30 +1,8 @@
 /* public/js/views/CmxView.js */
 
-define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass', 'modules/ImagePreloader'
+define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass'
   ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
 
-  function bulkPreload(Json, logtime) {
-    logtime = true;
-    Json = Json.cmxJSON;
-    var bigLoad = new ImagePreloader();
-    bigLoad.onLoadStart = function(){
-      if (logtime) console.log('loading every image');
-      this.start = new Date().getTime();
-    };
-    bigLoad.onLoadDone = function(){
-      if (logtime) this.end = new Date().getTime();
-      if (logtime) console.log('duration for every damn image load: ' + (this.end - this.start));
-      delete bigLoad.loadedImages;
-    };
-    var L = Json.length;
-    var _popupArr = [];
-    for (var i = 0; i < L; i++) {
-      //console.log(Json[i]);
-      _popupArr = Json[i].popups ? _popupArr.concat(Json[i].popups) : _popupArr;
-    }
-    console.log("Total no. of images: " + (Json.length + _popupArr.length));
-    bigLoad.load(Json.concat(_popupArr), true);
-  }
   
   var CmxView = Backbone.View.extend({
     el: $("#CmxCanvas"),
@@ -36,7 +14,6 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
       //@ Checks to see if it's a touch device and adds the appropriate class to the html dom element.
       ('ontouchstart' in document.documentElement) ? $('html').addClass('touchIs') : $('html').addClass('touchIsNot');
       var _modeljson = this.model.toJSON();
-      //bulkPreload(_modeljson);
       this.$el.html(jade.templates['cmxreader'](_modeljson));
       $('#leftbutton .ui-arrow').css('display', 'none');
       //create cmxcanvas class with methods to make life easier
@@ -68,7 +45,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
           }
           break;
         case "touchmove":
-          console.log("touchmove");
+          // console.log("touchmove");
           break;
       }
     },
@@ -89,7 +66,7 @@ define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCa
 
     leftArrow: function(e){
       var _read = this.cmxcanvas.goToPrev();
-      console.log('left arrow');
+      // console.log('left arrow');
 
       /**
           The if/then here and this.rightArrow should really be dealt with in 

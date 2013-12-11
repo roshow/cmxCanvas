@@ -6,8 +6,7 @@ require.config({
         underscore: 'libs/underscore-min',
         backbone: 'libs/backbone-min',
         bootstrap: 'libs/bootstrap.min',
-        jade: 'templates/cmxtemplates',
-        ImagePreloader: 'modules/imagePreloader'
+        jade: 'templates/cmxtemplates'
     },
     shim: {
         jade: {
@@ -19,9 +18,6 @@ require.config({
         },
         underscore: {
           exports: '_'
-        },
-        ImagePreloader: {
-            exports: 'ImagePreloader'
         }
     }
 });

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData', 'ImagePreloader'], function($, _, Animate, CountManager, ImageAsData, ImagePreloader){
+define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], function($, _, Animate, CountManager, ImageAsData){
 
 	function halfDiff(a, b) {
 		return (a - b)/2;
@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 
     var loadpanelimgs = (function(){
         var loadReadyAction = function() {
-            console.log('loadReadyAction');
+            // console.log('loadReadyAction');
         };
         function loadpanelimgs(arg, id, fn){
             var popupimgs;
@@ -129,7 +129,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                     return [_panelCounter, _popupCounter];
 				}
                 else {
-                    console.log('CANNOT MOVE');
+                    // console.log('CANNOT MOVE');
                     return false;
                 }
 			},
@@ -151,7 +151,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                     return [_panelCounter, _popupCounter];
 				}
                 else {
-                    console.log('CANNOT MOVE');
+                    // console.log('CANNOT MOVE');
                     return false;
                 }
 			},
@@ -210,7 +210,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                             _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
                         }
                     }
-                    console.log(_loadedPanels);
+                    // console.log(_loadedPanels);
                     _loadingHold = false;
                 });
             };
@@ -220,6 +220,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             var start = new Date();
             throttledLoadArray(_panelCounter.data.slice(2), start);
 
+            console.log('CmxCanvas Loaded');
 			return cmxcanvas;
 		}
 
