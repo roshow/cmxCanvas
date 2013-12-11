@@ -50,7 +50,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
         return loadpanelimgs;
     }());
 
-    function loadBatch(imgs2load, fn) {
+    function _loadAll(imgs2load, fn) {
         var keys = Object.keys(imgs2load);
         var L = keys.length;
         var loadingAll = L;
@@ -158,6 +158,9 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 			goToPanel: function(panel) {	
                 if (!_animating) { 
                     _panelCounter.goTo(panel);
+                    imgObj = _loadedPanels[_panelCounter.curr].img || _loadedPanels.loading.img
+                    _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
+                    _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
                 }
 			}
 		};
@@ -165,7 +168,7 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 		function __init(data, cnvId) {
             /* crazy recursive function to load images staggered-like in the background */
             function throttledLoadArray(imgs2load){
-                loadBatch(imgs2load.splice(0,10), function(imgs) {
+                _loadAll(imgs2load.splice(0,10), function(imgs) {
                     imgs = null;
                     if (imgs2load.length > 0) {
                         throttledLoadArray(imgs2load);
@@ -185,12 +188,20 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
             _panelCounter.onchange = function(){
                 _popupCounter = new CountManager(_panelCounter.getData().popups, -1);
                 var dataset = _panelCounter.getDataSet(-2, 2);
-                /* Delete images we already have or are currently loading from.
-                    dataset. If neither, set to 'loading'. */
+                var panelsToKeep = {};
+                panelsToKeep.loading = _loadedPanels.loading;
                 for (var key in dataset) {
-                    _loadedPanels[key] ? delete dataset[key] : _loadedPanels[key] = 'loading';
+                    if (_loadedPanels[key]) {
+                        delete dataset[key];
+                    }
+                    else {
+                        _loadedPanels[key] = 'loading';
+                    }
+                    panelsToKeep[key] = _loadedPanels[key];
                 }
-                loadBatch(dataset, function(imgs){
+                _loadedPanels = panelsToKeep;
+                panelsToKeep = null;
+                _loadAll(dataset, function(imgs){
                     for (key in imgs) {
                         _loadedPanels[key] = imgs[key];
                         if (parseInt(key, 10) === _panelCounter.curr) {
@@ -199,12 +210,13 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
                             _ctx.drawImage(imgObj, halfDiff(_cnv.width, imgObj.width), halfDiff(_cnv.height, imgObj.height));
                         }
                     }
+                    console.log(_loadedPanels);
                     _loadingHold = false;
-                    // console.log('done loading: ' + (new Date() - start)); console.log(imgs); console.log(loadedPanels);
                 });
             };
             _panelCounter.onchange(0,4);
 
+            /* warm up the local browser's cache */
             var start = new Date();
             throttledLoadArray(_panelCounter.data.slice(2), start);
 
