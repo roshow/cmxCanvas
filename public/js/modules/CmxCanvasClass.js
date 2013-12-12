@@ -65,6 +65,19 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
         }
     }
 
+    /* crazy recursive function to load images staggered-like in the background */
+    function throttledLoadArray(imgs2load){
+        _loadAll(imgs2load.splice(0,10), function(imgs) {
+            imgs = null;
+            if (imgs2load.length > 0) {
+                throttledLoadArray(imgs2load);
+            }
+            else {
+                return false;
+            }
+        });
+    }
+
 	var CmxCanvas = (function() {
 		
 		var _cnv, _ctx, _panelCounter, _popupCounter;
@@ -166,21 +179,14 @@ define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'mo
 		};
 
 		function __init(data, cnvId) {
-            /* crazy recursive function to load images staggered-like in the background */
-            function throttledLoadArray(imgs2load){
-                _loadAll(imgs2load.splice(0,10), function(imgs) {
-                    imgs = null;
-                    if (imgs2load.length > 0) {
-                        throttledLoadArray(imgs2load);
-                    }
-                    else {
-                        return false;
-                    }
-                });
-            }
     		/* Get Canvases and Contexts */
 			_cnv = document.getElementById(cnvId);
 			_ctx = _cnv.getContext('2d');
+
+            /** Loading placeholder **/
+            _ctx.clearRect(0, 0, _cnv.width, _cnv.height);
+            _ctx.drawImage(_loadedPanels.loading.img, halfDiff(_cnv.width, _loadedPanels.loading.img.width), halfDiff(_cnv.height, _loadedPanels.loading.img.height));
+
             /**
             *   Overriding _panelCounter after this point will BREAK EVERYTHING.
             **/
