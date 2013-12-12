@@ -47,6 +47,8 @@ exports.handler = (function() {
         },
 
         getallcmx: function(req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "X-Requested-With");
             console.log('handling /getallcmx');
             var _q = {
                 published: 1
@@ -57,6 +59,8 @@ exports.handler = (function() {
         },
 
         getcmxjson: function(req, res){
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "X-Requested-With");
             console.log('handling /getcmxjson');
             var _q = {
                 _id: req.params.id

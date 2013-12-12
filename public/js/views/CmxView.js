@@ -1,5 +1,5 @@
-define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvas'
-  ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
+define([ 'jquery', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvas'
+  ], function($, Backbone, jade, bootstrap, CmxCanvas) {
 
   
   var CmxView = Backbone.View.extend({
