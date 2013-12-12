@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter', 'modules/imageAsData'], function($, _, Animate, CountManager, ImageAsData){
+define(['jquery', 'underscore', 'modules/jsAnimate', 'modules/PanelCounter'], function($, _, Animate, CountManager){
 
 	function halfDiff(a, b) {
 		return (a - b)/2;

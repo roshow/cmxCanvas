@@ -1,6 +1,4 @@
-/* public/js/views/CmxView.js */
-
-define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvasClass'
+define([ 'jquery', 'underscore', 'backbone', 'jade', 'bootstrap', 'modules/CmxCanvas'
   ], function($, _, Backbone, jade, bootstrap, CmxCanvas) {
 
   
